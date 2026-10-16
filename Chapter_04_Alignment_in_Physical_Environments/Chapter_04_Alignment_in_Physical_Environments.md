@@ -1,0 +1,1216 @@
+**Volume 10. Physical AI Safety and Alignment**
+
+
+# Chapter 04. Alignment in Physical Environments
+
+##  
+
+## 04.01. What Alignment Means for Physical AI
+
+![](images/image1.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Alignment in Physical AI refers to the degree to which an embodied intelligent system's goals, decisions, and physical actions remain consistent with human intent, safety expectations, operational rules, and broader social constraints. Unlike alignment in purely digital systems, misalignment can immediately produce motion, force, manipulation, or environmental change, turning an abstract reasoning error into a physical consequence.
+
+A physically aligned system must do more than interpret what a human explicitly commands. It must understand what the person is trying to accomplish, recognize constraints that may not have been stated, and avoid actions that technically satisfy an instruction while violating its practical meaning. The distinction between literal instruction following and intended outcome becomes especially important when robots operate autonomously in complex environments.
+
+Physical AI therefore introduces a chain of alignment extending from human intent to goals, plans, actions, and physical outcomes. A command is interpreted into an internal objective, the objective is decomposed into tasks, tasks generate trajectories or manipulation actions, and those actions alter the environment. Alignment must be preserved across every transformation because an apparently correct high-level objective can still produce unsafe low-level behavior.
+
+The physical world also constrains what alignment can mean. Robots have mass, momentum, limited sensing, actuator uncertainty, communication delays, and finite stopping distances. An action that appears reasonable at the symbolic level may become unacceptable when these physical properties are considered. Alignment consequently requires reasoning about geometry, dynamics, contact, uncertainty, human proximity, and the irreversible consequences of some actions.
+
+Safety and alignment are closely related but are not identical. Safety asks whether the system remains within acceptable risk boundaries, while alignment asks whether its behavior continues to represent legitimate human goals and preferences. A robot may perform a physically safe action that is nevertheless unwanted, inappropriate, or contrary to mission intent. Conversely, a requested action may accurately reflect human intent while still requiring rejection because it violates safety constraints.
+
+This distinction creates a hierarchy of authority within an aligned Physical AI system. Human commands cannot automatically override fundamental safety requirements, and optimization objectives cannot override operational restrictions simply because doing so improves task performance. The robot must reconcile mission goals with safety envelopes, access permissions, environmental rules, social expectations, and system-level constraints before converting an instruction into physical execution.
+
+Alignment must also be context aware because the meaning of an acceptable action depends on where, when, and around whom it occurs. Moving quickly through an empty warehouse aisle may be appropriate, while the same trajectory becomes unacceptable when workers enter the area. A manipulator may safely grasp one object but require additional confirmation for another. Context therefore changes both the interpretation of intent and the permissible action space.
+
+Uncertainty is another fundamental alignment problem. Physical AI rarely possesses complete knowledge of its environment, and perception, localization, prediction, language interpretation, and world models may all contain uncertainty. An aligned system should not treat uncertain estimates as established facts when consequences are significant. It should reduce speed, increase safety margins, gather additional observations, request clarification, or defer execution when confidence becomes insufficient.
+
+This leads to the principle of conservative action under uncertainty. The purpose is not to make robots universally passive, but to ensure that autonomy decreases appropriately when evidence supporting safe and intended behavior becomes weaker. Confidence should therefore influence not only what the AI believes but also how much physical authority it is permitted to exercise, creating a direct relationship between epistemic uncertainty and operational behavior.
+
+Alignment becomes more difficult as Physical AI systems gain planning, reasoning, learning, and generalist capabilities. A fixed automation system operates within predefined behaviors, whereas a Vision-Language-Action model or autonomous agent may generate actions not explicitly anticipated by its designers. Greater behavioral flexibility expands the reachable action space and therefore increases the importance of constraints that remain effective even when the learned policy encounters novel situations.
+
+For this reason, alignment cannot depend exclusively on the internal behavior of an AI model. Physical systems require architectural mechanisms that constrain what models are allowed to command. Motion limits, collision avoidance, safety controllers, runtime monitors, action filters, protected zones, emergency stops, and independent supervisory functions can prevent an aligned objective from becoming an unsafe action when perception, reasoning, planning, or inference fails.
+
+Human oversight provides another layer of alignment. Operators must be able to understand important robot states, recognize when autonomous behavior becomes uncertain, intervene when necessary, and correct objectives without creating additional hazards. Effective oversight therefore requires transparency, interruptibility, predictable responses, and meaningful control authority rather than merely providing an interface through which a human can issue commands.
+
+Corrigibility extends this idea by requiring the system to remain receptive to correction. A robot should not resist shutdown, reinterpret intervention as an obstacle to its objective, or preserve an obsolete plan after human priorities have changed. Physical corrigibility means that interruption, goal modification, safe stopping, replanning, and transfer of control are designed as normal elements of autonomous operation rather than exceptional failures.
+
+Long-horizon autonomy creates additional alignment challenges because small interpretation errors can accumulate across sequences of decisions. A robot may begin with a correctly understood objective but gradually deviate as environmental assumptions change, intermediate goals are generated, or predicted outcomes diverge from reality. Alignment must therefore be continuously evaluated rather than established only when the original command is received.
+
+Learning systems further complicate this requirement because their behavior may evolve through adaptation, reinforcement learning, continual learning, or fleet-scale updates. Alignment must survive these changes. Improvements in task success cannot be accepted automatically if they weaken safety margins, produce undesirable strategies, exploit poorly specified rewards, or create behaviors that were absent during validation. Model improvement and behavioral acceptability are separate criteria.
+
+Multi-robot systems extend alignment from individual behavior to collective behavior. Each robot may behave acceptably in isolation while fleet-level coordination creates congestion, resource conflicts, unsafe interactions, or emergent strategies. Alignment at this scale therefore includes shared priorities, coordination rules, conflict resolution, authority boundaries, and mechanisms ensuring that local optimization does not undermine the safety or objectives of the overall system.
+
+Ultimately, Physical AI alignment is best understood as continuous correspondence between human intent and real-world consequences. It spans instruction understanding, objective formation, reasoning, planning, control, monitoring, intervention, and learning. The central question is not simply whether the AI selected a logically plausible action, but whether the complete embodied system produced an action that remained intended, permitted, contextually appropriate, and physically safe.
+
+물리 AI 정렬(Alignment in Physical AI)은 체화된 지능 시스템(Embodied Intelligent System)의 목표, 의사결정, 물리적 행동이 인간의 의도(Human Intent), 안전 기대(Safety Expectations), 운영 규칙(Operational Rules), 그리고 보다 광범위한 사회적 제약(Social Constraints)과 일관성을 유지하는 정도를 의미한다. 순수 디지털 시스템의 정렬과 달리, 물리 AI의 정렬 실패(Misalignment)는 즉각적으로 움직임, 힘, 조작 또는 환경 변화를 발생시켜 추상적인 추론 오류를 실제 물리적 결과로 전환할 수 있다.
+
+물리적으로 정렬된 시스템(Physically Aligned System)은 인간이 명시적으로 지시한 내용을 단순히 해석하는 것 이상을 수행해야 한다. 시스템은 사람이 실제로 달성하려는 목적을 이해하고, 명시되지 않은 제약을 인식하며, 지시를 문자 그대로 충족하면서도 실질적인 의미를 위반하는 행동을 피해야 한다. 이러한 문자적 지시 수행(Literal Instruction Following)과 의도된 결과(Intended Outcome)의 구분은 로봇이 복잡한 환경에서 자율적으로 작동할수록 더욱 중요해진다.
+
+따라서 물리 AI(Physical AI)는 인간 의도(Human Intent)에서 목표(Goals), 계획(Plans), 행동(Actions), 물리적 결과(Physical Outcomes)로 이어지는 정렬의 연쇄(Alignment Chain)를 형성한다. 명령은 내부 목표로 해석되고, 목표는 작업으로 분해되며, 작업은 궤적 또는 조작 행동을 생성하고, 이러한 행동은 환경을 변화시킨다. 겉보기에 올바른 상위 수준 목표도 안전하지 않은 하위 수준 행동으로 이어질 수 있으므로 모든 변환 단계에서 정렬이 유지되어야 한다.
+
+물리 세계(Physical World)는 정렬이 의미하는 바에도 제약을 부여한다. 로봇에는 질량(Mass), 운동량(Momentum), 제한된 센싱(Limited Sensing), 액추에이터 불확실성(Actuator Uncertainty), 통신 지연(Communication Delay), 유한한 정지 거리(Finite Stopping Distance)가 존재한다. 기호적 수준(Symbolic Level)에서 합리적으로 보이는 행동도 이러한 물리적 특성을 고려하면 허용될 수 없을 수 있다. 따라서 정렬에는 기하학, 동역학, 접촉, 불확실성, 인간과의 근접성, 그리고 일부 행동의 비가역적 결과에 대한 추론이 필요하다.
+
+안전(Safety)과 정렬(Alignment)은 밀접하게 관련되어 있지만 동일한 개념은 아니다. 안전은 시스템이 허용 가능한 위험 경계(Acceptable Risk Boundaries) 내에 머무르는지를 다루는 반면, 정렬은 시스템의 행동이 정당한 인간의 목표와 선호를 지속적으로 반영하는지를 다룬다. 로봇은 물리적으로 안전하지만 원하지 않거나 부적절하거나 임무 의도(Mission Intent)에 반하는 행동을 수행할 수 있다. 반대로 요청된 행동이 인간의 의도를 정확히 반영하더라도 안전 제약(Safety Constraints)을 위반한다면 거부되어야 할 수 있다.
+
+이러한 차이는 정렬된 물리 AI 시스템(Aligned Physical AI System) 내부에 권한 계층(Authority Hierarchy)을 형성한다. 인간의 명령은 기본적인 안전 요구사항(Fundamental Safety Requirements)을 자동으로 무시할 수 없으며, 최적화 목표(Optimization Objectives) 역시 작업 성능을 향상시킨다는 이유만으로 운영상의 제한을 넘어설 수 없다. 로봇은 지시를 물리적 실행으로 변환하기 전에 임무 목표, 안전 영역(Safety Envelope), 접근 권한, 환경 규칙, 사회적 기대, 시스템 수준 제약을 조정해야 한다.
+
+정렬은 또한 상황 인식(Context Awareness)을 필요로 한다. 허용 가능한 행동의 의미가 장소, 시간, 주변 사람에 따라 달라지기 때문이다. 사람이 없는 창고 통로를 빠르게 이동하는 것은 적절할 수 있지만, 작업자가 해당 영역에 진입하면 동일한 궤적은 허용될 수 없게 된다. 매니퓰레이터(Manipulator)는 특정 물체를 안전하게 파지할 수 있지만 다른 물체에는 추가 확인이 필요할 수 있다. 따라서 상황(Context)은 인간 의도의 해석과 허용 가능한 행동 공간(Permissible Action Space)을 동시에 변화시킨다.
+
+불확실성(Uncertainty)은 또 다른 근본적인 정렬 문제이다. 물리 AI는 환경에 대한 완전한 정보를 거의 갖지 못하며, 인식(Perception), 위치 추정(Localization), 예측(Prediction), 언어 해석(Language Interpretation), 월드 모델(World Model)은 모두 불확실성을 포함할 수 있다. 정렬된 시스템은 결과가 중대한 상황에서 불확실한 추정을 확정된 사실처럼 취급해서는 안 된다. 신뢰도가 충분하지 않다면 속도를 낮추고, 안전 여유(Safety Margin)를 확대하며, 추가 관측을 수행하거나, 명확화를 요청하거나, 실행을 보류해야 한다.
+
+이는 불확실성 하의 보수적 행동(Conservative Action under Uncertainty)이라는 원칙으로 이어진다. 그 목적은 로봇을 항상 수동적으로 만드는 것이 아니라 안전하고 의도된 행동을 뒷받침하는 근거가 약해질수록 자율성(Autonomy)이 적절하게 감소하도록 하는 것이다. 따라서 신뢰도(Confidence)는 AI가 무엇을 믿는가뿐만 아니라 어느 정도의 물리적 권한(Physical Authority)을 행사하도록 허용할 것인지에도 영향을 주어야 하며, 인식론적 불확실성(Epistemic Uncertainty)과 운영 행동(Operational Behavior) 사이에 직접적인 관계를 형성해야 한다.
+
+물리 AI 시스템이 계획(Planning), 추론(Reasoning), 학습(Learning), 범용화 능력(Generalist Capability)을 획득할수록 정렬은 더욱 어려워진다. 고정 자동화 시스템(Fixed Automation System)은 사전에 정의된 행동 범위에서 작동하지만, 비전-언어-행동 모델(Vision-Language-Action Model)이나 자율 에이전트(Autonomous Agent)는 설계자가 명시적으로 예상하지 못했던 행동을 생성할 수 있다. 행동의 유연성이 증가하면 도달 가능한 행동 공간(Reachable Action Space)이 확장되므로 학습된 정책이 새로운 상황에 직면하더라도 유효하게 작동하는 제약이 더욱 중요해진다.
+
+이러한 이유로 정렬은 AI 모델 내부의 행동에만 의존할 수 없다. 물리 시스템에는 모델이 명령할 수 있는 행동을 제한하는 아키텍처적 메커니즘(Architectural Mechanisms)이 필요하다. 동작 제한(Motion Limits), 충돌 회피(Collision Avoidance), 안전 제어기(Safety Controllers), 런타임 모니터(Runtime Monitors), 행동 필터(Action Filters), 보호 구역(Protected Zones), 비상 정지(Emergency Stops), 독립 감독 기능(Independent Supervisory Functions)은 인식, 추론, 계획 또는 추론 실행(Inference)이 실패하더라도 정렬된 목표가 안전하지 않은 행동으로 변환되는 것을 방지할 수 있다.
+
+인간 감독(Human Oversight)은 또 다른 정렬 계층을 제공한다. 운영자는 중요한 로봇 상태를 이해하고, 자율 행동이 불확실해지는 시점을 인식하며, 필요한 경우 개입하고, 추가적인 위험을 만들지 않으면서 목표를 수정할 수 있어야 한다. 따라서 효과적인 감독에는 단순히 인간이 명령을 입력할 수 있는 인터페이스를 제공하는 것을 넘어 투명성(Transparency), 중단 가능성(Interruptibility), 예측 가능한 반응(Predictable Responses), 실질적인 제어 권한(Meaningful Control Authority)이 필요하다.
+
+교정 가능성(Corrigibility)은 시스템이 수정과 교정을 지속적으로 받아들일 수 있어야 한다는 개념으로 이를 확장한다. 로봇은 종료(Shutdown)에 저항하거나, 인간의 개입을 자신의 목표 달성을 방해하는 장애물로 재해석하거나, 인간의 우선순위가 변경된 이후에도 오래된 계획을 유지해서는 안 된다. 물리적 교정 가능성(Physical Corrigibility)은 중단, 목표 수정, 안전 정지(Safe Stopping), 재계획(Replanning), 제어권 이전(Transfer of Control)을 예외적인 실패 상황이 아니라 정상적인 자율 운영의 구성 요소로 설계하는 것을 의미한다.
+
+장기 자율성(Long-Horizon Autonomy)은 작은 해석 오류가 연속적인 의사결정을 거치면서 누적될 수 있기 때문에 추가적인 정렬 문제를 발생시킨다. 로봇이 처음에는 목표를 올바르게 이해했더라도 환경에 대한 가정이 변하거나, 중간 목표가 생성되거나, 예측된 결과가 현실과 달라지면서 점진적으로 원래 의도에서 벗어날 수 있다. 따라서 정렬은 최초 명령이 입력되는 순간에만 확립되는 것이 아니라 운영 과정 전체에서 지속적으로 평가되어야 한다.
+
+학습 시스템(Learning Systems)은 적응(Adaptation), 강화학습(Reinforcement Learning), 지속 학습(Continual Learning), 플릿 규모 업데이트(Fleet-Scale Updates)를 통해 행동이 변화할 수 있으므로 이러한 요구를 더욱 복잡하게 만든다. 정렬은 이러한 변화 이후에도 유지되어야 한다. 작업 성공률이 향상되었다고 하더라도 안전 여유를 약화시키거나, 바람직하지 않은 전략을 생성하거나, 잘못 정의된 보상(Reward)을 악용하거나, 검증 과정에 존재하지 않았던 행동을 만들어낸다면 자동으로 허용되어서는 안 된다. 모델 개선(Model Improvement)과 행동 수용 가능성(Behavioral Acceptability)은 서로 다른 평가 기준이다.
+
+다중 로봇 시스템(Multi-Robot Systems)은 정렬의 범위를 개별 행동에서 집단 행동(Collective Behavior)으로 확장한다. 각각의 로봇은 독립적으로는 적절하게 행동하더라도 플릿 수준의 협조(Fleet-Level Coordination)가 혼잡, 자원 충돌, 안전하지 않은 상호작용 또는 창발적 전략(Emergent Strategies)을 발생시킬 수 있다. 따라서 이 규모에서의 정렬은 공유 우선순위(Shared Priorities), 협조 규칙(Coordination Rules), 충돌 해결(Conflict Resolution), 권한 경계(Authority Boundaries), 그리고 지역적 최적화(Local Optimization)가 전체 시스템의 안전이나 목표를 훼손하지 않도록 하는 메커니즘을 포함한다.
+
+궁극적으로 물리 AI 정렬(Physical AI Alignment)은 인간의 의도(Human Intent)와 현실 세계의 결과(Real-World Consequences) 사이의 지속적인 대응 관계(Continuous Correspondence)로 이해하는 것이 가장 적절하다. 이는 지시 이해, 목표 형성, 추론, 계획, 제어, 모니터링, 개입, 학습 전반에 걸쳐 적용된다. 핵심 질문은 AI가 논리적으로 타당해 보이는 행동을 선택했는가에 그치지 않고, 완전한 체화 시스템(Embodied System)이 실제로 의도되고(Intended), 허용되며(Permitted), 상황에 적절하고(Contextually Appropriate), 물리적으로 안전한(Physically Safe) 행동을 만들어냈는가에 있다.
+
+##  
+
+## 04.02. Human Intent Goals and Robot Objectives
+
+![](images/image2.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Human intent is the underlying purpose that a person expects a Physical AI system to understand and realize through its behavior. It is broader than the literal wording of a command because people frequently omit assumptions that appear obvious in context. A robot instructed to "bring the package" must infer not only the destination but also expectations concerning safety, handling, access permissions, urgency, and interaction with nearby people.
+
+A human instruction therefore represents only one observable expression of intent. The actual intent may contain explicit goals, implicit preferences, contextual expectations, prohibited outcomes, and priorities that are never directly stated. Physical AI must transform this incomplete specification into an operational representation while recognizing that its interpretation can be uncertain, incomplete, or incorrect rather than treating every instruction as a perfectly defined objective.
+
+Goals provide an intermediate representation between human intent and executable robot behavior. A goal describes a desired state or outcome, such as delivering an object, inspecting equipment, cleaning an area, or reaching a location. Goals can be decomposed into subgoals and tasks, but this decomposition must preserve the purpose of the original instruction. Successful completion of individual tasks does not guarantee that the overall human objective has been satisfied.
+
+Robot objectives convert goals into quantities, conditions, or decision criteria that an autonomous system can use during planning and control. These objectives may include task completion, travel time, energy consumption, manipulation accuracy, coverage, comfort, productivity, or mission success. Because optimization strongly influences behavior, the selected objective must represent the intended outcome without encouraging undesirable shortcuts or behaviors that satisfy a metric while violating the broader purpose.
+
+This creates a fundamental distinction between intent, goals, and objectives. Intent expresses what humans ultimately want, goals describe states that should be achieved, and robot objectives define how the system evaluates candidate actions and plans. These levels are related but not interchangeable. Misalignment can arise whenever information is lost, distorted, oversimplified, or incorrectly prioritized as intent is translated from one representation into another.
+
+A Physical AI system must also distinguish primary objectives from constraints. Reaching a destination may be the primary objective, while avoiding collisions, respecting restricted zones, maintaining stability, limiting speed, and protecting payloads are constraints on how that objective may be achieved. Treating safety merely as another optimization term can be dangerous because sufficiently strong performance incentives may outweigh a numerical safety penalty unless architectural limits prevent it.
+
+Human goals are often hierarchical. A high-level mission such as "inspect this facility" may require navigation, localization, viewpoint selection, sensor positioning, data acquisition, anomaly detection, and reporting. Each subgoal introduces additional decisions and assumptions. Alignment requires that locally generated objectives remain subordinate to the original mission and that optimizing a subtask never causes the system to compromise higher-priority requirements.
+
+Priorities become especially important when objectives conflict. A robot may need to complete a mission quickly while conserving battery power, avoiding disruption to workers, maintaining communication, and remaining within safety limits. These objectives cannot always be maximized simultaneously. An aligned system therefore requires explicit mechanisms for priority management so that convenience, efficiency, or productivity does not silently override safety or legitimate human authority.
+
+The relationship between human intent and robot objectives is also dynamic. Intent may change while the robot is executing a task because environmental conditions, operational priorities, or human needs can change. A previously valid objective can become obsolete when a worker blocks a route, an emergency occurs, a destination changes, or an operator modifies the mission. Physical AI must therefore support goal revision, cancellation, replanning, and safe transition between objectives.
+
+Context provides essential information for interpreting these changes. The same command can imply different acceptable behaviors depending on the environment, robot capability, nearby people, object properties, and operational state. "Move this object" means something different for a lightweight package and a hazardous container. Objective formation should therefore combine linguistic instructions with perception, world state, task history, permissions, and relevant physical constraints.
+
+Ambiguity must be represented rather than hidden. When several interpretations of an instruction are plausible, automatically selecting one can create unnecessary physical risk. The robot should estimate confidence in its interpretation and consider the consequences of being wrong. Low-risk ambiguity may permit conservative execution, whereas consequential uncertainty may require additional observation, explicit confirmation, or a request for clarification before physical action begins.
+
+Physical feasibility further separates human goals from robot objectives. Humans can request outcomes that are impossible because of payload limits, reachability, terrain, battery state, actuator capability, or environmental constraints. An aligned robot should not convert every requested outcome directly into action. It must determine whether the goal is physically achievable and whether an achievable plan exists within the permitted operating and safety envelope.
+
+World models can support this process by predicting how candidate actions may change the environment. Instead of evaluating objectives only from immediate observations, the system can estimate future states, interactions, and consequences before execution. However, predicted outcomes remain uncertain. Robot objectives should therefore incorporate prediction confidence and safety margins rather than assuming that a learned world model perfectly represents future physical behavior.
+
+Generalist policies and Vision-Language-Action models make objective alignment particularly important because they can map broad instructions into diverse behaviors. Their flexibility reduces the need to manually specify every task, but it also creates a larger space of possible interpretations and actions. High-level semantic competence must therefore be combined with physical constraints, runtime validation, and mechanisms that verify whether generated actions remain consistent with authorized objectives.
+
+Human oversight provides a mechanism for correcting errors in objective formation. Operators should be able to inspect important goals, understand significant decisions, modify priorities, reject proposed actions, and terminate execution. The system should treat such intervention as authoritative input rather than interference with task completion. This property ensures that robot objectives remain revisable when the system's interpretation diverges from human intent.
+
+In multi-robot and fleet systems, intent must propagate across multiple autonomous agents without becoming fragmented. A fleet-level objective may be decomposed into assignments for individual robots, but local agents should retain relevant global constraints and coordination requirements. Otherwise, individually rational objectives can produce congestion, duplicated work, resource competition, or unsafe interactions that contradict the original collective mission.
+
+Learning introduces another challenge because optimization can gradually change how objectives are achieved. A policy trained to maximize task success may discover strategies that were not anticipated by designers or operators. Improved performance does not necessarily imply improved alignment. Updated policies should therefore be evaluated for whether they preserve intended priorities, constraints, human control, and acceptable physical behavior rather than only whether numerical reward increases.
+
+Ultimately, aligning human intent, goals, and robot objectives requires maintaining semantic and operational continuity from what a person means to what the machine physically does. The system must preserve purpose while translating intent into goals, goals into plans, and plans into actions, continuously checking context, feasibility, uncertainty, safety, and authority. The desired outcome is not merely successful task completion, but successful completion in the manner humans actually intended.
+
+인간 의도(Human Intent)는 사람이 물리 AI(Physical AI) 시스템이 이해하고 행동을 통해 실현하기를 기대하는 근본적인 목적을 의미한다. 인간은 상황에서 당연하다고 생각하는 가정을 명령에서 자주 생략하기 때문에 인간 의도는 명령의 문자적인 표현보다 더 넓은 의미를 가진다. 예를 들어 "패키지를 가져와"라는 지시를 받은 로봇은 목적지뿐만 아니라 안전, 취급 방법, 접근 권한, 긴급성, 주변 사람과의 상호작용에 관한 기대까지 추론해야 한다.
+
+따라서 인간의 지시(Human Instruction)는 의도(Intent)를 관찰할 수 있는 하나의 표현에 불과하다. 실제 의도에는 명시적 목표(Explicit Goals), 암묵적 선호(Implicit Preferences), 상황적 기대(Contextual Expectations), 금지된 결과(Prohibited Outcomes), 직접적으로 언급되지 않은 우선순위(Priorities)가 포함될 수 있다. 물리 AI는 이러한 불완전한 명세를 운영 가능한 표현으로 변환하면서 자신의 해석이 불확실하거나 불완전하거나 잘못될 수 있음을 인식해야 하며, 모든 지시를 완벽하게 정의된 목표로 간주해서는 안 된다.
+
+목표(Goals)는 인간 의도(Human Intent)와 실행 가능한 로봇 행동(Executable Robot Behavior) 사이의 중간 표현을 제공한다. 목표는 물체 배송, 장비 검사, 영역 청소 또는 특정 위치 도달과 같은 원하는 상태나 결과를 나타낸다. 목표는 하위 목표(Subgoals)와 작업(Tasks)으로 분해될 수 있지만, 이러한 분해 과정에서도 원래 지시의 목적이 유지되어야 한다. 개별 작업을 성공적으로 완료했다고 해서 전체적인 인간의 목표가 달성되었다고 보장할 수는 없다.
+
+로봇 목적함수(Robot Objectives)는 목표를 자율 시스템이 계획(Planning)과 제어(Control) 과정에서 사용할 수 있는 수량, 조건 또는 의사결정 기준으로 변환한다. 이러한 목적에는 작업 완료, 이동 시간, 에너지 소비, 조작 정확도, 작업 범위, 편안함, 생산성 또는 임무 성공 등이 포함될 수 있다. 최적화(Optimization)는 행동에 강한 영향을 미치므로 선택된 목적함수는 의도된 결과를 표현하면서도 지표를 만족시키기 위해 더 광범위한 목적을 위반하는 바람직하지 않은 지름길이나 행동을 유도하지 않아야 한다.
+
+이는 의도(Intent), 목표(Goals), 목적함수(Objectives) 사이에 근본적인 차이가 있음을 보여준다. 의도는 인간이 궁극적으로 원하는 것을 나타내고, 목표는 달성되어야 하는 상태를 설명하며, 로봇 목적함수는 시스템이 후보 행동과 계획을 평가하는 방법을 정의한다. 이러한 수준들은 서로 연관되어 있지만 동일한 것은 아니다. 의도가 하나의 표현에서 다른 표현으로 변환될 때 정보가 손실되거나 왜곡되고, 지나치게 단순화되거나 잘못된 우선순위가 적용되면 오정렬(Misalignment)이 발생할 수 있다.
+
+물리 AI 시스템은 또한 주요 목적(Primary Objectives)과 제약조건(Constraints)을 구분해야 한다. 목적지에 도달하는 것이 주요 목적일 수 있지만, 충돌 회피, 제한 구역 준수, 안정성 유지, 속도 제한, 화물 보호는 그 목적을 달성하는 방법에 적용되는 제약조건이다. 안전(Safety)을 단순한 최적화 항목으로만 취급하는 것은 위험할 수 있다. 아키텍처적 제한이 없다면 강력한 성능 향상 요구가 수치화된 안전 페널티(Safety Penalty)를 압도할 수 있기 때문이다.
+
+인간의 목표(Human Goals)는 흔히 계층적 구조(Hierarchical Structure)를 가진다. "이 시설을 검사하라"와 같은 상위 수준 임무는 내비게이션(Navigation), 위치 추정(Localization), 관측 위치 선택(Viewpoint Selection), 센서 위치 설정, 데이터 획득, 이상 탐지(Anomaly Detection), 결과 보고 등의 과정으로 구성될 수 있다. 각각의 하위 목표는 추가적인 의사결정과 가정을 발생시킨다. 정렬(Alignment)을 위해서는 지역적으로 생성된 목적이 원래 임무에 종속되어야 하며, 하위 작업의 최적화가 더 높은 우선순위의 요구사항을 훼손해서는 안 된다.
+
+여러 목적이 충돌할 때에는 우선순위(Priorities)가 특히 중요해진다. 로봇은 임무를 신속하게 완료하면서 동시에 배터리 전력을 절약하고, 작업자에 대한 방해를 최소화하며, 통신을 유지하고, 안전 한계(Safety Limits)를 준수해야 할 수 있다. 이러한 목적들을 항상 동시에 최대화할 수 있는 것은 아니다. 따라서 정렬된 시스템에는 편의성, 효율성 또는 생산성이 안전이나 정당한 인간의 권한을 암묵적으로 넘어서는 것을 방지하는 명시적인 우선순위 관리(Priority Management) 메커니즘이 필요하다.
+
+인간 의도(Human Intent)와 로봇 목적함수(Robot Objectives)의 관계는 또한 동적(Dynamic)이다. 환경 조건, 운영 우선순위 또는 인간의 요구가 변화하면 로봇이 작업을 수행하는 동안에도 의도가 변경될 수 있다. 작업자가 경로를 차단하거나, 비상 상황이 발생하거나, 목적지가 변경되거나, 운영자가 임무를 수정하면 이전에 유효했던 목표가 더 이상 유효하지 않을 수 있다. 따라서 물리 AI는 목표 수정(Goal Revision), 취소(Cancellation), 재계획(Replanning), 목적 간 안전한 전환(Safe Transition)을 지원해야 한다.
+
+상황(Context)은 이러한 변화를 해석하는 데 필수적인 정보를 제공한다. 동일한 명령이라도 환경, 로봇의 능력, 주변 사람, 물체의 특성, 운영 상태에 따라 허용 가능한 행동이 달라질 수 있다. "이 물체를 이동시켜라"라는 명령은 가벼운 패키지와 위험 물질 용기에 대해 서로 다른 의미를 갖는다. 따라서 목적 형성(Objective Formation)은 언어적 지시뿐만 아니라 인식(Perception), 월드 상태(World State), 작업 이력(Task History), 권한(Permissions), 관련 물리적 제약조건을 함께 고려해야 한다.
+
+모호성(Ambiguity)은 숨겨지는 것이 아니라 명시적으로 표현되어야 한다. 하나의 지시에 여러 가지 해석이 가능할 때 자동으로 특정 해석 하나를 선택하면 불필요한 물리적 위험을 발생시킬 수 있다. 로봇은 자신의 해석에 대한 신뢰도(Confidence)를 추정하고 잘못 해석했을 때의 결과를 고려해야 한다. 위험도가 낮은 모호성에서는 보수적인 실행(Conservative Execution)이 가능할 수 있지만, 중대한 결과를 초래할 수 있는 불확실성에서는 물리적 행동을 시작하기 전에 추가 관측, 명시적 확인 또는 명확화 요청(Clarification Request)이 필요할 수 있다.
+
+물리적 실현 가능성(Physical Feasibility)은 인간의 목표와 로봇 목적함수를 구분하는 또 다른 요소이다. 인간은 적재 한계(Payload Limits), 도달 가능성(Reachability), 지형(Terrain), 배터리 상태, 액추에이터 성능(Actuator Capability), 환경적 제약 때문에 실현할 수 없는 결과를 요청할 수 있다. 정렬된 로봇은 요청된 모든 결과를 직접 행동으로 변환해서는 안 된다. 목표가 물리적으로 달성 가능한지, 그리고 허용된 운영 및 안전 영역(Safety Envelope) 내에서 실행 가능한 계획이 존재하는지를 판단해야 한다.
+
+월드 모델(World Models)은 후보 행동이 환경을 어떻게 변화시킬지를 예측함으로써 이러한 과정을 지원할 수 있다. 시스템은 현재의 관측만을 기반으로 목적을 평가하는 대신 실행 전에 미래 상태, 상호작용, 결과를 예측할 수 있다. 그러나 예측된 결과에도 불확실성이 존재한다. 따라서 로봇 목적함수는 학습된 월드 모델이 미래의 물리적 행동을 완벽하게 표현한다고 가정하기보다는 예측 신뢰도(Prediction Confidence)와 안전 여유(Safety Margins)를 포함해야 한다.
+
+범용 정책(Generalist Policies)과 비전-언어-행동 모델(Vision-Language-Action Models)은 광범위한 지시를 다양한 행동으로 변환할 수 있기 때문에 목적 정렬(Objective Alignment)을 특히 중요하게 만든다. 이러한 유연성은 모든 작업을 수동으로 지정해야 할 필요성을 줄여주지만, 가능한 해석과 행동의 공간을 확대한다. 따라서 상위 수준의 의미론적 능력(Semantic Competence)은 물리적 제약, 런타임 검증(Runtime Validation), 생성된 행동이 승인된 목적과 일치하는지 확인하는 메커니즘과 결합되어야 한다.
+
+인간 감독(Human Oversight)은 목적 형성(Objective Formation) 과정에서 발생하는 오류를 수정할 수 있는 메커니즘을 제공한다. 운영자는 중요한 목표를 확인하고, 주요 의사결정을 이해하며, 우선순위를 변경하고, 제안된 행동을 거부하며, 실행을 종료할 수 있어야 한다. 시스템은 이러한 개입을 작업 완료를 방해하는 요소가 아니라 권한 있는 입력(Authoritative Input)으로 취급해야 한다. 이를 통해 시스템의 해석이 인간 의도와 달라질 경우 로봇의 목적을 수정할 수 있다.
+
+다중 로봇 및 플릿 시스템(Multi-Robot and Fleet Systems)에서는 인간의 의도가 여러 자율 에이전트(Autonomous Agents)에 전달되는 과정에서 분산되거나 단절되지 않아야 한다. 플릿 수준 목적(Fleet-Level Objective)은 개별 로봇의 작업으로 분해될 수 있지만, 각 로봇은 관련된 전역 제약(Global Constraints)과 협조 요구사항(Coordination Requirements)을 유지해야 한다. 그렇지 않으면 개별적으로 합리적인 목적들이 혼잡, 중복 작업, 자원 경쟁 또는 안전하지 않은 상호작용을 발생시켜 원래의 집단 임무(Collective Mission)를 위반할 수 있다.
+
+학습(Learning)은 최적화 과정이 목적을 달성하는 방법을 점진적으로 변화시킬 수 있기 때문에 또 다른 문제를 발생시킨다. 작업 성공을 최대화하도록 학습된 정책(Policy)은 설계자나 운영자가 예상하지 못한 전략을 발견할 수 있다. 성능 향상이 반드시 정렬 향상을 의미하는 것은 아니다. 따라서 업데이트된 정책은 수치적 보상(Numerical Reward)의 증가만이 아니라 의도된 우선순위, 제약조건, 인간의 통제권, 허용 가능한 물리적 행동을 유지하는지 평가되어야 한다.
+
+궁극적으로 인간 의도(Human Intent), 목표(Goals), 로봇 목적함수(Robot Objectives)의 정렬은 사람이 의미한 것에서 기계가 실제로 수행하는 물리적 행동까지 의미론적 및 운영적 연속성(Semantic and Operational Continuity)을 유지하는 과정이다. 시스템은 의도를 목표로, 목표를 계획으로, 계획을 행동으로 변환하는 동안 원래의 목적을 보존하고 상황, 실현 가능성, 불확실성, 안전, 권한을 지속적으로 확인해야 한다. 원하는 결과는 단순한 작업 성공이 아니라 인간이 실제로 의도한 방식으로 작업을 성공적으로 완료하는 것이다.
+
+##  
+
+## 04.03. Instruction Action Alignment
+
+![](images/image3.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Instruction-action alignment describes the requirement that a Physical AI system's executed behavior faithfully reflects the meaning and purpose of the instruction that initiated it. Between a human command and physical motion lie interpretation, reasoning, planning, action generation, and control. Alignment must therefore be maintained throughout this complete transformation rather than judged only from whether the robot appears to have completed the requested task.
+
+Natural-language instructions are rarely complete specifications of physical behavior. A command such as "move the box to the other room" does not explicitly define the route, grasping method, speed, collision margin, handling constraints, or appropriate behavior around people. The robot must infer these missing details from context while ensuring that its chosen actions remain compatible with the instruction rather than introducing assumptions that alter its intended meaning.
+
+Instruction understanding begins by identifying the requested task, relevant objects, spatial references, temporal conditions, constraints, and expected outcome. Physical AI may combine language with visual perception, localization, world state, task history, and operator context to resolve these elements. The resulting interpretation should represent not only what action is requested but also the conditions under which that action is considered correctly and acceptably completed.
+
+A critical problem arises because the same instruction can correspond to many physically possible actions. A robot asked to approach a workstation could select different routes, speeds, orientations, and stopping positions. Instruction-action alignment does not require one predetermined trajectory, but it requires every acceptable trajectory to preserve the command's purpose while remaining within safety, operational, physical, and social constraints applicable to the current environment.
+
+Semantic correctness alone is therefore insufficient. A robot may correctly identify that an instruction requests an object to be delivered but still perform an inappropriate action by moving too quickly, entering a restricted area, damaging the object, or obstructing workers. Alignment must connect semantic interpretation to physically acceptable execution, ensuring that correctness at the language level survives the transition into planning, control, and environmental interaction.
+
+Instruction decomposition introduces another potential source of misalignment. Complex commands are often transformed into sequences of subgoals such as navigate, locate, grasp, transport, position, release, and confirm completion. Each generated subgoal should remain traceable to the original instruction. A locally reasonable subtask should not become an independent objective that continues after its relevance disappears or conflicts with a higher-priority requirement.
+
+Constraints play a central role in controlling this transformation. Some constraints may be explicitly stated by the user, while others originate from safety policies, operational rules, robot capabilities, or environmental conditions. An aligned system must distinguish what it should accomplish from what it is permitted to do. Task objectives guide progress toward completion, whereas hard constraints restrict the set of actions that can legitimately be considered for execution.
+
+Ambiguous instructions require particular caution because incorrect interpretation can produce irreversible physical consequences. Expressions such as "put it over there," "move closer," or "clean this area" depend heavily on contextual references. When multiple interpretations remain plausible, the robot should estimate uncertainty and consider the consequences of choosing incorrectly rather than automatically committing to the interpretation with the highest estimated probability.
+
+The appropriate response to ambiguity should depend on risk. If alternative interpretations produce equivalent and low-risk outcomes, conservative execution may be reasonable. If they imply substantially different physical actions or consequences, the system should gather more observations, request clarification, or wait for confirmation. Instruction-action alignment therefore connects interpretation confidence directly to the level of physical authority granted to autonomous execution.
+
+Action grounding is the process through which abstract concepts are connected to entities, states, and actions in the physical environment. Terms such as "that container," "the safe location," or "carefully" must ultimately influence perception, target selection, trajectory generation, speed, force, or other control parameters. Without reliable grounding, a language model may produce semantically plausible reasoning that does not correspond accurately to the robot's actual environment.
+
+Physical feasibility must also be checked before an instruction becomes an executable action. The requested behavior may exceed the robot's reach, payload, mobility, energy, sensing, or manipulation capabilities. Environmental geometry or current system state may make an otherwise reasonable task impossible. Alignment requires the robot to recognize such conditions and avoid pretending that an infeasible instruction can be safely completed through unrestricted planning.
+
+World models can strengthen instruction-action alignment by allowing the robot to predict likely consequences before committing to an action. Candidate trajectories or manipulation strategies can be evaluated against expected future states, interactions, and hazards. However, predictions remain imperfect, so model uncertainty must influence decision making. A predicted successful outcome should not justify aggressive execution when confidence in the prediction is insufficient.
+
+Vision-Language-Action models make this problem especially important because they can map multimodal instructions directly toward robot actions. Their end-to-end capabilities can simplify task specification, but they may also reduce the visibility of intermediate reasoning and constraints. Practical alignment therefore benefits from explicit action validation, safety filters, motion limits, runtime monitoring, and independent control mechanisms surrounding learned policies.
+
+Execution should not be treated as the final step of alignment. Once an action begins, the robot must compare observed physical outcomes with expected outcomes and determine whether the instruction is still being satisfied. Changes in human position, obstacles, object state, localization, equipment health, or mission context may invalidate the original plan. Feedback must therefore continuously connect physical execution back to interpretation and planning.
+
+This feedback creates a closed-loop model of instruction-action alignment. The system interprets an instruction, generates a plan, executes an action, observes its consequences, and updates its understanding when reality differs from expectation. Replanning is not evidence that alignment has failed; it can be an essential mechanism for preserving alignment when the environment changes or initial assumptions prove incorrect during physical interaction.
+
+Human intervention must remain possible throughout this loop. Operators should be able to stop execution, correct an interpretation, change a target, modify constraints, or replace the current instruction. The robot should respond predictably to such corrections and should not continue pursuing an obsolete objective simply because execution has already begun. Interruptibility and corrigibility are therefore fundamental properties of instruction-action alignment.
+
+Long-horizon instructions amplify alignment challenges because the distance between the original command and later actions becomes larger. Intermediate decisions may accumulate assumptions that gradually shift behavior away from the initial intent. Systems performing extended missions should periodically verify that active subgoals, plans, and actions remain justified by the original instruction, current context, and updated human priorities rather than relying indefinitely on an initial interpretation.
+
+In multi-robot systems, instructions may be decomposed and distributed across several agents. Each robot can receive a locally valid task while the collective behavior becomes inconsistent with the fleet-level instruction. Shared constraints, task dependencies, priorities, and coordination state must therefore accompany distributed objectives. Instruction-action alignment at fleet scale requires consistency between individual actions and the intended collective outcome.
+
+Ultimately, instruction-action alignment establishes a continuous correspondence between what humans communicate and what robots physically do. Reliable alignment requires semantic understanding, contextual grounding, uncertainty management, feasibility checking, constrained planning, runtime monitoring, feedback, and human correction. A Physical AI system is aligned only when its actual behavior remains a safe, permitted, and contextually faithful realization of the instruction throughout execution.
+
+지시-행동 정렬(Instruction-Action Alignment)은 물리 AI(Physical AI) 시스템이 실제로 수행하는 행동이 그 행동을 시작하게 한 지시의 의미와 목적을 충실하게 반영해야 한다는 요구사항을 의미한다. 인간의 명령과 물리적 움직임 사이에는 해석(Interpretation), 추론(Reasoning), 계획(Planning), 행동 생성(Action Generation), 제어(Control)가 존재한다. 따라서 정렬(Alignment)은 로봇이 요청된 작업을 완료한 것처럼 보이는지만으로 판단해서는 안 되며, 이러한 전체 변환 과정에서 지속적으로 유지되어야 한다.
+
+자연어 지시(Natural-Language Instructions)는 물리적 행동에 대한 완전한 명세가 되는 경우가 거의 없다. "상자를 다른 방으로 옮겨라"라는 명령은 경로, 파지 방법, 속도, 충돌 여유, 취급 제약 또는 주변 사람에 대한 적절한 행동을 명시적으로 정의하지 않는다. 로봇은 상황(Context)으로부터 이러한 누락된 세부사항을 추론하면서 선택한 행동이 지시와 일치하고, 원래 의도된 의미를 변경하는 가정을 도입하지 않도록 해야 한다.
+
+지시 이해(Instruction Understanding)는 요청된 작업, 관련 객체, 공간적 참조, 시간적 조건, 제약조건, 예상 결과를 식별하는 것에서 시작된다. 물리 AI는 이러한 요소를 해석하기 위해 언어(Language)를 시각적 인식(Visual Perception), 위치 추정(Localization), 월드 상태(World State), 작업 이력(Task History), 운영자 상황(Operator Context)과 결합할 수 있다. 그 결과는 어떤 행동이 요청되었는지뿐만 아니라 어떤 조건에서 해당 행동이 올바르고 적절하게 완료된 것으로 간주되는지도 표현해야 한다.
+
+중요한 문제는 동일한 지시가 물리적으로 가능한 여러 행동에 대응할 수 있다는 점이다. 작업대에 접근하라는 요청을 받은 로봇은 서로 다른 경로, 속도, 방향, 정지 위치를 선택할 수 있다. 지시-행동 정렬은 하나의 사전 결정된 궤적(Predetermined Trajectory)을 요구하는 것이 아니라, 허용 가능한 모든 궤적이 명령의 목적을 유지하면서 현재 환경에 적용되는 안전, 운영, 물리적, 사회적 제약조건을 준수하도록 요구한다.
+
+따라서 의미론적 정확성(Semantic Correctness)만으로는 충분하지 않다. 로봇이 지시가 물체 배송을 요구한다는 사실을 정확하게 파악했더라도 지나치게 빠르게 이동하거나, 제한 구역에 진입하거나, 물체를 손상시키거나, 작업자를 방해한다면 부적절한 행동을 수행한 것이다. 정렬은 의미론적 해석을 물리적으로 허용 가능한 실행(Physically Acceptable Execution)과 연결하여 언어 수준에서의 정확성이 계획, 제어, 환경과의 상호작용 과정에서도 유지되도록 해야 한다.
+
+지시 분해(Instruction Decomposition)는 또 다른 잠재적인 오정렬(Misalignment)의 원인이 된다. 복잡한 명령은 흔히 이동, 탐색, 파지, 운반, 배치, 해제, 완료 확인과 같은 일련의 하위 목표(Subgoals)로 변환된다. 생성된 각각의 하위 목표는 원래 지시까지 추적 가능해야 한다. 국소적으로 합리적인 하위 작업이라도 그 필요성이 사라지거나 더 높은 우선순위의 요구사항과 충돌한다면 독립적인 목표로 계속 수행되어서는 안 된다.
+
+제약조건(Constraints)은 이러한 변환을 제어하는 데 핵심적인 역할을 한다. 일부 제약조건은 사용자가 명시적으로 지정할 수 있지만, 다른 제약조건은 안전 정책(Safety Policies), 운영 규칙(Operational Rules), 로봇의 능력(Robot Capabilities), 환경 조건(Environmental Conditions)에서 발생한다. 정렬된 시스템은 무엇을 달성해야 하는지와 무엇을 수행하도록 허용되어 있는지를 구분해야 한다. 작업 목표(Task Objectives)는 완료를 향한 진행을 유도하는 반면, 강제 제약조건(Hard Constraints)은 합법적으로 실행을 고려할 수 있는 행동의 범위를 제한한다.
+
+모호한 지시(Ambiguous Instructions)는 잘못된 해석이 되돌릴 수 없는 물리적 결과를 초래할 수 있기 때문에 특별한 주의가 필요하다. "저기에 놓아라", "조금 더 가까이 이동하라", "이 영역을 청소하라"와 같은 표현은 상황적 참조(Contextual References)에 크게 의존한다. 여러 해석이 여전히 가능하다면 로봇은 가장 높은 확률을 가진 해석에 자동으로 확정하기보다 불확실성(Uncertainty)을 추정하고 잘못된 해석을 선택했을 때 발생할 결과를 고려해야 한다.
+
+모호성에 대한 적절한 대응은 위험(Risk)에 따라 달라져야 한다. 서로 다른 해석이 유사하고 위험도가 낮은 결과를 발생시킨다면 보수적 실행(Conservative Execution)이 합리적일 수 있다. 반대로 해석에 따라 상당히 다른 물리적 행동이나 결과가 발생한다면 시스템은 추가 관측을 수행하거나, 명확화(Clarification)를 요청하거나, 확인(Confirmation)을 기다려야 한다. 따라서 지시-행동 정렬은 해석 신뢰도(Interpretation Confidence)를 자율 실행에 부여되는 물리적 권한(Physical Authority)의 수준과 직접 연결한다.
+
+행동 그라운딩(Action Grounding)은 추상적 개념을 물리적 환경의 실제 객체, 상태, 행동과 연결하는 과정이다. "저 컨테이너", "안전한 위치", "조심스럽게"와 같은 표현은 궁극적으로 인식(Perception), 목표 선택(Target Selection), 궤적 생성(Trajectory Generation), 속도, 힘 또는 기타 제어 파라미터에 영향을 주어야 한다. 신뢰할 수 있는 그라운딩이 없다면 언어 모델(Language Model)은 의미론적으로는 그럴듯하지만 로봇의 실제 환경과 정확하게 대응하지 않는 추론을 생성할 수 있다.
+
+물리적 실현 가능성(Physical Feasibility)도 지시가 실행 가능한 행동으로 변환되기 전에 확인되어야 한다. 요청된 행동은 로봇의 도달 범위, 적재 능력, 이동 능력, 에너지, 센싱 또는 조작 능력을 초과할 수 있다. 환경의 기하 구조(Environmental Geometry)나 현재 시스템 상태 때문에 일반적으로 합리적인 작업이 불가능해질 수도 있다. 정렬을 위해서는 로봇이 이러한 조건을 인식하고 실행 불가능한 지시를 제한 없는 계획을 통해 안전하게 완료할 수 있는 것처럼 처리하지 않아야 한다.
+
+월드 모델(World Models)은 로봇이 행동을 실행하기 전에 예상 결과를 예측할 수 있게 함으로써 지시-행동 정렬을 강화할 수 있다. 후보 궤적(Candidate Trajectories)이나 조작 전략(Manipulation Strategies)은 예상되는 미래 상태, 상호작용, 위험요소를 기준으로 평가할 수 있다. 그러나 예측은 완벽하지 않으므로 모델 불확실성(Model Uncertainty)이 의사결정에 영향을 미쳐야 한다. 예측 신뢰도가 충분하지 않은 상황에서 예상된 성공 결과만을 근거로 공격적인 실행을 정당화해서는 안 된다.
+
+비전-언어-행동 모델(Vision-Language-Action Models)은 다중모달 지시(Multimodal Instructions)를 로봇 행동으로 직접 연결할 수 있기 때문에 이 문제를 특히 중요하게 만든다. 이러한 종단간(End-to-End) 능력은 작업 명세를 단순화할 수 있지만 중간 추론과 제약조건의 가시성을 감소시킬 수도 있다. 따라서 실용적인 정렬에는 학습된 정책(Learned Policies)을 둘러싼 명시적 행동 검증(Action Validation), 안전 필터(Safety Filters), 동작 제한(Motion Limits), 런타임 모니터링(Runtime Monitoring), 독립 제어 메커니즘(Independent Control Mechanisms)이 필요하다.
+
+실행(Execution)을 정렬 과정의 마지막 단계로 간주해서는 안 된다. 행동이 시작된 이후에도 로봇은 관측된 물리적 결과를 예상 결과와 비교하고 해당 지시가 여전히 충족되고 있는지를 판단해야 한다. 사람의 위치, 장애물, 객체 상태, 위치 추정, 장비 상태 또는 임무 상황이 변화하면 원래 계획이 더 이상 유효하지 않을 수 있다. 따라서 피드백(Feedback)은 물리적 실행을 해석 및 계획 과정과 지속적으로 다시 연결해야 한다.
+
+이러한 피드백은 지시-행동 정렬의 폐루프 모델(Closed-Loop Model)을 형성한다. 시스템은 지시를 해석하고, 계획을 생성하고, 행동을 실행하며, 그 결과를 관측하고, 현실이 예상과 다르면 자신의 이해를 갱신한다. 재계획(Replanning)은 정렬 실패의 증거가 아니라 환경이 변화하거나 초기 가정이 물리적 상호작용 과정에서 잘못된 것으로 밝혀졌을 때 정렬을 유지하기 위한 핵심적인 메커니즘이 될 수 있다.
+
+인간 개입(Human Intervention)은 이러한 폐루프 전체에서 가능해야 한다. 운영자는 실행을 중단하고, 해석을 수정하고, 목표 대상을 변경하고, 제약조건을 수정하거나, 현재 지시를 새로운 지시로 대체할 수 있어야 한다. 로봇은 이러한 수정에 예측 가능하게 대응해야 하며, 실행이 이미 시작되었다는 이유만으로 더 이상 유효하지 않은 목표를 계속 추구해서는 안 된다. 따라서 중단 가능성(Interruptibility)과 교정 가능성(Corrigibility)은 지시-행동 정렬의 근본적인 속성이다.
+
+장기 지시(Long-Horizon Instructions)는 원래 명령과 이후 행동 사이의 거리가 점점 커지기 때문에 정렬 문제를 증폭시킨다. 중간 의사결정 과정에서 가정이 누적되면서 행동이 초기 의도에서 점진적으로 벗어날 수 있다. 장시간 임무를 수행하는 시스템은 초기 해석에 무기한 의존하는 대신 현재 활성화된 하위 목표, 계획, 행동이 원래 지시, 현재 상황, 갱신된 인간의 우선순위에 의해 여전히 정당화되는지를 주기적으로 검증해야 한다.
+
+다중 로봇 시스템(Multi-Robot Systems)에서는 지시가 여러 에이전트(Agents)에 걸쳐 분해되고 분산될 수 있다. 각각의 로봇이 국소적으로 유효한 작업을 부여받더라도 전체 집단 행동(Collective Behavior)은 플릿 수준 지시(Fleet-Level Instruction)와 일치하지 않을 수 있다. 따라서 공유 제약조건(Shared Constraints), 작업 의존성(Task Dependencies), 우선순위, 협조 상태(Coordination State)가 분산된 목표와 함께 전달되어야 한다. 플릿 규모의 지시-행동 정렬은 개별 행동과 의도된 집단적 결과 사이의 일관성을 요구한다.
+
+궁극적으로 지시-행동 정렬(Instruction-Action Alignment)은 인간이 전달한 내용과 로봇이 물리적으로 수행하는 행동 사이에 지속적인 대응 관계(Continuous Correspondence)를 확립하는 것이다. 신뢰할 수 있는 정렬에는 의미론적 이해(Semantic Understanding), 상황적 그라운딩(Contextual Grounding), 불확실성 관리(Uncertainty Management), 실현 가능성 검증(Feasibility Checking), 제약 기반 계획(Constrained Planning), 런타임 모니터링, 피드백, 인간에 의한 교정이 필요하다. 물리 AI 시스템은 실제 행동이 실행 과정 전체에서 지시를 안전하고, 허용되며, 상황에 충실하게 구현할 때에만 정렬되었다고 할 수 있다.
+
+##  
+
+## 04.04. Value and Preference Alignment
+
+![](images/image4.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Value and preference alignment extends Physical AI alignment beyond literal instruction following toward behavior that reflects what humans consider desirable, acceptable, and appropriate. A robot may correctly understand a command and successfully complete its task while still behaving in ways that conflict with human expectations. Alignment therefore requires attention not only to explicit objectives but also to the values and preferences that shape acceptable physical behavior.
+
+Values represent relatively persistent principles that influence judgments about desirable behavior, such as safety, human welfare, fairness, privacy, autonomy, property protection, and respect for legitimate authority. Preferences are usually more contextual and may concern speed, comfort, route choice, interaction distance, task order, or preferred ways of completing an activity. Physical AI must distinguish these concepts because preferences should normally remain subordinate to fundamental values and safety requirements.
+
+Unlike explicit commands, values are rarely provided as complete machine-readable specifications. Humans often assume that ordinary social, physical, and organizational expectations will be respected without stating them individually. A service robot instructed to deliver an item is normally expected not to endanger people, damage property, invade private spaces, or unnecessarily disrupt ongoing activities. These implicit expectations become part of the alignment problem.
+
+Preference alignment concerns how a robot selects among multiple acceptable ways of achieving the same objective. Several routes may reach the same destination, several grasp strategies may safely manipulate an object, and several schedules may complete the same set of tasks. When alternatives satisfy mandatory constraints, human preferences can guide selection toward behavior that is more comfortable, efficient, predictable, convenient, or appropriate for the user and environment.
+
+A useful distinction must therefore be maintained between hard constraints and soft preferences. Hard constraints define behaviors that are prohibited or mandatory, such as collision avoidance, restricted-area rules, force limits, or emergency procedures. Soft preferences express desirable characteristics that can be traded against one another when necessary. Treating a safety constraint as a preference creates risk, while treating every preference as an absolute constraint can make useful autonomous behavior unnecessarily rigid.
+
+Values and preferences also exist in hierarchical relationships. Fundamental safety requirements may take priority over organizational policies, which may take priority over mission objectives, which in turn may dominate convenience preferences. The exact hierarchy depends on the system and operational context, but an aligned robot requires a consistent method for resolving priority conflicts rather than allowing whichever objective produces the strongest numerical optimization signal to dominate behavior.
+
+Conflicts can also occur between different humans. An operator may prefer maximum productivity, a nearby worker may prefer greater separation distance, and a facility manager may prioritize energy efficiency or access control. Physical AI should not assume that all human preferences can be simultaneously satisfied. It requires authority models, role information, priority rules, and conflict-resolution mechanisms that determine whose instructions and preferences are applicable in a particular situation.
+
+Context fundamentally changes the interpretation of preferences. A user may normally prefer fast delivery but expect slower movement in crowded spaces. Quiet operation may be desirable in a hospital but relatively unimportant in an industrial loading area. The robot must therefore avoid treating learned preferences as universal rules. Preference application should depend on environment, task, human presence, operational mode, and the consequences associated with making an incorrect assumption.
+
+Preference uncertainty must also be represented explicitly. A robot may infer preferences from previous interactions, demonstrations, corrections, selections, or behavioral patterns, but such inference does not guarantee that the inferred preference remains valid. Confidence should influence how strongly the system acts on learned preferences. Low-confidence preferences should have limited authority, particularly when their application could create significant physical, social, or operational consequences.
+
+Human feedback provides an important mechanism for learning preferences. Users can approve actions, reject alternatives, modify priorities, demonstrate desired behavior, or correct undesirable outcomes. Over repeated interactions, these signals can help the system adapt its decisions to individual or organizational expectations. However, preference learning should remain bounded so that adaptation cannot silently weaken safety constraints, permissions, or other higher-priority requirements.
+
+Reward models and preference models can provide computational representations of desirable behavior, particularly when simple task objectives cannot capture qualitative human judgments. They may help rank candidate plans or actions according to learned human preferences. Nevertheless, learned reward signals are approximations of human judgments rather than the values themselves, and optimization pressure can exploit inaccuracies unless the resulting behavior is constrained and independently evaluated.
+
+This creates the risk of preference overoptimization. A robot that strongly optimizes a learned preference may produce extreme behavior that technically scores well while becoming undesirable in practice. For example, minimizing task duration without adequate constraints may encourage excessive speed, while maximizing user convenience could create interference with other people. Alignment therefore requires bounded optimization, safety margins, and evaluation of actual physical consequences.
+
+Value alignment must also account for the difference between individual preferences and broader collective requirements. A particular user may request behavior that conflicts with workplace policies, legal restrictions, safety procedures, or the rights of other people. Physical AI should not interpret personalization as unconditional obedience. Individual adaptation must operate inside an authorized envelope established by higher-level safety, governance, organizational, and social requirements.
+
+Transparency becomes important when values or preferences influence robot decisions. Humans should be able to understand why a robot selected one route, delayed an action, refused a request, or changed its behavior around particular conditions. The system does not need to expose every internal computation, but significant decisions should be attributable to understandable goals, constraints, preferences, or safety requirements so that unexpected behavior can be examined and corrected.
+
+Corrigibility complements preference alignment by allowing humans to revise what the system has learned. Preferences change over time, operational roles change, and previously useful assumptions may become obsolete. A robot should allow authorized users to modify, override, or remove learned preferences without resisting correction. Adaptation mechanisms should therefore include mechanisms for preference updating, forgetting, versioning, and restoration when inappropriate learning is detected.
+
+Long-term learning introduces the additional problem of preference drift. A system continually adapting from observations may gradually infer behavioral tendencies that no longer correspond to legitimate human intentions. Changes in data distribution, user populations, missions, or environments can amplify this problem. Continuous monitoring is therefore necessary to verify that learned preferences remain valid and that behavioral adaptation does not gradually alter higher-level values.
+
+Multi-robot systems extend value and preference alignment from individuals to collective behavior. Fleet-level policies may need to balance productivity, congestion, energy use, human convenience, fairness in resource allocation, and safety across many robots. Local preference optimization by individual agents can produce undesirable system-wide outcomes, making shared priorities and collective constraints necessary for maintaining alignment across the fleet.
+
+Evaluation of value and preference alignment must examine behavior rather than relying only on internal model scores. Scenario-based testing can expose the robot to conflicting preferences, ambiguous expectations, changing contexts, multiple humans, and unusual conditions. Evaluation should determine whether the system preserves mandatory values, applies preferences appropriately, manages uncertainty, accepts correction, and avoids extreme strategies that satisfy a learned metric while violating its underlying purpose.
+
+Ultimately, value and preference alignment requires Physical AI to distinguish what must never be violated, what humans generally value, and what particular users prefer under specific circumstances. These layers must remain connected to perception, reasoning, planning, learning, and control. An aligned robot does not merely accomplish requested tasks; it selects and adapts its physical behavior in ways that remain safe, authorized, contextually appropriate, corrigible, and consistent with legitimate human expectations.
+
+가치 및 선호 정렬(Value and Preference Alignment)은 물리 AI(Physical AI)의 정렬을 문자 그대로의 지시 수행을 넘어 인간이 바람직하고, 수용 가능하며, 적절하다고 판단하는 행동을 반영하는 수준으로 확장한다. 로봇은 명령을 정확히 이해하고 작업을 성공적으로 완료하더라도 인간의 기대와 충돌하는 방식으로 행동할 수 있다. 따라서 정렬(Alignment)은 명시적 목표뿐만 아니라 허용 가능한 물리적 행동을 결정하는 가치(Values)와 선호(Preferences)까지 고려해야 한다.
+
+가치(Values)는 안전(Safety), 인간 복지(Human Welfare), 공정성(Fairness), 프라이버시(Privacy), 자율성(Autonomy), 재산 보호(Property Protection), 정당한 권한에 대한 존중(Respect for Legitimate Authority)처럼 바람직한 행동을 판단하는 데 영향을 미치는 비교적 지속적인 원칙을 의미한다. 반면 선호(Preferences)는 일반적으로 더욱 상황적이며 속도, 편안함, 경로 선택, 상호작용 거리, 작업 순서 또는 선호하는 작업 수행 방식과 관련될 수 있다. 물리 AI는 선호가 기본적인 가치와 안전 요구사항보다 일반적으로 낮은 우선순위를 가져야 하므로 이 두 개념을 구분해야 한다.
+
+명시적 명령(Explicit Commands)과 달리 가치는 완전한 기계 판독 가능 명세(Machine-Readable Specifications)로 제공되는 경우가 거의 없다. 인간은 일반적인 사회적, 물리적, 조직적 기대가 개별적으로 명시되지 않더라도 준수될 것이라고 생각하는 경우가 많다. 물품을 배송하라는 지시를 받은 서비스 로봇(Service Robot)은 일반적으로 사람을 위험하게 하거나, 재산을 손상시키거나, 사적 공간을 침해하거나, 진행 중인 활동을 불필요하게 방해하지 않을 것으로 기대된다. 이러한 암묵적 기대(Implicit Expectations)도 정렬 문제의 일부가 된다.
+
+선호 정렬(Preference Alignment)은 로봇이 동일한 목표를 달성할 수 있는 여러 허용 가능한 방법 가운데 하나를 선택하는 방식과 관련된다. 여러 경로가 동일한 목적지에 도달할 수 있고, 여러 파지 전략(Grasp Strategies)이 물체를 안전하게 조작할 수 있으며, 여러 일정이 동일한 작업 집합을 완료할 수 있다. 대안들이 필수 제약조건을 충족한다면 인간의 선호는 더욱 편안하고, 효율적이며, 예측 가능하고, 편리하며, 사용자와 환경에 적합한 행동을 선택하도록 안내할 수 있다.
+
+따라서 강제 제약조건(Hard Constraints)과 유연한 선호(Soft Preferences)를 명확하게 구분해야 한다. 강제 제약조건은 충돌 회피, 제한 구역 규칙, 힘 제한 또는 비상 절차처럼 금지되거나 반드시 준수해야 하는 행동을 정의한다. 유연한 선호는 필요할 경우 서로 절충할 수 있는 바람직한 특성을 나타낸다. 안전 제약을 단순한 선호로 취급하면 위험이 발생할 수 있으며, 반대로 모든 선호를 절대적 제약조건으로 취급하면 유용한 자율 행동이 불필요하게 경직될 수 있다.
+
+가치와 선호는 또한 계층적 관계(Hierarchical Relationships)를 형성한다. 기본적인 안전 요구사항(Fundamental Safety Requirements)은 조직 정책보다 높은 우선순위를 가질 수 있고, 조직 정책은 임무 목표보다 우선할 수 있으며, 임무 목표는 다시 편의성에 대한 선호보다 높은 우선순위를 가질 수 있다. 정확한 계층은 시스템과 운영 상황에 따라 달라지지만, 정렬된 로봇은 가장 강한 수치적 최적화 신호가 행동을 지배하도록 두는 대신 우선순위 충돌을 일관되게 해결할 수 있는 방법을 필요로 한다.
+
+서로 다른 인간 사이에서도 충돌이 발생할 수 있다. 운영자(Operator)는 최대 생산성을 선호할 수 있고, 주변 작업자는 더 넓은 분리 거리(Separation Distance)를 선호할 수 있으며, 시설 관리자는 에너지 효율이나 접근 통제(Access Control)를 우선할 수 있다. 물리 AI는 모든 인간의 선호를 동시에 만족시킬 수 있다고 가정해서는 안 된다. 특정 상황에서 누구의 지시와 선호를 적용해야 하는지를 결정하기 위해 권한 모델(Authority Models), 역할 정보(Role Information), 우선순위 규칙(Priority Rules), 충돌 해결 메커니즘(Conflict-Resolution Mechanisms)이 필요하다.
+
+상황(Context)은 선호의 해석을 근본적으로 변화시킨다. 사용자가 일반적으로 빠른 배송을 선호하더라도 혼잡한 공간에서는 더 느린 이동을 기대할 수 있다. 조용한 작동은 병원에서는 중요하지만 산업용 적재 구역에서는 상대적으로 중요하지 않을 수 있다. 따라서 로봇은 학습된 선호를 보편적인 규칙으로 취급해서는 안 된다. 선호의 적용은 환경, 작업, 사람의 존재, 운영 모드(Operational Mode), 잘못된 가정을 적용했을 때 발생할 수 있는 결과에 따라 달라져야 한다.
+
+선호 불확실성(Preference Uncertainty) 역시 명시적으로 표현되어야 한다. 로봇은 이전 상호작용, 시연(Demonstrations), 교정(Corrections), 선택 또는 행동 패턴으로부터 선호를 추론할 수 있지만, 이렇게 추론된 선호가 계속 유효하다는 보장은 없다. 신뢰도(Confidence)는 시스템이 학습된 선호를 얼마나 강하게 적용하는지에 영향을 주어야 한다. 특히 해당 선호의 적용이 중대한 물리적, 사회적 또는 운영적 결과를 초래할 수 있다면 신뢰도가 낮은 선호에는 제한된 권한만 부여되어야 한다.
+
+인간 피드백(Human Feedback)은 선호를 학습하는 중요한 메커니즘을 제공한다. 사용자는 행동을 승인하거나, 대안을 거부하거나, 우선순위를 변경하거나, 원하는 행동을 시연하거나, 바람직하지 않은 결과를 교정할 수 있다. 반복적인 상호작용을 통해 이러한 신호는 시스템이 개인 또는 조직의 기대에 맞게 의사결정을 적응시키는 데 도움을 줄 수 있다. 그러나 선호 학습(Preference Learning)은 적응 과정이 안전 제약, 권한 또는 더 높은 우선순위의 요구사항을 암묵적으로 약화시키지 못하도록 제한되어야 한다.
+
+보상 모델(Reward Models)과 선호 모델(Preference Models)은 특히 단순한 작업 목적함수로 정성적인 인간의 판단을 표현하기 어려운 경우 바람직한 행동을 계산적으로 표현할 수 있다. 이러한 모델은 학습된 인간 선호에 따라 후보 계획이나 행동의 순위를 결정하는 데 활용될 수 있다. 그러나 학습된 보상 신호는 인간의 가치 그 자체가 아니라 인간 판단의 근사치(Approximation)이므로, 결과 행동을 제한하고 독립적으로 평가하지 않으면 최적화 압력(Optimization Pressure)이 모델의 부정확성을 악용할 수 있다.
+
+이는 선호 과잉 최적화(Preference Overoptimization)의 위험을 발생시킨다. 학습된 선호를 지나치게 강하게 최적화하는 로봇은 수치적으로는 높은 평가를 받지만 실제로는 바람직하지 않은 극단적 행동을 생성할 수 있다. 예를 들어 적절한 제약 없이 작업 시간을 최소화하면 과도한 속도를 유도할 수 있으며, 사용자 편의성을 최대화하면 다른 사람의 활동을 방해할 수 있다. 따라서 정렬에는 제한된 최적화(Bounded Optimization), 안전 여유(Safety Margins), 실제 물리적 결과에 대한 평가가 필요하다.
+
+가치 정렬(Value Alignment)은 개인의 선호와 보다 광범위한 집단적 요구사항(Collective Requirements)의 차이도 고려해야 한다. 특정 사용자가 작업장 정책, 법적 제한, 안전 절차 또는 다른 사람의 권리와 충돌하는 행동을 요청할 수 있다. 물리 AI는 개인화(Personalization)를 무조건적인 복종으로 해석해서는 안 된다. 개인별 적응은 더 높은 수준의 안전, 거버넌스(Governance), 조직적 요구사항, 사회적 요구사항에 의해 설정된 승인된 범위(Authorized Envelope) 안에서 이루어져야 한다.
+
+가치나 선호가 로봇의 의사결정에 영향을 미칠 때에는 투명성(Transparency)이 중요해진다. 인간은 로봇이 특정 경로를 선택하거나, 행동을 지연하거나, 요청을 거부하거나, 특정 조건에서 행동을 변경한 이유를 이해할 수 있어야 한다. 시스템이 모든 내부 계산을 공개할 필요는 없지만, 중요한 의사결정은 이해 가능한 목표, 제약조건, 선호 또는 안전 요구사항과 연결될 수 있어야 하며, 이를 통해 예상하지 못한 행동을 검토하고 수정할 수 있어야 한다.
+
+교정 가능성(Corrigibility)은 인간이 시스템이 학습한 내용을 수정할 수 있도록 함으로써 선호 정렬을 보완한다. 선호는 시간에 따라 변화하고, 운영 역할도 변경되며, 이전에 유용했던 가정이 더 이상 유효하지 않을 수 있다. 로봇은 권한 있는 사용자가 학습된 선호를 수정, 재정의 또는 제거할 수 있도록 해야 하며 이러한 교정에 저항해서는 안 된다. 따라서 적응 메커니즘에는 부적절한 학습이 발견되었을 때 사용할 수 있는 선호 갱신(Preference Updating), 망각(Forgetting), 버전 관리(Versioning), 복원(Restoration) 메커니즘이 포함되어야 한다.
+
+장기 학습(Long-Term Learning)은 선호 드리프트(Preference Drift)라는 추가적인 문제를 발생시킨다. 관측으로부터 지속적으로 적응하는 시스템은 시간이 지나면서 정당한 인간 의도와 더 이상 일치하지 않는 행동 경향을 추론할 수 있다. 데이터 분포(Data Distribution), 사용자 집단, 임무 또는 환경의 변화는 이러한 문제를 더욱 증폭시킬 수 있다. 따라서 학습된 선호가 여전히 유효한지, 그리고 행동 적응이 상위 수준의 가치를 점진적으로 변화시키고 있지 않은지를 검증하기 위한 지속적인 모니터링(Continuous Monitoring)이 필요하다.
+
+다중 로봇 시스템(Multi-Robot Systems)은 가치 및 선호 정렬의 범위를 개별 로봇에서 집단 행동(Collective Behavior)으로 확장한다. 플릿 수준 정책(Fleet-Level Policies)은 여러 로봇에 걸쳐 생산성, 혼잡, 에너지 사용, 인간의 편의성, 자원 할당의 공정성(Fairness), 안전 사이의 균형을 조정해야 할 수 있다. 개별 에이전트의 국소적 선호 최적화(Local Preference Optimization)는 바람직하지 않은 시스템 전체의 결과를 발생시킬 수 있으므로 플릿 전체의 정렬을 유지하기 위한 공유 우선순위(Shared Priorities)와 집단적 제약조건(Collective Constraints)이 필요하다.
+
+가치 및 선호 정렬의 평가(Evaluation)는 내부 모델 점수에만 의존하지 않고 실제 행동을 검토해야 한다. 시나리오 기반 시험(Scenario-Based Testing)은 로봇을 상충하는 선호, 모호한 기대, 변화하는 상황, 여러 인간, 비정상적인 조건에 노출시킬 수 있다. 평가는 시스템이 필수적인 가치를 유지하고, 선호를 적절하게 적용하며, 불확실성을 관리하고, 교정을 수용하며, 학습된 지표를 만족시키면서 그 근본적인 목적을 위반하는 극단적 전략을 피하는지를 확인해야 한다.
+
+궁극적으로 가치 및 선호 정렬(Value and Preference Alignment)은 물리 AI가 절대로 위반해서는 안 되는 것, 인간이 일반적으로 중요하게 여기는 것, 특정 상황에서 개별 사용자가 선호하는 것을 구분하도록 요구한다. 이러한 계층은 인식(Perception), 추론(Reasoning), 계획(Planning), 학습(Learning), 제어(Control)와 지속적으로 연결되어야 한다. 정렬된 로봇은 단순히 요청된 작업을 완료하는 것이 아니라 안전하고, 권한이 부여되며, 상황에 적절하고, 교정 가능하며, 정당한 인간의 기대와 일치하는 방식으로 자신의 물리적 행동을 선택하고 적응해야 한다.
+
+##  
+
+## 04.05. Context Aware Alignment
+
+![](images/image5.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Context-aware alignment requires a Physical AI system to determine whether an action is appropriate not only from the instruction itself, but also from the situation in which the instruction is executed. The same command can require different behavior depending on location, nearby people, objects, time, operational mode, environmental conditions, and system state. Alignment therefore depends on continuously relating goals and actions to their physical and social context.
+
+Context is broader than immediate sensor observations. It can include spatial structure, object identities, human roles, task history, mission phase, access permissions, environmental conditions, robot capability, and organizational rules. A robot must integrate these heterogeneous signals into a coherent representation of the current situation. Without such integration, locally correct perception or reasoning can still produce behavior that is inappropriate for the actual operating environment.
+
+Spatial context strongly affects acceptable robot behavior. A mobile robot may travel quickly through an empty logistics corridor but should reduce speed when entering a crowded workspace. A manipulator may perform unrestricted motion inside an isolated cell while requiring constrained trajectories near humans. The physical location of the robot therefore changes the permissible action space even when the high-level task remains unchanged.
+
+Human context is equally important because people are not merely obstacles to be avoided. Their position, motion, activity, role, attention, and expected interaction with the robot can influence appropriate behavior. An authorized operator, maintenance technician, visitor, and nearby worker may have different permissions and expectations. Context-aware alignment requires the system to reason about these differences without assuming that every detected person has identical authority or intent.
+
+Task context determines how instructions and objectives should be interpreted. "Move carefully" may imply different speed, force, and trajectory limits when transporting fragile equipment than when carrying an ordinary package. Similarly, inspection, delivery, cleaning, manipulation, emergency response, and collaborative work create different priorities. The robot must connect current actions to the larger task so that local decisions remain consistent with the purpose of the mission.
+
+Temporal context also influences alignment. An action that was appropriate several seconds or minutes earlier may become inappropriate as conditions change. A route can become blocked, a person can enter a safety zone, a machine can begin operating, or an emergency can change mission priorities. Context-aware systems must therefore treat context as dynamic state rather than static information established only when a task begins.
+
+Operational mode provides another important source of context. A robot may behave differently during normal operation, maintenance, commissioning, teleoperation, degraded operation, emergency response, or recovery. Each mode can define different authorities, limits, and permitted actions. Alignment requires the system to know which mode is active and prevent behaviors that are valid in one mode from being incorrectly transferred into another.
+
+Context also determines which constraints have priority. General preferences such as fast completion or short routes may be reasonable under normal conditions, but they should become subordinate when human proximity, hazardous materials, reduced visibility, or equipment faults increase risk. Context-aware alignment therefore dynamically adjusts the relative importance of objectives while preserving hard safety requirements that remain non-negotiable.
+
+A world model can provide a structured representation for contextual reasoning by combining observations with estimates of objects, agents, relationships, dynamics, and future states. Rather than reacting independently to individual sensor measurements, Physical AI can reason about how the current situation may evolve. This allows planning to account for moving humans, changing obstacles, object interactions, and anticipated consequences before selecting physical actions.
+
+However, contextual representations are inherently uncertain. Sensors may miss objects, human intent may be unclear, localization may drift, and world models may predict future interactions incorrectly. A robot should therefore maintain confidence about important contextual variables rather than assuming its current interpretation is complete. Uncertainty about context should reduce the authority of aggressive autonomous actions when incorrect assumptions could cause significant consequences.
+
+Out-of-distribution conditions make this requirement particularly important. A robot may encounter environments, objects, human behaviors, weather conditions, or operational situations that differ substantially from its training data. Context-aware alignment requires detecting when familiar decision rules may no longer be reliable. The appropriate response can include slower operation, larger safety margins, additional sensing, alternative planning, human assistance, or transition to a safer operating mode.
+
+Context can also resolve ambiguous language. Expressions such as "bring that one," "park over there," or "continue after they leave" cannot be interpreted from words alone. Perception, dialogue history, spatial relationships, and current activity provide the grounding required to determine their meaning. If contextual evidence does not sufficiently distinguish among possible interpretations, the robot should request clarification rather than convert ambiguity directly into physical action.
+
+Social context introduces expectations that may not be represented by geometric safety constraints. A robot can maintain collision-free motion while still moving in a disruptive, unpredictable, intrusive, or socially inappropriate manner. Appropriate interaction distances, yielding behavior, turn-taking, communication, and movement predictability may depend on the environment and activity. Alignment therefore includes socially acceptable behavior in addition to physical collision avoidance.
+
+Context-aware alignment should influence planning before execution rather than functioning only as a post-action check. Candidate plans can be evaluated against the current environment, people, permissions, task requirements, predicted changes, and uncertainty. Plans that are geometrically feasible but contextually inappropriate should be rejected before they reach the controller. This makes contextual reasoning an active constraint on action selection rather than merely descriptive information.
+
+Runtime monitoring is necessary because context continues to change after planning. The system should observe whether assumptions used to authorize an action remain valid during execution. If a person enters the path, an object moves, communication is lost, or confidence falls below an acceptable level, the robot may need to slow, stop, replan, or request assistance. Alignment is preserved by continuously validating the conditions under which the action was originally selected.
+
+Human oversight remains essential when contextual interpretation exceeds the system's reliable competence. Operators should be able to inspect relevant context, correct mistaken assumptions, change priorities, and provide information unavailable to the robot. The system should incorporate these corrections into subsequent decisions while preserving safety constraints. Human intervention is therefore part of contextual reasoning rather than an external mechanism used only after failure.
+
+Learning can improve context awareness by allowing the robot to recognize recurring environments, interaction patterns, and operational preferences. However, learned contextual associations must not become rigid assumptions. A pattern that was previously valid may cease to apply when personnel, layouts, procedures, or missions change. Continual adaptation should therefore preserve uncertainty and allow learned contextual rules to be revised or discarded when evidence changes.
+
+Multi-robot systems introduce fleet-level context in addition to local context. Individual robots may need information about shared routes, task assignments, congestion, resource availability, hazards, and the intentions of other robots. A locally optimal action may be inappropriate when viewed from the fleet perspective. Context-aware alignment therefore requires relevant global information to influence local decisions without overwhelming robots with unnecessary centralized state.
+
+Evaluating context-aware alignment requires scenarios in which apparently identical instructions should produce different actions under different conditions. Testing should vary human proximity, environmental state, task type, permissions, uncertainty, operational mode, and unexpected changes. Successful alignment is demonstrated when the robot appropriately changes its behavior while preserving the underlying human goal and mandatory safety requirements.
+
+Ultimately, context-aware alignment means that Physical AI does not treat instructions, goals, or learned policies as isolated commands independent of the world. Perception, world understanding, human activity, task state, uncertainty, and operational constraints must continuously shape how objectives become actions. An aligned system performs the right action not only for the stated goal, but for the particular physical and social situation in which that goal must be achieved.
+
+상황 인식 정렬(Context-Aware Alignment)은 물리 AI(Physical AI) 시스템이 행동의 적절성을 지시 자체만으로 판단하는 것이 아니라, 해당 지시가 실행되는 상황까지 고려하여 판단하도록 요구한다. 동일한 명령이라도 위치, 주변 사람, 객체, 시간, 운영 모드(Operational Mode), 환경 조건, 시스템 상태에 따라 서로 다른 행동이 필요할 수 있다. 따라서 정렬(Alignment)은 목표와 행동을 물리적 및 사회적 상황(Physical and Social Context)과 지속적으로 연결하는 데 달려 있다.
+
+상황(Context)은 즉각적인 센서 관측(Sensor Observations)보다 더 광범위한 개념이다. 여기에는 공간 구조, 객체의 정체성, 인간의 역할, 작업 이력(Task History), 임무 단계(Mission Phase), 접근 권한, 환경 조건, 로봇의 능력, 조직 규칙 등이 포함될 수 있다. 로봇은 이러한 이질적인 신호를 현재 상황에 대한 일관된 표현으로 통합해야 한다. 이러한 통합이 없다면 개별적인 인식이나 추론이 올바르더라도 실제 운영 환경에는 부적절한 행동을 생성할 수 있다.
+
+공간적 상황(Spatial Context)은 허용 가능한 로봇 행동에 강한 영향을 미친다. 이동 로봇(Mobile Robot)은 사람이 없는 물류 통로에서는 빠르게 이동할 수 있지만 혼잡한 작업 공간에 진입하면 속도를 낮춰야 한다. 매니퓰레이터(Manipulator)는 격리된 작업 셀에서는 자유롭게 움직일 수 있지만 사람 근처에서는 제한된 궤적(Constrained Trajectories)이 필요할 수 있다. 따라서 상위 수준의 작업이 동일하더라도 로봇의 물리적 위치에 따라 허용 가능한 행동 공간(Permissible Action Space)이 달라진다.
+
+인간 상황(Human Context)도 마찬가지로 중요하다. 사람은 단순히 회피해야 할 장애물이 아니기 때문이다. 사람의 위치, 움직임, 활동, 역할, 주의 상태, 로봇과의 예상 상호작용은 적절한 행동에 영향을 미칠 수 있다. 권한 있는 운영자(Authorized Operator), 유지보수 기술자, 방문자, 주변 작업자는 서로 다른 권한과 기대를 가질 수 있다. 상황 인식 정렬은 감지된 모든 사람이 동일한 권한이나 의도를 가진다고 가정하지 않고 이러한 차이를 추론하도록 요구한다.
+
+작업 상황(Task Context)은 지시와 목적을 어떻게 해석해야 하는지를 결정한다. "조심스럽게 이동하라"는 표현은 일반적인 패키지를 운반할 때보다 깨지기 쉬운 장비를 운반할 때 서로 다른 속도, 힘, 궤적 제한을 의미할 수 있다. 마찬가지로 검사, 배송, 청소, 조작, 비상 대응, 협업 작업은 서로 다른 우선순위를 형성한다. 로봇은 현재 행동을 더 큰 작업 목적과 연결하여 국소적인 의사결정이 전체 임무의 목적과 일관성을 유지하도록 해야 한다.
+
+시간적 상황(Temporal Context)도 정렬에 영향을 미친다. 몇 초 또는 몇 분 전에 적절했던 행동이 조건 변화에 따라 더 이상 적절하지 않을 수 있다. 경로가 차단되거나, 사람이 안전 구역(Safety Zone)에 진입하거나, 기계가 작동을 시작하거나, 비상 상황으로 임무 우선순위가 변경될 수 있다. 따라서 상황 인식 시스템은 상황을 작업 시작 시 한 번 설정되는 정적인 정보가 아니라 지속적으로 변화하는 동적 상태(Dynamic State)로 다루어야 한다.
+
+운영 모드(Operational Mode)는 또 다른 중요한 상황 정보이다. 로봇은 정상 운영(Normal Operation), 유지보수(Maintenance), 시운전(Commissioning), 원격조작(Teleoperation), 성능 저하 운영(Degraded Operation), 비상 대응(Emergency Response), 복구(Recovery) 상황에서 서로 다르게 행동할 수 있다. 각 모드는 서로 다른 권한, 제한, 허용 행동을 정의할 수 있다. 정렬을 위해서는 시스템이 현재 어떤 모드가 활성화되어 있는지 파악하고 한 모드에서 유효한 행동이 다른 모드에 잘못 적용되지 않도록 해야 한다.
+
+상황은 어떤 제약조건(Constraints)이 우선되어야 하는지도 결정한다. 빠른 작업 완료나 짧은 경로와 같은 일반적인 선호는 정상적인 조건에서는 합리적일 수 있지만, 사람과의 근접성, 위험 물질, 제한된 시야 또는 장비 고장으로 위험이 증가하면 낮은 우선순위로 전환되어야 한다. 따라서 상황 인식 정렬은 절대로 양보할 수 없는 강제 안전 요구사항(Hard Safety Requirements)을 유지하면서 목적 간 상대적 중요도를 동적으로 조정한다.
+
+월드 모델(World Model)은 관측 정보와 객체, 에이전트, 관계, 동역학, 미래 상태에 대한 추정을 결합하여 상황 추론(Contextual Reasoning)을 위한 구조화된 표현을 제공할 수 있다. 물리 AI는 개별 센서 측정에 독립적으로 반응하는 대신 현재 상황이 앞으로 어떻게 변화할지를 추론할 수 있다. 이를 통해 물리적 행동을 선택하기 전에 움직이는 사람, 변화하는 장애물, 객체 간 상호작용, 예상되는 결과를 계획 과정에서 고려할 수 있다.
+
+그러나 상황 표현(Contextual Representations)에는 본질적으로 불확실성(Uncertainty)이 존재한다. 센서가 객체를 놓칠 수 있고, 인간의 의도가 불분명할 수 있으며, 위치 추정(Localization)이 드리프트(Drift)할 수 있고, 월드 모델이 미래의 상호작용을 잘못 예측할 수도 있다. 따라서 로봇은 현재 해석이 완전하다고 가정하지 않고 중요한 상황 변수에 대한 신뢰도(Confidence)를 유지해야 한다. 잘못된 가정이 중대한 결과를 초래할 수 있다면 상황에 대한 불확실성이 공격적인 자율 행동에 부여되는 권한을 감소시켜야 한다.
+
+분포 외 조건(Out-of-Distribution Conditions)에서는 이러한 요구가 특히 중요하다. 로봇은 학습 데이터와 상당히 다른 환경, 객체, 인간 행동, 기상 조건 또는 운영 상황에 직면할 수 있다. 상황 인식 정렬은 익숙한 의사결정 규칙이 더 이상 신뢰할 수 없는 상황을 탐지하도록 요구한다. 적절한 대응에는 속도 감소, 안전 여유(Safety Margins) 확대, 추가 센싱, 대체 계획, 인간 지원 또는 더욱 안전한 운영 모드로의 전환이 포함될 수 있다.
+
+상황은 모호한 언어(Ambiguous Language)를 해석하는 데에도 활용될 수 있다. "저것을 가져와", "저쪽에 주차해", "그들이 떠난 후 계속해"와 같은 표현은 단어만으로는 해석할 수 없다. 인식(Perception), 대화 이력(Dialogue History), 공간적 관계, 현재 활동은 이러한 표현의 의미를 결정하는 데 필요한 그라운딩(Grounding)을 제공한다. 상황적 증거가 여러 가능한 해석을 충분히 구분하지 못한다면 로봇은 모호성을 직접 물리적 행동으로 변환하기보다 명확화(Clarification)를 요청해야 한다.
+
+사회적 상황(Social Context)은 기하학적인 안전 제약으로만 표현할 수 없는 기대를 추가한다. 로봇은 충돌 없는 움직임을 유지하면서도 방해가 되거나, 예측하기 어렵거나, 지나치게 침범적이거나, 사회적으로 부적절하게 행동할 수 있다. 적절한 상호작용 거리, 양보 행동(Yielding Behavior), 순서 지키기(Turn-Taking), 의사소통, 움직임의 예측 가능성은 환경과 활동에 따라 달라질 수 있다. 따라서 정렬은 물리적 충돌 회피뿐만 아니라 사회적으로 수용 가능한 행동(Socially Acceptable Behavior)도 포함한다.
+
+상황 인식 정렬은 실행 후 행동을 검사하는 기능에만 머무르지 않고 실행 전에 계획(Planning)에 영향을 미쳐야 한다. 후보 계획(Candidate Plans)은 현재 환경, 사람, 권한, 작업 요구사항, 예상 변화, 불확실성을 기준으로 평가할 수 있다. 기하학적으로는 실행 가능하지만 상황적으로 부적절한 계획은 제어기(Controller)에 전달되기 전에 거부되어야 한다. 이를 통해 상황 추론은 단순한 설명 정보가 아니라 행동 선택을 능동적으로 제한하는 요소가 된다.
+
+런타임 모니터링(Runtime Monitoring)은 계획이 수립된 이후에도 상황이 계속 변화하기 때문에 필요하다. 시스템은 행동을 승인하는 데 사용된 가정이 실행 중에도 여전히 유효한지를 관찰해야 한다. 사람이 경로에 진입하거나, 객체가 움직이거나, 통신이 끊기거나, 신뢰도가 허용 가능한 수준 아래로 떨어지면 로봇은 감속, 정지, 재계획(Replanning) 또는 지원 요청을 수행해야 할 수 있다. 행동이 처음 선택되었을 때의 조건을 지속적으로 검증함으로써 정렬이 유지된다.
+
+인간 감독(Human Oversight)은 상황 해석이 시스템의 신뢰 가능한 능력을 넘어설 때 필수적이다. 운영자는 관련 상황을 확인하고, 잘못된 가정을 수정하고, 우선순위를 변경하며, 로봇이 확보할 수 없는 정보를 제공할 수 있어야 한다. 시스템은 안전 제약을 유지하면서 이러한 교정을 이후 의사결정에 반영해야 한다. 따라서 인간 개입(Human Intervention)은 실패가 발생한 이후에만 사용되는 외부 메커니즘이 아니라 상황 추론의 일부이다.
+
+학습(Learning)은 로봇이 반복적으로 나타나는 환경, 상호작용 패턴, 운영 선호를 인식하도록 하여 상황 인식 능력을 향상시킬 수 있다. 그러나 학습된 상황적 연관성(Contextual Associations)이 경직된 가정으로 변해서는 안 된다. 과거에는 유효했던 패턴이 인력, 배치, 절차 또는 임무가 변경되면 더 이상 적용되지 않을 수 있다. 따라서 지속적인 적응(Continual Adaptation)은 불확실성을 유지하고 증거가 변화할 때 학습된 상황 규칙을 수정하거나 폐기할 수 있어야 한다.
+
+다중 로봇 시스템(Multi-Robot Systems)은 국소적 상황(Local Context)에 더하여 플릿 수준 상황(Fleet-Level Context)을 도입한다. 개별 로봇은 공유 경로, 작업 할당, 혼잡, 자원 가용성, 위험요소, 다른 로봇의 의도에 관한 정보가 필요할 수 있다. 국소적으로 최적인 행동도 플릿 관점에서는 부적절할 수 있다. 따라서 상황 인식 정렬은 불필요한 중앙 집중식 상태 정보로 로봇에 과도한 부담을 주지 않으면서 관련된 전역 정보(Global Information)가 국소 의사결정에 영향을 미치도록 해야 한다.
+
+상황 인식 정렬의 평가(Evaluation)에는 겉보기에는 동일한 지시라도 서로 다른 조건에서는 서로 다른 행동을 생성해야 하는 시나리오가 필요하다. 시험에서는 인간과의 근접성, 환경 상태, 작업 유형, 권한, 불확실성, 운영 모드, 예상하지 못한 변화를 다양하게 구성해야 한다. 성공적인 정렬은 로봇이 근본적인 인간의 목표와 필수 안전 요구사항을 유지하면서 상황 변화에 맞게 자신의 행동을 적절하게 변경할 때 입증된다.
+
+궁극적으로 상황 인식 정렬(Context-Aware Alignment)은 물리 AI가 지시, 목표 또는 학습된 정책(Learned Policies)을 현실 세계와 독립된 고립된 명령으로 취급하지 않는다는 것을 의미한다. 인식, 월드 이해(World Understanding), 인간 활동, 작업 상태, 불확실성, 운영 제약조건은 목표가 행동으로 변환되는 방식을 지속적으로 형성해야 한다. 정렬된 시스템은 명시된 목표에 적합한 행동을 수행하는 것에 그치지 않고, 그 목표가 달성되어야 하는 특정한 물리적 및 사회적 상황에 적합한 행동을 수행해야 한다.
+
+##  
+
+## 04.06. Physical and Social Constraints
+
+![](images/image6.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Physical and social constraints define the boundaries within which a Physical AI system may pursue its objectives. Physical constraints arise from the laws of physics, robot capabilities, environmental geometry, and safety limits, while social constraints arise from human expectations, roles, permissions, norms, and organizational rules. Alignment requires both types to shape planning and action rather than being considered only after a task has been selected.
+
+Physical constraints begin with the embodiment of the robot itself. Mass, dimensions, payload capacity, joint limits, actuator force, acceleration, braking distance, stability, battery state, sensing range, and communication capability determine what actions are physically possible. An intelligent planner cannot safely command behavior that exceeds these limits, even when the requested goal is semantically valid and apparently useful.
+
+Environmental geometry creates another class of physical constraints. Walls, doors, stairs, narrow passages, uneven terrain, work cells, machinery, shelves, and temporary obstacles restrict where a robot can move or manipulate objects. These constraints are not static because doors can close, objects can move, and pathways can become blocked. Physical AI must therefore continuously connect geometric understanding with motion planning and execution.
+
+Dynamics and contact introduce constraints that cannot be captured by geometry alone. A collision-free trajectory may still be unsafe if velocity, acceleration, momentum, contact force, friction, or payload motion creates excessive risk. Manipulation similarly requires consideration of grasp stability, object fragility, surface properties, and interaction forces. Alignment must therefore constrain not only where the robot moves, but also how physical motion is produced.
+
+Human proximity adds particularly important physical constraints. Robots operating around people must account for separation distance, relative velocity, reachable space, stopping capability, and uncertainty in human motion. A trajectory that is acceptable in an isolated environment may become unacceptable when a person enters the workspace. Human presence should therefore dynamically modify speed, force, trajectory, and permissible autonomous behavior.
+
+Physical constraints also include resource limitations. Energy, computation, sensing quality, communication bandwidth, thermal capacity, and remaining mission time can determine whether a plan remains feasible. A robot with insufficient battery capacity should not begin a mission that cannot be safely completed or exited. Resource awareness therefore becomes part of alignment because physical capability changes during operation rather than remaining constant.
+
+Social constraints address behavior that may be physically feasible and collision-free but still inappropriate around humans. A robot may block a doorway, move unpredictably through a group, approach someone too closely, interrupt an activity, or occupy a shared resource for too long without causing a physical accident. Socially aligned behavior requires understanding that successful interaction involves more than geometric avoidance.
+
+Personal space is one example of a social constraint that depends heavily on context. Appropriate interaction distance can vary with environment, task, culture, role, and whether interaction was intentionally initiated. A collaborative robot and a delivery robot may require different proximity behavior. Physical AI should therefore avoid applying one universal distance rule and instead combine minimum safety requirements with context-sensitive interaction policies.
+
+Predictability is another important social requirement. Humans working near robots benefit when robot motion communicates understandable intent through stable trajectories, reasonable speeds, clear stopping behavior, and consistent yielding patterns. A mathematically efficient trajectory that repeatedly changes direction may be safe according to collision calculations but difficult for people to anticipate. Social alignment therefore favors behavior that humans can interpret and coordinate with.
+
+Right-of-way and turn-taking illustrate how social rules influence navigation and collaboration. In corridors, intersections, shared workspaces, elevators, loading areas, and manipulation tasks, robots may need to yield, wait, negotiate access, or allow human activity to proceed first. These behaviors depend on local conventions and task priorities. Efficient autonomy must therefore operate within shared interaction rules rather than treating humans merely as moving obstacles.
+
+Permissions and authority create another category of social constraint. A robot may be physically capable of entering a room, opening a container, moving equipment, or accessing information while lacking authorization to do so. Alignment requires distinguishing capability from permission. Identity, role, access level, mission assignment, and operational mode can determine whether an otherwise feasible action is legitimately available to the system.
+
+Organizational policies further constrain robot behavior. Facilities may define restricted zones, approved routes, working hours, hygiene requirements, inspection procedures, hazardous-area protocols, or rules governing human approval. These policies translate institutional expectations into operational boundaries. Physical AI should incorporate them into planning and runtime monitoring so that productivity optimization cannot silently bypass required procedures.
+
+Physical and social constraints frequently interact rather than operating independently. A narrow corridor may be physically traversable, but entering it while workers are carrying equipment may be socially inappropriate and dynamically unsafe. A robot may be allowed to approach an operator but not at high speed. Alignment therefore requires integrated reasoning in which geometry, dynamics, human activity, permissions, and social expectations jointly determine acceptable actions.
+
+Constraints should also be distinguished by their degree of flexibility. Some are hard constraints that must never be intentionally violated, such as critical collision limits, prohibited access, or emergency-stop conditions. Others are conditional constraints that depend on operating mode or context, while still others behave as soft preferences. Correct classification is essential because treating mandatory requirements as optimization penalties can allow performance objectives to override them.
+
+Uncertainty makes constraint enforcement more difficult. Perception may incorrectly estimate human position, friction may differ from expectations, permissions may be incomplete, or the system may not recognize a social situation correctly. Constraint satisfaction should therefore include safety margins and confidence estimates. When uncertainty increases, the permissible action space may need to contract until additional information restores sufficient confidence.
+
+World models can help predict whether candidate actions will violate constraints in future states rather than only detecting violations after they occur. A robot can estimate whether a moving person may enter its path, whether a carried object may collide with infrastructure, or whether congestion may develop around a shared resource. Predictive constraint reasoning enables earlier adaptation but must remain conservative when future-state estimates are uncertain.
+
+Planning should incorporate constraints before physical execution. Candidate plans can be generated and filtered according to feasibility, safety, permissions, human interaction requirements, and organizational rules. A plan that reaches the target quickly but violates a restricted zone should not compete merely as a lower-scoring alternative; it should be excluded when the restriction is mandatory. This preserves the distinction between optimization and admissibility.
+
+Runtime enforcement provides an additional protection layer because planning models can be incomplete or incorrect. Safety controllers, motion limits, collision monitors, geofencing, force limits, access-control mechanisms, and supervisory logic can restrict commands generated by higher-level AI. Such mechanisms are especially important for learned policies because their outputs may extend beyond situations explicitly represented during training.
+
+Human oversight is required when constraints conflict, become ambiguous, or cannot be reliably interpreted. Operators may need to authorize exceptional access, clarify social expectations, modify task priorities, or decide whether degraded operation is acceptable. The system should make relevant constraints visible and support safe intervention without allowing temporary human preferences to silently disable fundamental protections.
+
+In multi-robot systems, constraints extend to collective resources and interactions. Robots may compete for corridors, charging stations, work cells, communication capacity, or manipulation access. Locally feasible actions can collectively create congestion or unsafe configurations. Fleet-level coordination must therefore manage shared physical resources, priorities, exclusion zones, and interaction rules while preserving the safety constraints of each individual robot.
+
+Evaluation should test constraint handling under changing and conflicting conditions rather than only nominal operation. Scenarios can introduce unexpected humans, blocked routes, reduced sensing, permission changes, resource shortages, conflicting priorities, or unusual social interactions. Successful alignment requires the robot to recognize applicable constraints, modify behavior appropriately, and avoid completing the task through actions that violate the boundaries defining acceptable operation.
+
+Ultimately, physical and social constraints transform robot autonomy from unrestricted goal pursuit into bounded, context-sensitive action. Physical constraints determine what can safely be done, while social constraints help determine what should appropriately be done around people and institutions. A well-aligned Physical AI system achieves its objectives only through actions that remain physically feasible, safe, authorized, predictable, socially appropriate, and responsive to changing conditions.
+
+물리적 및 사회적 제약조건(Physical and Social Constraints)은 물리 AI(Physical AI) 시스템이 자신의 목표를 추구할 수 있는 경계를 정의한다. 물리적 제약조건(Physical Constraints)은 물리 법칙, 로봇의 능력, 환경의 기하 구조, 안전 한계에서 발생하는 반면, 사회적 제약조건(Social Constraints)은 인간의 기대, 역할, 권한, 규범, 조직 규칙에서 발생한다. 정렬(Alignment)을 위해서는 두 종류의 제약조건 모두 작업이 선택된 이후에만 검토되는 것이 아니라 계획과 행동 자체를 형성해야 한다.
+
+물리적 제약조건은 로봇 자체의 체화(Embodiment)에서 시작된다. 질량, 크기, 적재 능력(Payload Capacity), 관절 한계(Joint Limits), 액추에이터 힘(Actuator Force), 가속도, 제동 거리, 안정성, 배터리 상태, 센싱 범위, 통신 능력은 어떤 행동이 물리적으로 가능한지를 결정한다. 지능형 계획기(Intelligent Planner)는 요청된 목표가 의미론적으로 타당하고 유용해 보이더라도 이러한 한계를 초과하는 행동을 안전하게 명령할 수 없다.
+
+환경의 기하 구조(Environmental Geometry)는 또 다른 유형의 물리적 제약조건을 형성한다. 벽, 문, 계단, 좁은 통로, 불규칙한 지형, 작업 셀, 기계, 선반, 임시 장애물은 로봇이 이동하거나 물체를 조작할 수 있는 영역을 제한한다. 이러한 제약은 정적이지 않으며 문이 닫히거나, 물체가 이동하거나, 통로가 차단될 수 있다. 따라서 물리 AI는 기하학적 이해(Geometric Understanding)를 동작 계획(Motion Planning) 및 실행과 지속적으로 연결해야 한다.
+
+동역학(Dynamics)과 접촉(Contact)은 기하 구조만으로 표현할 수 없는 제약조건을 추가한다. 충돌이 없는 궤적이라도 속도, 가속도, 운동량, 접촉력, 마찰 또는 적재물의 움직임이 과도한 위험을 발생시키면 안전하지 않을 수 있다. 조작(Manipulation)에서도 파지 안정성(Grasp Stability), 물체의 취약성, 표면 특성, 상호작용 힘을 고려해야 한다. 따라서 정렬은 로봇이 어디로 이동하는지만이 아니라 물리적 움직임을 어떠한 방식으로 생성하는지도 제한해야 한다.
+
+인간과의 근접성(Human Proximity)은 특히 중요한 물리적 제약조건을 추가한다. 사람 주변에서 작동하는 로봇은 분리 거리(Separation Distance), 상대 속도, 도달 가능 공간(Reachable Space), 정지 능력, 인간 움직임의 불확실성을 고려해야 한다. 격리된 환경에서는 허용 가능한 궤적도 사람이 작업 공간에 진입하면 허용될 수 없게 된다. 따라서 사람의 존재는 속도, 힘, 궤적 및 허용 가능한 자율 행동을 동적으로 변경해야 한다.
+
+물리적 제약조건에는 자원 제한(Resource Limitations)도 포함된다. 에너지, 연산 능력, 센싱 품질, 통신 대역폭, 열적 용량(Thermal Capacity), 남아 있는 임무 시간은 계획이 계속 실행 가능한지를 결정할 수 있다. 배터리 용량이 충분하지 않은 로봇은 안전하게 완료하거나 복귀할 수 없는 임무를 시작해서는 안 된다. 따라서 물리적 능력은 운영 중에도 변화하므로 자원 인식(Resource Awareness) 역시 정렬의 일부가 된다.
+
+사회적 제약조건(Social Constraints)은 물리적으로 실행 가능하고 충돌이 없는 행동이라도 사람 주변에서는 부적절할 수 있다는 문제를 다룬다. 로봇은 물리적 사고를 발생시키지 않으면서도 출입구를 막거나, 사람들 사이에서 예측하기 어렵게 이동하거나, 누군가에게 지나치게 가까이 접근하거나, 진행 중인 활동을 방해하거나, 공유 자원을 지나치게 오래 점유할 수 있다. 사회적으로 정렬된 행동(Socially Aligned Behavior)은 성공적인 상호작용이 단순한 기하학적 회피 이상의 것을 요구한다는 점을 반영해야 한다.
+
+개인 공간(Personal Space)은 상황에 크게 의존하는 사회적 제약조건의 한 예이다. 적절한 상호작용 거리는 환경, 작업, 문화, 역할, 그리고 상호작용이 의도적으로 시작되었는지 여부에 따라 달라질 수 있다. 협동 로봇(Collaborative Robot)과 배송 로봇(Delivery Robot)은 서로 다른 근접 행동을 필요로 할 수 있다. 따라서 물리 AI는 하나의 보편적인 거리 규칙을 적용하기보다 최소 안전 요구사항과 상황에 민감한 상호작용 정책(Context-Sensitive Interaction Policies)을 결합해야 한다.
+
+예측 가능성(Predictability) 역시 중요한 사회적 요구사항이다. 로봇 주변에서 작업하는 사람은 안정적인 궤적, 합리적인 속도, 명확한 정지 행동, 일관된 양보 패턴을 통해 로봇의 움직임 의도를 이해할 수 있을 때 더 효과적으로 대응할 수 있다. 수학적으로 효율적인 궤적이라도 방향을 반복적으로 변경한다면 충돌 계산상 안전할 수 있지만 사람이 예측하기 어려울 수 있다. 따라서 사회적 정렬(Social Alignment)은 인간이 이해하고 협조할 수 있는 행동을 선호한다.
+
+통행 우선권(Right-of-Way)과 순서 지키기(Turn-Taking)는 사회적 규칙이 내비게이션과 협업에 영향을 미치는 방식을 보여준다. 복도, 교차 지점, 공유 작업 공간, 엘리베이터, 적재 구역, 조작 작업에서 로봇은 양보하거나, 대기하거나, 접근 순서를 조정하거나, 인간의 활동이 먼저 진행되도록 해야 할 수 있다. 이러한 행동은 지역적 관행과 작업 우선순위에 따라 달라진다. 따라서 효율적인 자율성은 인간을 단순한 이동 장애물로 취급하는 것이 아니라 공유된 상호작용 규칙(Shared Interaction Rules) 안에서 작동해야 한다.
+
+권한(Permissions)과 권위(Authority)는 또 다른 유형의 사회적 제약조건을 형성한다. 로봇은 특정 공간에 진입하거나, 컨테이너를 열거나, 장비를 이동하거나, 정보에 접근할 수 있는 물리적 능력을 갖추고 있더라도 그러한 행동을 수행할 권한이 없을 수 있다. 정렬은 능력(Capability)과 권한(Permission)을 구분하도록 요구한다. 신원, 역할, 접근 수준, 임무 할당, 운영 모드에 따라 물리적으로 가능한 행동이 시스템에 정당하게 허용되는지 결정될 수 있다.
+
+조직 정책(Organizational Policies)은 로봇의 행동을 추가로 제한한다. 시설에서는 제한 구역, 승인된 경로, 작업 시간, 위생 요구사항, 검사 절차, 위험 구역 프로토콜 또는 인간 승인에 관한 규칙을 정의할 수 있다. 이러한 정책은 조직의 기대를 운영상의 경계(Operational Boundaries)로 변환한다. 물리 AI는 생산성 최적화가 필수 절차를 암묵적으로 우회하지 못하도록 이러한 정책을 계획과 런타임 모니터링(Runtime Monitoring)에 통합해야 한다.
+
+물리적 제약조건과 사회적 제약조건은 독립적으로 작동하기보다 서로 상호작용하는 경우가 많다. 좁은 복도는 물리적으로 통과할 수 있지만 작업자들이 장비를 운반하고 있다면 그곳에 진입하는 것은 사회적으로 부적절하면서 동역학적으로도 안전하지 않을 수 있다. 로봇이 운영자에게 접근하도록 허용되더라도 높은 속도로 접근해서는 안 될 수 있다. 따라서 정렬은 기하 구조, 동역학, 인간 활동, 권한, 사회적 기대를 통합하여 허용 가능한 행동을 결정해야 한다.
+
+제약조건은 유연성의 정도(Degree of Flexibility)에 따라서도 구분되어야 한다. 중요한 충돌 한계, 금지된 접근 또는 비상 정지 조건처럼 의도적으로 절대 위반해서는 안 되는 것은 강제 제약조건(Hard Constraints)이다. 일부는 운영 모드나 상황에 따라 달라지는 조건부 제약조건(Conditional Constraints)이며, 다른 일부는 유연한 선호(Soft Preferences)로 작동한다. 필수 요구사항을 최적화 페널티(Optimization Penalties)로 취급하면 성능 목표가 이를 압도할 수 있으므로 올바른 분류가 필수적이다.
+
+불확실성(Uncertainty)은 제약조건의 적용을 더욱 어렵게 만든다. 인식 시스템이 사람의 위치를 잘못 추정하거나, 마찰이 예상과 다르거나, 권한 정보가 불완전하거나, 시스템이 사회적 상황을 정확하게 인식하지 못할 수 있다. 따라서 제약조건 충족(Constraint Satisfaction)에는 안전 여유(Safety Margins)와 신뢰도 추정(Confidence Estimates)이 포함되어야 한다. 불확실성이 증가하면 추가 정보가 충분한 신뢰도를 회복할 때까지 허용 가능한 행동 공간이 축소될 필요가 있다.
+
+월드 모델(World Models)은 제약 위반이 발생한 이후에만 이를 탐지하는 대신 후보 행동이 미래 상태에서 제약을 위반할 가능성을 예측하는 데 도움을 줄 수 있다. 로봇은 이동 중인 사람이 자신의 경로에 진입할지, 운반 중인 물체가 시설물과 충돌할지, 공유 자원 주변에 혼잡이 발생할지를 추정할 수 있다. 예측적 제약 추론(Predictive Constraint Reasoning)은 더 빠른 적응을 가능하게 하지만 미래 상태의 추정이 불확실할 때에는 보수적으로 작동해야 한다.
+
+계획(Planning)은 물리적 실행 이전에 제약조건을 포함해야 한다. 후보 계획(Candidate Plans)은 실현 가능성, 안전, 권한, 인간 상호작용 요구사항, 조직 규칙을 기준으로 생성되고 필터링될 수 있다. 목표에 빠르게 도달하더라도 제한 구역을 침범하는 계획은 단순히 낮은 점수를 받는 대안으로 경쟁해서는 안 되며, 해당 제한이 필수적이라면 후보에서 제외되어야 한다. 이를 통해 최적화(Optimization)와 허용 가능성(Admissibility)의 차이를 유지할 수 있다.
+
+런타임 강제 적용(Runtime Enforcement)은 계획 모델이 불완전하거나 잘못될 수 있기 때문에 추가적인 보호 계층을 제공한다. 안전 제어기(Safety Controllers), 동작 제한(Motion Limits), 충돌 모니터(Collision Monitors), 지오펜싱(Geofencing), 힘 제한(Force Limits), 접근 제어 메커니즘(Access-Control Mechanisms), 감독 로직(Supervisory Logic)은 상위 수준 AI가 생성한 명령을 제한할 수 있다. 이러한 메커니즘은 학습된 정책(Learned Policies)의 출력이 훈련에서 명시적으로 다루지 않은 상황으로 확장될 수 있기 때문에 특히 중요하다.
+
+인간 감독(Human Oversight)은 제약조건이 서로 충돌하거나, 모호해지거나, 신뢰성 있게 해석될 수 없을 때 필요하다. 운영자는 예외적인 접근을 승인하거나, 사회적 기대를 명확하게 하거나, 작업 우선순위를 수정하거나, 성능 저하 운영이 허용 가능한지를 결정해야 할 수 있다. 시스템은 관련 제약조건을 인간이 확인할 수 있도록 하고 안전한 개입을 지원하면서, 일시적인 인간의 선호가 근본적인 보호 기능을 암묵적으로 비활성화하지 못하도록 해야 한다.
+
+다중 로봇 시스템(Multi-Robot Systems)에서는 제약조건이 집단적 자원과 상호작용으로 확장된다. 로봇들은 복도, 충전소, 작업 셀, 통신 용량 또는 조작 접근권을 두고 경쟁할 수 있다. 개별적으로 실행 가능한 행동들이 집단적으로는 혼잡이나 안전하지 않은 구성을 만들 수 있다. 따라서 플릿 수준 협조(Fleet-Level Coordination)는 각 개별 로봇의 안전 제약조건을 유지하면서 공유 물리 자원, 우선순위, 배제 구역(Exclusion Zones), 상호작용 규칙을 관리해야 한다.
+
+평가(Evaluation)는 정상적인 운영만을 시험하는 것이 아니라 변화하고 충돌하는 조건에서 제약조건을 처리하는 능력을 검증해야 한다. 시험 시나리오에는 예상하지 못한 사람의 등장, 차단된 경로, 센싱 성능 저하, 권한 변경, 자원 부족, 상충하는 우선순위 또는 비정상적인 사회적 상호작용을 포함할 수 있다. 성공적인 정렬은 로봇이 적용 가능한 제약조건을 인식하고, 행동을 적절하게 변경하며, 허용 가능한 운영 경계를 위반하는 방식으로 작업을 완료하지 않을 때 달성된다.
+
+궁극적으로 물리적 및 사회적 제약조건(Physical and Social Constraints)은 로봇의 자율성을 제한 없는 목표 추구(Unrestricted Goal Pursuit)에서 경계가 설정되고 상황에 민감한 행동(Bounded, Context-Sensitive Action)으로 전환한다. 물리적 제약조건은 무엇을 안전하게 수행할 수 있는지를 결정하고, 사회적 제약조건은 사람과 조직 주변에서 무엇을 적절하게 수행해야 하는지를 결정하는 데 도움을 준다. 잘 정렬된 물리 AI 시스템은 물리적으로 실현 가능하고, 안전하며, 권한이 부여되고, 예측 가능하며, 사회적으로 적절하고, 변화하는 조건에 대응하는 행동을 통해서만 자신의 목표를 달성해야 한다.
+
+##  
+
+## 04.07. Hierarchical Goals and Priority Conflicts (source skips 04.07)
+
+![](images/image7.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Hierarchical goals organize Physical AI objectives into multiple levels so that broad human intentions can be transformed into concrete, executable actions. A high-level mission such as inspecting a facility may contain goals for coverage, safety, reporting, and completion time, while each goal is decomposed into navigation, sensing, positioning, inspection, and communication tasks. Alignment requires every lower-level objective to remain traceable to the purpose of the higher-level mission.
+
+The hierarchy typically begins with human intent and mission-level objectives, followed by task goals, subgoals, plans, actions, and low-level control commands. Each level translates abstract requirements into increasingly specific behavior. This decomposition makes complex autonomy manageable, but it also creates opportunities for misalignment because assumptions introduced at one level can propagate downward and eventually become physical actions that no longer represent the original intent.
+
+Higher-level goals define why the system acts, while lower-level goals determine how those goals are achieved. For example, "deliver medical supplies safely" expresses a mission objective, while selecting a destination, planning a route, avoiding obstacles, controlling speed, and positioning the payload are subordinate objectives. Lower-level optimization should improve execution without changing the meaning, boundaries, or priority of the mission-level objective that authorized it.
+
+Goal hierarchies should distinguish objectives from constraints and preferences. Mission completion may be an objective, collision avoidance may be a mandatory constraint, and shorter travel time may be a preference. If these categories are represented only as competing numerical rewards, optimization may produce undesirable trade-offs. Physical AI therefore requires explicit priority structures that prevent lower-priority performance improvements from overriding requirements that must remain satisfied.
+
+Priority conflicts arise whenever two or more objectives cannot be satisfied simultaneously. A robot may need to minimize travel time while conserving energy, maintain production throughput while yielding to workers, or complete an inspection while responding to a newly detected hazard. Such conflicts are normal in autonomous operation. Alignment depends on resolving them according to authorized priorities rather than whichever objective is easiest to optimize at the moment.
+
+Safety usually occupies a privileged position in this hierarchy because some actions should remain unacceptable regardless of their contribution to task performance. A robot should not intentionally violate critical collision limits merely to meet a delivery deadline. This motivates lexicographic or constraint-based reasoning in which mandatory safety conditions are satisfied first, while efficiency, convenience, and other objectives are optimized only within the remaining admissible action space.
+
+Authority introduces another dimension to priority management. Goals can originate from operators, supervisors, fleet managers, automated planners, organizational policies, or learned models, but these sources do not necessarily possess equal authority. A locally generated subgoal should not override an authorized human command, and a user preference should not automatically override safety or access restrictions. Goal arbitration therefore requires information about both priority and authority.
+
+Context can dynamically change the relative priority of goals. Energy efficiency may dominate route selection during normal operation, while human safety becomes immediately decisive when a worker enters the robot's path. Mission completion may be important until a fault reduces braking capability or localization confidence. Hierarchical alignment must therefore support conditional priorities rather than assuming that one fixed ordering remains optimal under every operating condition.
+
+Temporal relationships also influence goal priority. Some goals are urgent, others have deadlines, and some become relevant only after prerequisite conditions are satisfied. A robot may need to recharge before continuing a mission, wait until a shared workspace becomes available, or suspend routine inspection during an emergency. Goal management must represent these dependencies so that immediate actions remain consistent with both present requirements and future mission viability.
+
+Subgoal generation is especially important because autonomous systems may create intermediate objectives without direct human specification. A planning system might decide to reposition, acquire another observation, open a door, move an obstacle, or request assistance as part of a larger mission. Generated subgoals should inherit relevant constraints, permissions, and priorities from their parent goals so that decomposition does not create unintended authority for new actions.
+
+Conflicts can occur vertically between different levels of the hierarchy. A low-level controller may prefer a smooth trajectory while the planner requires an immediate stop, or a navigation module may seek the shortest route while the mission layer prohibits entry into a particular area. The architecture must ensure that higher-priority constraints can reliably influence lower-level execution and that local optimization cannot silently defeat decisions made at higher levels.
+
+Horizontal conflicts occur between goals at the same or similar level. Two delivery tasks may compete for the same robot, multiple inspection targets may share a deadline, or energy conservation may conflict with rapid completion. These situations require arbitration based on urgency, value, resource availability, risk, dependencies, and organizational policy. The selected priority should remain explainable so that operators can understand why one objective was delayed or suspended.
+
+Uncertainty complicates priority conflicts because the importance of a goal may depend on incomplete information. A suspected hazard may require immediate attention even when its existence has not been confirmed, while abandoning the current mission unnecessarily may also carry cost. Physical AI should therefore combine priority with confidence and consequence, allowing uncertain but high-impact conditions to trigger conservative behavior when the potential downside is sufficiently severe.
+
+World models can support hierarchical goal management by predicting the consequences of different priority choices. The system can estimate whether delaying one task creates future resource shortages, whether continuing a mission increases risk, or whether a temporary detour improves overall completion. Such predictions help resolve conflicts over longer horizons, but their uncertainty must be considered so that speculative future benefits do not override well-established safety requirements.
+
+Replanning is necessary when goals, priorities, or environmental conditions change. The robot should be able to suspend an active plan, preserve relevant progress, introduce a higher-priority objective, and later resume or reformulate the original task when appropriate. This requires goal lifecycle management rather than simple sequential execution. Goals may be active, pending, suspended, completed, invalidated, or cancelled depending on current context and authority.
+
+Human oversight provides a final mechanism for resolving conflicts that the autonomous system cannot reliably arbitrate. Operators should be able to inspect active goals, understand their relationships, change priorities, cancel objectives, authorize exceptions, and identify why the robot selected a particular course of action. The system should accept such corrections while preserving fundamental safety boundaries and maintaining consistency across dependent subgoals.
+
+Learning systems create additional challenges because learned policies may implicitly develop priorities that differ from explicitly designed ones. A policy rewarded strongly for throughput may gradually behave as though speed has greater importance than intended. Evaluation must therefore examine observed trade-offs, not only task success. Learned behavior should be checked for whether it preserves the intended hierarchy among safety, authorization, mission objectives, and preferences.
+
+Multi-robot systems extend hierarchical goals across individual and collective levels. A fleet may pursue a common mission while individual robots receive local assignments and generate their own subgoals. Local optimization can conflict with fleet priorities through congestion, duplicated effort, resource competition, or selfish route selection. Fleet-level alignment requires shared priorities and coordination mechanisms while preserving appropriate local autonomy for rapid physical response.
+
+Ultimately, hierarchical goals and priority management provide the structure that connects broad human intent with detailed physical execution. Alignment requires that every generated goal remain subordinate to legitimate higher-level purposes, that conflicts be resolved according to safety, authority, context, and consequence, and that priorities remain revisable as conditions change. The objective is coherent autonomy in which local intelligence advances the mission without losing the hierarchy that gives the mission its meaning.
+
+계층적 목표(Hierarchical Goals)는 광범위한 인간의 의도(Human Intent)를 구체적이고 실행 가능한 행동으로 변환할 수 있도록 물리 AI(Physical AI)의 목적을 여러 수준으로 구성한다. 시설 검사와 같은 상위 수준 임무에는 검사 범위, 안전, 보고, 완료 시간에 관한 목표가 포함될 수 있으며, 각각의 목표는 내비게이션, 센싱, 위치 설정, 검사, 통신 작업으로 분해된다. 정렬(Alignment)을 위해서는 모든 하위 수준의 목적이 상위 수준 임무의 목적까지 추적 가능해야 한다.
+
+이러한 계층 구조는 일반적으로 인간 의도(Human Intent)와 임무 수준 목적(Mission-Level Objectives)에서 시작하여 작업 목표(Task Goals), 하위 목표(Subgoals), 계획(Plans), 행동(Actions), 하위 수준 제어 명령(Low-Level Control Commands)으로 이어진다. 각 수준은 추상적인 요구사항을 점점 더 구체적인 행동으로 변환한다. 이러한 분해는 복잡한 자율성을 관리 가능하게 만들지만, 한 수준에서 도입된 가정이 아래로 전파되어 결국 원래 의도를 더 이상 반영하지 않는 물리적 행동이 될 수 있기 때문에 오정렬(Misalignment)의 가능성도 만든다.
+
+상위 수준 목표(Higher-Level Goals)는 시스템이 왜 행동하는지를 정의하고, 하위 수준 목표(Lower-Level Goals)는 그러한 목표를 어떻게 달성할지를 결정한다. 예를 들어 "의료 물품을 안전하게 배송하라"는 임무 목적을 나타내며, 목적지 선택, 경로 계획, 장애물 회피, 속도 제어, 적재물 위치 설정은 이에 종속되는 목적이다. 하위 수준 최적화(Lower-Level Optimization)는 해당 행동을 승인한 임무 수준 목적의 의미, 경계 또는 우선순위를 변경하지 않으면서 실행을 개선해야 한다.
+
+목표 계층(Goal Hierarchies)은 목적(Objectives), 제약조건(Constraints), 선호(Preferences)를 구분해야 한다. 임무 완료는 목적이 될 수 있고, 충돌 회피는 필수 제약조건이 될 수 있으며, 짧은 이동 시간은 선호가 될 수 있다. 이러한 범주를 단순히 경쟁하는 수치적 보상(Numerical Rewards)으로만 표현하면 최적화 과정에서 바람직하지 않은 절충이 발생할 수 있다. 따라서 물리 AI에는 낮은 우선순위의 성능 개선이 반드시 충족되어야 하는 요구사항을 침해하지 못하도록 하는 명시적인 우선순위 구조(Priority Structures)가 필요하다.
+
+우선순위 충돌(Priority Conflicts)은 둘 이상의 목적을 동시에 만족시킬 수 없을 때 발생한다. 로봇은 이동 시간을 최소화하면서 에너지를 절약해야 할 수 있고, 생산 처리량을 유지하면서 작업자에게 양보해야 할 수도 있으며, 새롭게 감지된 위험에 대응하면서 검사를 완료해야 할 수도 있다. 이러한 충돌은 자율 운영에서 정상적으로 발생한다. 정렬은 특정 순간에 가장 최적화하기 쉬운 목적이 아니라 승인된 우선순위(Authorized Priorities)에 따라 이러한 충돌을 해결하는 데 달려 있다.
+
+안전(Safety)은 일부 행동이 작업 성능에 얼마나 기여하는지와 관계없이 허용되어서는 안 되기 때문에 일반적으로 이러한 계층 구조에서 특별한 위치를 차지한다. 로봇은 배송 마감시간을 맞추기 위해 중요한 충돌 한계(Collision Limits)를 의도적으로 위반해서는 안 된다. 이는 필수 안전 조건을 먼저 만족시키고 효율성, 편의성 및 기타 목적은 남아 있는 허용 가능한 행동 공간(Admissible Action Space) 안에서만 최적화하는 사전식 또는 제약 기반 추론(Lexicographic or Constraint-Based Reasoning)의 필요성으로 이어진다.
+
+권한(Authority)은 우선순위 관리에 또 다른 차원을 추가한다. 목표는 운영자, 감독자, 플릿 관리자(Fleet Manager), 자동 계획기(Automated Planner), 조직 정책 또는 학습된 모델(Learned Model)에서 생성될 수 있지만 이러한 출처들이 반드시 동일한 권한을 갖는 것은 아니다. 국소적으로 생성된 하위 목표가 권한 있는 인간의 명령을 무시해서는 안 되며, 사용자의 선호가 안전 또는 접근 제한을 자동으로 넘어설 수도 없다. 따라서 목표 중재(Goal Arbitration)에는 우선순위뿐만 아니라 권한에 대한 정보도 필요하다.
+
+상황(Context)은 목표의 상대적 우선순위를 동적으로 변경할 수 있다. 정상 운영에서는 에너지 효율이 경로 선택에서 중요한 요소가 될 수 있지만 작업자가 로봇의 경로에 진입하면 인간의 안전이 즉시 결정적인 요소가 된다. 임무 완료가 중요하더라도 고장으로 제동 능력이나 위치 추정 신뢰도(Localization Confidence)가 감소하면 그 중요도는 달라질 수 있다. 따라서 계층적 정렬(Hierarchical Alignment)은 하나의 고정된 순서가 모든 운영 조건에서 최적이라고 가정하기보다 조건부 우선순위(Conditional Priorities)를 지원해야 한다.
+
+시간적 관계(Temporal Relationships)도 목표의 우선순위에 영향을 미친다. 일부 목표는 긴급하고, 일부는 마감시간을 가지며, 다른 목표는 선행 조건이 충족된 이후에만 관련성을 갖는다. 로봇은 임무를 계속하기 전에 충전해야 하거나, 공유 작업 공간이 사용 가능해질 때까지 기다려야 하거나, 비상 상황에서 정기 검사를 중단해야 할 수 있다. 목표 관리(Goal Management)는 즉각적인 행동이 현재 요구사항뿐만 아니라 미래의 임무 지속 가능성(Future Mission Viability)과도 일치하도록 이러한 의존성을 표현해야 한다.
+
+하위 목표 생성(Subgoal Generation)은 자율 시스템이 인간의 직접적인 명세 없이 중간 목적을 생성할 수 있기 때문에 특히 중요하다. 계획 시스템은 더 큰 임무의 일부로 위치를 변경하거나, 추가 관측을 획득하거나, 문을 열거나, 장애물을 이동하거나, 지원을 요청하기로 결정할 수 있다. 생성된 하위 목표는 상위 목표의 관련 제약조건, 권한, 우선순위를 상속해야 하며, 목표 분해가 새로운 행동에 의도하지 않은 권한을 부여해서는 안 된다.
+
+충돌은 계층 구조의 서로 다른 수준 사이에서 수직적으로 발생할 수 있다. 하위 수준 제어기(Low-Level Controller)는 부드러운 궤적을 선호할 수 있지만 계획기는 즉각적인 정지를 요구할 수 있으며, 내비게이션 모듈은 최단 경로를 탐색하는 반면 임무 계층에서는 특정 영역의 진입을 금지할 수 있다. 아키텍처는 높은 우선순위의 제약조건이 하위 수준 실행에 신뢰성 있게 영향을 미치도록 하고, 국소 최적화(Local Optimization)가 상위 수준에서 결정된 사항을 암묵적으로 무력화하지 못하도록 해야 한다.
+
+수평적 충돌(Horizontal Conflicts)은 동일하거나 유사한 수준의 목표 사이에서 발생한다. 두 개의 배송 작업이 동일한 로봇을 필요로 하거나, 여러 검사 대상이 동일한 마감시간을 가질 수 있으며, 에너지 절약과 신속한 작업 완료가 충돌할 수도 있다. 이러한 상황에서는 긴급성, 가치, 자원 가용성, 위험, 의존성, 조직 정책에 따라 중재가 이루어져야 한다. 선택된 우선순위는 운영자가 특정 목적이 지연되거나 중단된 이유를 이해할 수 있도록 설명 가능(Explainable)해야 한다.
+
+불확실성(Uncertainty)은 목표의 중요성이 불완전한 정보에 따라 달라질 수 있기 때문에 우선순위 충돌을 더욱 복잡하게 만든다. 의심되는 위험은 아직 존재가 확인되지 않았더라도 즉각적인 주의가 필요할 수 있지만, 현재 임무를 불필요하게 중단하는 것 역시 비용을 발생시킬 수 있다. 따라서 물리 AI는 우선순위와 신뢰도(Confidence), 결과의 심각성(Consequence)을 함께 고려하여 잠재적 피해가 충분히 크다면 불확실하지만 영향력이 큰 조건에서도 보수적 행동(Conservative Behavior)을 수행할 수 있어야 한다.
+
+월드 모델(World Models)은 서로 다른 우선순위 선택이 가져올 결과를 예측함으로써 계층적 목표 관리(Hierarchical Goal Management)를 지원할 수 있다. 시스템은 특정 작업의 지연이 향후 자원 부족을 발생시킬지, 임무 지속이 위험을 증가시킬지, 일시적인 우회가 전체 완료 성능을 개선할지를 추정할 수 있다. 이러한 예측은 장기적인 충돌 해결에 도움을 주지만, 추측적인 미래 이익이 충분히 확립된 안전 요구사항을 넘어서는 일이 없도록 예측의 불확실성을 함께 고려해야 한다.
+
+재계획(Replanning)은 목표, 우선순위 또는 환경 조건이 변화할 때 필요하다. 로봇은 활성 계획을 일시 중단하고, 관련된 진행 상태를 보존하며, 더 높은 우선순위의 목적을 도입하고, 이후 적절한 시점에 원래 작업을 재개하거나 재구성할 수 있어야 한다. 이를 위해서는 단순한 순차 실행(Sequential Execution)이 아니라 목표 생명주기 관리(Goal Lifecycle Management)가 필요하다. 목표는 현재 상황과 권한에 따라 활성(Active), 대기(Pending), 일시 중단(Suspended), 완료(Completed), 무효화(Invalidated), 취소(Cancelled) 상태가 될 수 있다.
+
+인간 감독(Human Oversight)은 자율 시스템이 신뢰성 있게 중재할 수 없는 충돌을 해결하는 최종 메커니즘을 제공한다. 운영자는 활성 목표를 확인하고, 목표 간 관계를 이해하며, 우선순위를 변경하고, 목적을 취소하고, 예외를 승인하며, 로봇이 특정 행동 방식을 선택한 이유를 파악할 수 있어야 한다. 시스템은 기본적인 안전 경계를 유지하고 서로 의존하는 하위 목표 사이의 일관성을 보존하면서 이러한 인간의 교정을 받아들여야 한다.
+
+학습 시스템(Learning Systems)은 학습된 정책(Learned Policies)이 명시적으로 설계된 우선순위와 다른 우선순위를 암묵적으로 형성할 수 있기 때문에 추가적인 문제를 발생시킨다. 처리량(Throughput)에 강한 보상을 받는 정책은 시간이 지나면서 속도를 의도된 것보다 더 중요하게 취급하는 행동을 보일 수 있다. 따라서 평가는 단순한 작업 성공뿐만 아니라 실제로 관찰되는 절충 관계를 검토해야 한다. 학습된 행동이 안전, 권한, 임무 목적, 선호 사이의 의도된 계층을 유지하는지를 확인해야 한다.
+
+다중 로봇 시스템(Multi-Robot Systems)은 계층적 목표를 개별 수준과 집단 수준으로 확장한다. 플릿(Fleet)은 공동 임무를 수행하면서 개별 로봇에 지역적 작업을 할당하고, 각각의 로봇은 자신의 하위 목표를 생성할 수 있다. 국소 최적화는 혼잡, 중복 작업, 자원 경쟁 또는 이기적인 경로 선택을 통해 플릿의 우선순위와 충돌할 수 있다. 플릿 수준 정렬(Fleet-Level Alignment)은 신속한 물리적 대응을 위한 적절한 지역 자율성(Local Autonomy)을 유지하면서 공유 우선순위와 협조 메커니즘(Coordination Mechanisms)을 필요로 한다.
+
+궁극적으로 계층적 목표와 우선순위 관리(Hierarchical Goals and Priority Management)는 광범위한 인간 의도와 세부적인 물리적 실행을 연결하는 구조를 제공한다. 정렬을 위해서는 생성된 모든 목표가 정당한 상위 수준의 목적에 종속되고, 충돌이 안전, 권한, 상황, 결과에 따라 해결되며, 조건 변화에 따라 우선순위를 수정할 수 있어야 한다. 최종 목표는 국소 지능(Local Intelligence)이 임무에 의미를 부여하는 계층 구조를 잃지 않으면서 전체 임무를 발전시키는 일관된 자율성(Coherent Autonomy)을 구현하는 것이다.
+
+##  
+
+## 04.08. Ambiguous and Conflicting Instructions
+
+![](images/image8.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Ambiguous instructions arise when a Physical AI system cannot determine a single reliable interpretation of what a human wants. Commands such as "put it over there," "move closer," or "handle this carefully" depend on missing references, unstated constraints, and situational knowledge. Because interpretation ultimately produces physical action, ambiguity must be treated as operational uncertainty rather than merely a language-processing problem.
+
+Ambiguity can occur at several levels of an instruction. The robot may be uncertain about the referenced object, destination, desired action, timing, degree of completion, or constraints governing execution. Even when individual words are understood, their combination may permit several plausible meanings. Reliable alignment therefore requires identifying which parts of an instruction are uncertain before committing the robot to a physical plan.
+
+Context can resolve many ambiguous instructions by connecting language with perception, spatial relationships, task history, dialogue, and current activity. If a user says "bring that container," gaze direction, proximity, previous conversation, and visible objects may identify the intended target. However, contextual inference should not be treated as certainty when several interpretations remain plausible or when selecting the wrong interpretation could produce significant consequences.
+
+Conflicting instructions create a different but related problem. Conflict occurs when two or more instructions cannot be satisfied simultaneously or when satisfying one would violate another requirement. A robot may be told to complete a delivery immediately while another instruction requires it to stop for inspection. Conflict can also occur between human commands, organizational policies, safety constraints, mission objectives, and automatically generated subgoals.
+
+Not every apparent conflict has equal importance. Some conflicts involve preferences that can be negotiated, such as choosing between shorter travel time and lower energy consumption. Others involve mandatory constraints, such as a command to enter an unauthorized area or continue moving despite an emergency stop condition. Physical AI must classify the nature of the conflict before deciding whether optimization, prioritization, clarification, refusal, or immediate safe action is appropriate.
+
+Authority is fundamental when instructions originate from different sources. Operators, supervisors, maintenance personnel, fleet managers, users, and autonomous planning modules may issue requests with different levels of legitimacy. The most recent instruction should not automatically override an earlier one merely because it arrived later. The system needs an authority model that determines who is permitted to create, modify, suspend, or cancel particular goals.
+
+Priority must be considered separately from authority. Two instructions from equally authorized sources may still have different urgency or mission importance. An emergency evacuation command may legitimately interrupt routine inspection, while a low-priority convenience request should not disrupt a safety-critical task. Instruction arbitration therefore requires reasoning about authority, priority, urgency, dependencies, and consequences rather than relying on a simple first-in or last-in rule.
+
+Safety constraints should normally bound the resolution process rather than compete as ordinary instructions. If a human requests an action that exceeds force limits, violates collision protection, or requires unsafe entry into a hazardous condition, the robot should not simply balance safety against task reward. Mandatory safety requirements define the admissible action space within which legitimate instructions can be interpreted and executed.
+
+Uncertainty provides an important signal for determining how much autonomous authority should be exercised. When the robot is highly confident that several interpretations lead to equivalent low-risk outcomes, conservative execution may be reasonable. When confidence is low and possible interpretations imply substantially different actions, the system should delay commitment, gather more information, or request clarification before creating irreversible physical consequences.
+
+Clarification should be targeted rather than unnecessarily broad. Instead of asking a human to repeat an entire instruction, the robot can identify the unresolved element and ask which object, location, timing condition, or priority was intended. Efficient clarification reduces interaction burden while preserving safety. The system should also retain confirmed information so that resolving one ambiguity does not cause previously established parts of the task to be forgotten.
+
+Physical AI can also use active perception to reduce ambiguity. A robot may reposition a camera, approach to obtain a better view, inspect an object label, update localization, or acquire additional sensor measurements before asking a human. Such information-gathering actions should themselves remain safe and authorized. Active perception turns uncertainty reduction into part of planning rather than assuming that all required information must already be available.
+
+Some conflicts can be resolved automatically through hierarchical goals and explicit policy. A fleet-level emergency objective may suspend local delivery goals, while access-control rules may reject an unauthorized navigation request. Automatic arbitration is appropriate when the hierarchy and applicable rules are clear. When authority, intent, or consequences remain uncertain, escalation to human oversight is preferable to silently selecting a convenient interpretation.
+
+Temporal changes can transform valid instructions into conflicting ones. A command may have been appropriate when issued but become incompatible with new conditions when a hazard appears, a route closes, equipment fails, or mission priorities change. The robot must therefore evaluate instructions against current context throughout execution rather than assuming that authorization at the beginning of a task remains permanently valid.
+
+Instruction conflicts may also arise from goal decomposition. A planner can generate subgoals that were not explicitly requested, such as moving an obstacle, opening a door, repositioning equipment, or waiting in a shared area. These subgoals may conflict with permissions or other active tasks. Generated objectives must therefore inherit the constraints and authority boundaries of their parent goals and remain subject to continuous validation.
+
+World models can support conflict resolution by predicting the consequences of alternative interpretations and priorities. The robot can estimate what may happen if it continues the current task, follows a new instruction, delays execution, or selects a conservative alternative. Prediction helps compare consequences before physical commitment, but uncertainty in the world model must prevent speculative benefits from overriding established safety and authority constraints.
+
+Human oversight is especially important when conflicts involve values, unusual circumstances, or incomplete policies. The robot should make the relevant instructions, constraints, and reason for conflict understandable to an authorized operator. Humans can then clarify intent, establish priority, authorize exceptions where permitted, or cancel objectives. The system should incorporate the decision consistently across all dependent plans and subgoals.
+
+Corrigibility ensures that conflict resolution remains reversible when new information becomes available. A robot should accept correction after beginning a task, abandon an obsolete interpretation, and safely transition to a revised objective. It should not defend its previous decision simply because resources have already been invested. Safe interruption, replanning, goal cancellation, and restoration of suspended tasks are therefore essential alignment capabilities.
+
+Multi-robot systems introduce distributed ambiguity and conflict. Different robots may receive overlapping assignments, inconsistent local instructions, or competing claims on shared resources. A command that appears valid to one robot may conflict with fleet-level priorities known elsewhere. Shared mission state, authority information, resource reservations, and conflict-resolution protocols are needed so that local instruction following does not undermine collective objectives.
+
+Evaluation should deliberately expose Physical AI to incomplete references, contradictory commands, changing priorities, uncertain authority, delayed instructions, and conflicts between task objectives and mandatory constraints. Success should not be measured only by whether the robot eventually completes a task. Evaluation must determine whether it detects ambiguity, preserves safety, seeks clarification appropriately, respects authority, and transitions coherently when instructions change.
+
+Ultimately, handling ambiguous and conflicting instructions requires Physical AI to recognize that uncertainty and disagreement are normal parts of human-directed autonomy. The correct response is not always immediate execution. Reliable alignment combines contextual interpretation, confidence estimation, authority and priority reasoning, constraint enforcement, clarification, prediction, human oversight, and replanning so that physical actions remain faithful to legitimate human intent even when instructions are incomplete or inconsistent.
+
+모호한 지시(Ambiguous Instructions)는 물리 AI(Physical AI) 시스템이 인간이 원하는 바에 대해 하나의 신뢰할 수 있는 해석을 결정할 수 없을 때 발생한다. "저기에 놓아라", "더 가까이 이동하라", "이것을 조심스럽게 다뤄라"와 같은 명령은 누락된 참조 정보, 명시되지 않은 제약조건, 상황적 지식에 의존한다. 해석은 궁극적으로 물리적 행동으로 이어지므로 모호성(Ambiguity)은 단순한 언어 처리 문제가 아니라 운영상의 불확실성(Operational Uncertainty)으로 다루어져야 한다.
+
+모호성은 하나의 지시 안에서도 여러 수준에서 발생할 수 있다. 로봇은 참조된 객체, 목적지, 원하는 행동, 실행 시점, 완료 수준 또는 실행을 통제하는 제약조건에 대해 불확실할 수 있다. 개별 단어를 이해하더라도 이들의 조합이 여러 가지 타당한 의미를 허용할 수 있다. 따라서 신뢰할 수 있는 정렬(Alignment)을 위해서는 로봇을 물리적 계획에 투입하기 전에 지시의 어떤 부분이 불확실한지를 식별해야 한다.
+
+상황(Context)은 언어를 인식(Perception), 공간적 관계, 작업 이력(Task History), 대화(Dialogue), 현재 활동과 연결함으로써 많은 모호한 지시를 해결할 수 있다. 사용자가 "저 컨테이너를 가져와"라고 말한다면 시선 방향, 근접성, 이전 대화, 관측 가능한 객체를 이용해 의도된 대상을 식별할 수 있다. 그러나 여러 해석이 여전히 가능하거나 잘못된 해석의 선택이 중대한 결과를 초래할 수 있다면 상황적 추론(Contextual Inference)을 확실한 사실로 간주해서는 안 된다.
+
+상충하는 지시(Conflicting Instructions)는 서로 관련되어 있지만 다른 유형의 문제를 발생시킨다. 둘 이상의 지시를 동시에 충족할 수 없거나 하나의 지시를 충족하는 것이 다른 요구사항을 위반할 때 충돌(Conflict)이 발생한다. 예를 들어 로봇은 즉시 배송을 완료하라는 지시를 받으면서 동시에 검사를 위해 정지하라는 다른 지시를 받을 수 있다. 인간의 명령, 조직 정책, 안전 제약조건, 임무 목적, 자동으로 생성된 하위 목표 사이에서도 충돌이 발생할 수 있다.
+
+겉보기에 나타나는 모든 충돌이 동일한 중요도를 갖는 것은 아니다. 일부 충돌은 짧은 이동 시간과 낮은 에너지 소비 중 하나를 선택하는 것처럼 협상 가능한 선호(Preferences)와 관련된다. 다른 충돌은 권한이 없는 구역에 진입하라는 명령이나 비상 정지 조건에도 계속 이동하라는 명령처럼 필수 제약조건(Mandatory Constraints)과 관련된다. 따라서 물리 AI는 최적화, 우선순위 결정, 명확화, 거부 또는 즉각적인 안전 행동 가운데 무엇이 적절한지를 결정하기 전에 충돌의 성격을 분류해야 한다.
+
+서로 다른 출처에서 지시가 발생할 때 권한(Authority)은 근본적으로 중요하다. 운영자, 감독자, 유지보수 담당자, 플릿 관리자(Fleet Manager), 사용자, 자율 계획 모듈(Autonomous Planning Modules)은 서로 다른 수준의 정당성을 가진 요청을 생성할 수 있다. 가장 최근에 도착한 지시가 단지 나중에 도착했다는 이유만으로 이전 지시를 자동으로 무효화해서는 안 된다. 시스템에는 특정 목표를 누가 생성, 수정, 일시 중단 또는 취소할 수 있는지를 결정하는 권한 모델(Authority Model)이 필요하다.
+
+우선순위(Priority)는 권한과 별도로 고려해야 한다. 동일한 권한을 가진 출처에서 생성된 두 개의 지시도 서로 다른 긴급성이나 임무 중요도를 가질 수 있다. 비상 대피 명령(Emergency Evacuation Command)은 정기 검사를 정당하게 중단시킬 수 있지만, 낮은 우선순위의 편의성 요청이 안전 필수 작업(Safety-Critical Task)을 방해해서는 안 된다. 따라서 지시 중재(Instruction Arbitration)는 단순한 선입선출 또는 후입우선 규칙이 아니라 권한, 우선순위, 긴급성, 의존성, 결과를 함께 고려하는 추론을 필요로 한다.
+
+안전 제약조건(Safety Constraints)은 일반적인 지시처럼 경쟁하기보다는 충돌 해결 과정의 경계를 정의해야 한다. 인간이 힘 제한(Force Limits)을 초과하거나, 충돌 방지 기능을 위반하거나, 위험한 조건에 안전하지 않게 진입해야 하는 행동을 요청한다면 로봇은 안전과 작업 보상(Task Reward)을 단순히 비교해서는 안 된다. 필수 안전 요구사항(Mandatory Safety Requirements)은 정당한 지시를 해석하고 실행할 수 있는 허용 가능한 행동 공간(Admissible Action Space)을 정의한다.
+
+불확실성(Uncertainty)은 어느 정도의 자율적 권한을 행사해야 하는지를 결정하는 중요한 신호를 제공한다. 여러 해석이 동일한 저위험 결과로 이어진다는 확신이 높은 경우에는 보수적 실행(Conservative Execution)이 합리적일 수 있다. 반면 신뢰도가 낮고 가능한 해석들이 상당히 다른 행동을 의미한다면 시스템은 되돌릴 수 없는 물리적 결과를 발생시키기 전에 실행을 지연하고, 추가 정보를 수집하거나, 명확화(Clarification)를 요청해야 한다.
+
+명확화는 불필요하게 광범위하기보다 목표 지향적(Targeted)이어야 한다. 인간에게 전체 지시를 다시 말하도록 요청하는 대신 로봇은 해결되지 않은 요소를 식별하여 어떤 객체, 위치, 시간 조건 또는 우선순위를 의미했는지 질문할 수 있다. 효율적인 명확화(Efficient Clarification)는 안전을 유지하면서 상호작용 부담을 감소시킨다. 또한 하나의 모호성을 해결하는 과정에서 이미 확정된 작업 정보가 사라지지 않도록 확인된 정보를 유지해야 한다.
+
+물리 AI는 모호성을 줄이기 위해 능동적 인식(Active Perception)을 사용할 수도 있다. 로봇은 인간에게 질문하기 전에 카메라의 위치를 변경하거나, 더 나은 시야를 확보하기 위해 접근하거나, 객체 라벨을 확인하거나, 위치 추정을 갱신하거나, 추가적인 센서 측정값을 획득할 수 있다. 이러한 정보 수집 행동(Information-Gathering Actions) 자체도 안전하고 권한이 부여된 범위 내에서 수행되어야 한다. 능동적 인식은 필요한 모든 정보가 이미 존재한다고 가정하는 대신 불확실성 감소를 계획의 일부로 만든다.
+
+일부 충돌은 계층적 목표(Hierarchical Goals)와 명시적인 정책을 통해 자동으로 해결할 수 있다. 플릿 수준 비상 목적(Fleet-Level Emergency Objective)은 개별 배송 목표를 일시 중단시킬 수 있으며, 접근 제어 규칙(Access-Control Rules)은 권한이 없는 내비게이션 요청을 거부할 수 있다. 계층 구조와 적용 가능한 규칙이 명확하다면 자동 중재(Automatic Arbitration)가 적절하다. 반면 권한, 의도 또는 결과가 여전히 불확실하다면 편리한 해석을 임의로 선택하는 것보다 인간 감독(Human Oversight)으로 에스컬레이션(Escalation)하는 것이 바람직하다.
+
+시간적 변화(Temporal Changes)는 이전에 유효했던 지시를 상충하는 지시로 변화시킬 수 있다. 지시가 처음 내려졌을 때에는 적절했더라도 위험이 발생하거나, 경로가 폐쇄되거나, 장비가 고장 나거나, 임무 우선순위가 변경되면 새로운 조건과 양립할 수 없게 될 수 있다. 따라서 로봇은 작업 시작 시 부여된 권한이 영구적으로 유효하다고 가정하지 않고 실행 전체 과정에서 현재 상황을 기준으로 지시의 유효성을 지속적으로 평가해야 한다.
+
+지시 충돌은 목표 분해(Goal Decomposition) 과정에서도 발생할 수 있다. 계획기(Planner)는 장애물 이동, 문 열기, 장비 재배치 또는 공유 영역에서 대기하기처럼 명시적으로 요청되지 않은 하위 목표(Subgoals)를 생성할 수 있다. 이러한 하위 목표는 권한이나 다른 활성 작업과 충돌할 수 있다. 따라서 생성된 목적은 상위 목표(Parent Goals)의 제약조건과 권한 경계를 상속해야 하며 지속적인 검증(Continuous Validation)의 대상이 되어야 한다.
+
+월드 모델(World Models)은 서로 다른 해석과 우선순위가 가져올 결과를 예측함으로써 충돌 해결을 지원할 수 있다. 로봇은 현재 작업을 계속하거나, 새로운 지시를 따르거나, 실행을 지연하거나, 보수적인 대안을 선택했을 때 발생할 수 있는 결과를 추정할 수 있다. 예측(Prediction)은 물리적 행동을 확정하기 전에 결과를 비교하는 데 도움을 주지만, 월드 모델의 불확실성 때문에 추측적인 이익이 확립된 안전 및 권한 제약조건을 넘어서는 일이 없어야 한다.
+
+인간 감독(Human Oversight)은 충돌이 가치, 비정상적인 상황 또는 불완전한 정책과 관련될 때 특히 중요하다. 로봇은 관련된 지시와 제약조건, 그리고 충돌이 발생한 이유를 권한 있는 운영자가 이해할 수 있도록 제공해야 한다. 인간은 이를 바탕으로 의도를 명확하게 하고, 우선순위를 설정하며, 허용되는 범위에서 예외를 승인하거나, 목표를 취소할 수 있다. 시스템은 이러한 결정을 모든 관련 계획과 하위 목표에 일관되게 반영해야 한다.
+
+교정 가능성(Corrigibility)은 새로운 정보가 확보되었을 때 충돌 해결 결과를 수정할 수 있도록 보장한다. 로봇은 작업을 시작한 이후에도 교정을 받아들이고, 더 이상 유효하지 않은 해석을 폐기하며, 수정된 목표로 안전하게 전환할 수 있어야 한다. 이미 자원이 투입되었다는 이유만으로 기존 결정을 고수해서는 안 된다. 따라서 안전한 중단(Safe Interruption), 재계획(Replanning), 목표 취소(Goal Cancellation), 일시 중단된 작업의 복원(Restoration)은 필수적인 정렬 능력이다.
+
+다중 로봇 시스템(Multi-Robot Systems)은 분산된 모호성과 충돌(Distributed Ambiguity and Conflict)을 발생시킨다. 서로 다른 로봇이 중복된 작업 할당, 일관되지 않은 지역적 지시 또는 공유 자원에 대한 경쟁적인 요구를 받을 수 있다. 한 로봇에게 유효해 보이는 명령이 다른 곳에서 관리되는 플릿 수준 우선순위(Fleet-Level Priorities)와 충돌할 수 있다. 따라서 지역적 지시 수행이 집단적 목표(Collective Objectives)를 훼손하지 않도록 공유 임무 상태(Shared Mission State), 권한 정보, 자원 예약(Resource Reservations), 충돌 해결 프로토콜(Conflict-Resolution Protocols)이 필요하다.
+
+평가(Evaluation)는 물리 AI를 불완전한 참조, 모순되는 명령, 변화하는 우선순위, 불확실한 권한, 지연된 지시, 작업 목적과 필수 제약조건 사이의 충돌에 의도적으로 노출시켜야 한다. 성공 여부는 로봇이 결국 작업을 완료했는지만으로 평가해서는 안 된다. 시스템이 모호성을 탐지하고, 안전을 유지하며, 적절하게 명확화를 요청하고, 권한을 준수하며, 지시가 변경될 때 일관성 있게 전환하는지를 평가해야 한다.
+
+궁극적으로 모호하고 상충하는 지시(Ambiguous and Conflicting Instructions)를 처리하려면 물리 AI가 불확실성과 의견 불일치가 인간 주도 자율성(Human-Directed Autonomy)의 정상적인 일부임을 인식해야 한다. 올바른 대응이 항상 즉각적인 실행인 것은 아니다. 신뢰할 수 있는 정렬은 상황적 해석(Contextual Interpretation), 신뢰도 추정(Confidence Estimation), 권한 및 우선순위 추론(Authority and Priority Reasoning), 제약조건 적용(Constraint Enforcement), 명확화, 예측, 인간 감독, 재계획을 결합하여 지시가 불완전하거나 서로 일치하지 않는 상황에서도 물리적 행동이 정당한 인간 의도(Legitimate Human Intent)에 충실하도록 유지하는 것이다.
+
+##  
+
+## 04.09. Human Oversight and Intervention
+
+![](images/image9.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Human oversight is the capability for authorized people to observe, understand, supervise, and influence the behavior of a Physical AI system throughout its operation. Because autonomous robots act directly in the physical world, errors can create consequences that cannot always be reversed through software correction. Oversight therefore provides a governance and safety layer connecting autonomous decision making with continuing human authority.
+
+Oversight should not be understood simply as a human watching every robot action. Effective autonomy requires different degrees of supervision according to task complexity, uncertainty, risk, and system capability. Routine low-risk operations may proceed independently, while unusual or safety-critical situations may require human review. The objective is meaningful human control rather than continuous manual involvement that eliminates the benefits of autonomy.
+
+Human-in-the-loop operation places human approval directly inside the decision process. The robot may perceive the environment, generate alternatives, and recommend a plan, but execution of consequential actions requires explicit authorization. This approach is useful when actions involve significant uncertainty, sensitive environments, irreversible consequences, or decisions for which autonomous authority has intentionally been limited.
+
+Human-on-the-loop supervision allows the robot to execute autonomously while a person monitors its behavior and retains the ability to intervene. This arrangement is appropriate when frequent decisions must occur faster than continuous human approval would permit. Effective supervision nevertheless requires the robot to expose meaningful state, goals, risks, and anomalies so that the operator can recognize when intervention is necessary.
+
+Human-out-of-the-loop operation may be appropriate for bounded actions whose risks are well understood and controlled through reliable constraints. Even in such cases, the absence of immediate supervision should not imply unlimited autonomy. Operational boundaries, safety mechanisms, logging, access control, and predefined responses to abnormal conditions should continue to restrict behavior and determine when the system must stop or request assistance.
+
+Intervention mechanisms must provide more than an emergency stop. Humans may need to pause execution, reduce autonomy, modify a target, correct an interpretation, change priorities, impose additional constraints, request replanning, or cancel a mission. Different intervention levels allow operators to correct developing problems without unnecessarily terminating the entire task when a safe and controlled adjustment is sufficient.
+
+Emergency intervention remains a distinct capability because some situations require immediate physical risk reduction rather than deliberative replanning. Emergency-stop functions, protective stops, motion inhibition, force limits, and safe-state transitions should operate with sufficiently independent authority to constrain higher-level AI behavior. A learned policy or planner should not be able to override mechanisms specifically designed to prevent unacceptable physical consequences.
+
+Intervention must also be timely. A technically available control mechanism provides little protection if an operator cannot understand the problem or act before the robot reaches an unsafe state. Physical AI should therefore detect conditions that may require human attention early enough to preserve intervention time. Prediction, risk estimation, and uncertainty monitoring can help initiate escalation before a situation becomes an immediate emergency.
+
+Escalation connects autonomous operation with human oversight. When uncertainty, risk, conflict, or system degradation exceeds defined thresholds, the robot can transition from independent execution toward increased supervision. It may slow down, enter a safe waiting state, present alternatives, request authorization, or transfer control. Escalation policies should reflect the severity and reversibility of potential consequences rather than relying on one universal threshold.
+
+Operators require situation awareness to intervene effectively. Interfaces should communicate what the robot believes is happening, what goal it is pursuing, what action it intends to perform, and why intervention may be needed. Raw sensor streams alone may overwhelm the operator. Useful oversight therefore depends on presenting relevant state, confidence, constraints, alerts, and predicted consequences in forms that support rapid and accurate human judgment.
+
+Transparency supports oversight by making important autonomous decisions understandable. The system should provide enough information to identify the active goal, relevant constraints, significant uncertainty, and reasons for unusual behavior. Complete exposure of internal model computation is neither necessary nor always useful. What matters is operational explainability that allows authorized humans to determine whether the robot remains within its intended mission and authority.
+
+Human attention itself is a limited resource. One operator may supervise multiple robots, making continuous detailed monitoring impossible. Physical AI should therefore prioritize alerts according to urgency and consequence, suppress redundant notifications, and distinguish situations requiring immediate action from those that can be reviewed later. Poorly designed alerting can create alarm fatigue and reduce the effectiveness of human oversight precisely when it is most needed.
+
+Authority management determines who is permitted to intervene and what changes they may make. An operator may be authorized to modify task priorities, while a maintenance technician may control diagnostic or recovery functions and a supervisor may authorize exceptional mission changes. Role-based permissions prevent arbitrary intervention while ensuring that legitimate human authority can override autonomous decisions when required.
+
+Human intervention should itself remain subject to safety boundaries. An authorized user may make a mistaken request, misunderstand the situation, or attempt an action that exceeds physical limits. Oversight should therefore not mean that every human command bypasses all safeguards. Fundamental collision protection, actuator limits, emergency protections, and other mandatory constraints should remain effective even when the system is operating under direct human direction.
+
+Corrigibility is closely related to oversight because an aligned robot must accept legitimate correction without resisting it. If a human changes a target, cancels a task, or identifies an incorrect assumption, the system should update its active objectives and safely transition away from the obsolete plan. It should not continue pursuing an outdated goal merely because that goal was previously selected or because resources have already been committed.
+
+Intervention also requires predictable transitions between autonomy levels. Switching from autonomous navigation to teleoperation, from normal operation to safe waiting, or from emergency stop to recovery can introduce new hazards if state is not synchronized. The robot should preserve relevant mission information, clearly indicate control ownership, and ensure that motion resumes only when required conditions and permissions have been restored.
+
+Logging and traceability strengthen oversight beyond real-time operation. Records of instructions, goals, plans, interventions, safety events, state transitions, and important model outputs allow later analysis of why the robot behaved as it did. Such records support incident investigation, policy improvement, validation, and learning while helping organizations distinguish failures of perception, planning, control, supervision, or operational procedure.
+
+Learning from intervention can improve future autonomy. Human corrections may reveal ambiguous instructions, poor plans, inappropriate preferences, or previously unknown situations. These examples can inform model updates, policy refinement, or new constraints. However, individual interventions should not automatically become permanent learned rules, because emergency actions or context-specific corrections may be inappropriate when generalized to other environments.
+
+Multi-robot systems make oversight more challenging because operators must understand both individual and collective behavior. Intervention on one robot may affect task allocation, traffic flow, shared resources, or fleet priorities. Fleet supervision should therefore propagate relevant changes through coordination mechanisms while allowing local safety controllers to respond immediately to physical hazards without waiting for centralized human decisions.
+
+Oversight effectiveness should be evaluated under realistic workload and failure conditions. Testing should examine whether operators notice critical events, understand robot state, intervene within available time, recover safely, and manage multiple simultaneous alerts. Evaluation should also examine automation bias, excessive reliance on human monitoring, confusing interfaces, and situations in which nominally available oversight cannot realistically prevent harmful behavior.
+
+Ultimately, human oversight and intervention preserve human authority over autonomous Physical AI without requiring humans to manually control every action. Effective oversight combines bounded autonomy, meaningful transparency, risk-based escalation, reliable intervention, corrigibility, authority management, safe control transitions, and traceability. The goal is an autonomous system that can act independently when appropriate while remaining observable, interruptible, correctable, and governable when human judgment is required.
+
+인간 감독(Human Oversight)은 권한을 가진 사람이 물리 AI(Physical AI) 시스템의 운영 전반에 걸쳐 행동을 관찰하고, 이해하고, 감독하며, 영향을 미칠 수 있는 능력을 의미한다. 자율 로봇(Autonomous Robots)은 물리 세계에서 직접 행동하기 때문에 오류가 발생하면 소프트웨어 수정만으로 항상 되돌릴 수 없는 결과가 발생할 수 있다. 따라서 감독은 자율적 의사결정(Autonomous Decision Making)과 지속적인 인간의 권한(Human Authority)을 연결하는 거버넌스 및 안전 계층(Governance and Safety Layer)을 제공한다.
+
+감독(Oversight)은 단순히 인간이 로봇의 모든 행동을 지켜보는 것으로 이해해서는 안 된다. 효과적인 자율성(Effective Autonomy)을 위해서는 작업 복잡성, 불확실성, 위험, 시스템 능력에 따라 서로 다른 수준의 감독이 필요하다. 일상적인 저위험 작업은 독립적으로 수행될 수 있지만, 비정상적이거나 안전이 중요한 상황에서는 인간의 검토가 필요할 수 있다. 목표는 자율성의 이점을 제거하는 지속적인 수동 개입이 아니라 의미 있는 인간 통제(Meaningful Human Control)를 구현하는 것이다.
+
+인간 참여형(Human-in-the-Loop) 운영은 인간의 승인을 의사결정 과정에 직접 포함한다. 로봇은 환경을 인식하고, 대안을 생성하고, 계획을 제안할 수 있지만 중대한 결과를 초래할 수 있는 행동의 실행에는 명시적인 승인(Explicit Authorization)이 필요하다. 이러한 방식은 상당한 불확실성, 민감한 환경, 되돌릴 수 없는 결과가 존재하거나 자율적 권한이 의도적으로 제한된 의사결정에 유용하다.
+
+인간 감독형(Human-on-the-Loop) 운영에서는 로봇이 자율적으로 실행하는 동안 사람이 행동을 모니터링하고 필요할 때 개입할 수 있는 권한을 유지한다. 이러한 방식은 지속적인 인간 승인을 기다리기에는 너무 빠르고 빈번한 의사결정이 필요한 경우에 적합하다. 그러나 효과적인 감독을 위해서는 운영자가 언제 개입해야 하는지를 판단할 수 있도록 로봇이 의미 있는 상태, 목표, 위험, 이상 상황(Anomalies)을 제공해야 한다.
+
+인간 비개입형(Human-out-of-the-Loop) 운영은 위험이 충분히 이해되고 신뢰할 수 있는 제약조건을 통해 통제되는 제한된 행동(Bounded Actions)에 적합할 수 있다. 이러한 경우에도 즉각적인 감독의 부재가 무제한적인 자율성(Unlimited Autonomy)을 의미해서는 안 된다. 운영 경계(Operational Boundaries), 안전 메커니즘, 로그 기록(Logging), 접근 제어(Access Control), 비정상 조건에 대한 사전 정의된 대응이 지속적으로 행동을 제한하고 시스템이 언제 정지하거나 지원을 요청해야 하는지를 결정해야 한다.
+
+개입 메커니즘(Intervention Mechanisms)은 단순한 비상 정지(Emergency Stop) 이상의 기능을 제공해야 한다. 인간은 실행을 일시 중지하고, 자율성 수준을 낮추고, 목표 대상을 수정하고, 해석을 교정하고, 우선순위를 변경하고, 추가적인 제약조건을 부과하고, 재계획(Replanning)을 요청하거나, 임무를 취소해야 할 수 있다. 다양한 개입 수준을 제공하면 안전하고 통제된 조정만으로 충분한 경우 전체 작업을 불필요하게 종료하지 않고도 진행 중인 문제를 수정할 수 있다.
+
+비상 개입(Emergency Intervention)은 일부 상황에서 숙고를 통한 재계획보다 즉각적인 물리적 위험 감소가 필요하기 때문에 별도의 능력으로 유지되어야 한다. 비상 정지 기능, 보호 정지(Protective Stops), 동작 억제(Motion Inhibition), 힘 제한(Force Limits), 안전 상태 전환(Safe-State Transitions)은 상위 수준 AI 행동을 제한할 수 있을 만큼 충분히 독립적인 권한을 가지고 작동해야 한다. 학습된 정책(Learned Policy)이나 계획기(Planner)가 허용할 수 없는 물리적 결과를 방지하기 위해 특별히 설계된 메커니즘을 무효화할 수 있어서는 안 된다.
+
+개입은 적시에 이루어질 수 있어야 한다. 기술적으로 사용 가능한 제어 메커니즘이 존재하더라도 운영자가 문제를 이해하거나 로봇이 안전하지 않은 상태에 도달하기 전에 행동할 수 없다면 충분한 보호 기능을 제공하지 못한다. 따라서 물리 AI는 인간의 주의가 필요할 수 있는 조건을 충분히 일찍 탐지하여 개입 시간(Intervention Time)을 확보해야 한다. 예측(Prediction), 위험 추정(Risk Estimation), 불확실성 모니터링(Uncertainty Monitoring)은 상황이 즉각적인 비상 상태로 발전하기 전에 에스컬레이션(Escalation)을 시작하는 데 도움을 줄 수 있다.
+
+에스컬레이션(Escalation)은 자율 운영과 인간 감독을 연결한다. 불확실성, 위험, 충돌 또는 시스템 성능 저하(System Degradation)가 정의된 임계값을 초과하면 로봇은 독립적인 실행에서 더 높은 수준의 감독으로 전환할 수 있다. 로봇은 속도를 줄이고, 안전 대기 상태(Safe Waiting State)에 진입하고, 대안을 제시하고, 승인을 요청하거나, 제어권을 이전할 수 있다. 에스컬레이션 정책은 하나의 보편적인 임계값에 의존하기보다 잠재적 결과의 심각성과 가역성(Reversibility)을 반영해야 한다.
+
+운영자가 효과적으로 개입하려면 상황 인식(Situation Awareness)이 필요하다. 인터페이스는 로봇이 현재 상황을 어떻게 이해하고 있는지, 어떤 목표를 추구하는지, 어떤 행동을 수행하려 하는지, 왜 개입이 필요할 수 있는지를 전달해야 한다. 원시 센서 스트림(Raw Sensor Streams)만 제공하면 운영자에게 과도한 부담을 줄 수 있다. 따라서 유용한 감독은 신속하고 정확한 인간 판단을 지원할 수 있도록 관련 상태, 신뢰도, 제약조건, 경고, 예상 결과를 적절한 형태로 제공하는 데 달려 있다.
+
+투명성(Transparency)은 중요한 자율 의사결정을 이해할 수 있도록 함으로써 감독을 지원한다. 시스템은 활성 목표(Active Goal), 관련 제약조건, 중요한 불확실성, 비정상적인 행동의 이유를 파악할 수 있을 정도의 정보를 제공해야 한다. 내부 모델의 모든 계산 과정을 완전히 공개하는 것은 필요하지 않으며 항상 유용한 것도 아니다. 중요한 것은 권한 있는 사람이 로봇이 의도된 임무와 권한 범위 내에 있는지를 판단할 수 있도록 하는 운영적 설명 가능성(Operational Explainability)이다.
+
+인간의 주의(Human Attention) 자체도 제한된 자원이다. 한 명의 운영자가 여러 로봇을 감독할 수 있기 때문에 지속적이고 세부적인 모니터링은 현실적으로 불가능할 수 있다. 따라서 물리 AI는 긴급성과 결과의 심각성에 따라 경고의 우선순위를 결정하고, 중복된 알림을 억제하며, 즉각적인 조치가 필요한 상황과 나중에 검토할 수 있는 상황을 구분해야 한다. 잘못 설계된 경고 시스템은 경보 피로(Alert Fatigue)를 발생시켜 인간 감독이 가장 필요한 순간에 오히려 그 효과를 감소시킬 수 있다.
+
+권한 관리(Authority Management)는 누가 개입할 수 있으며 어떤 변경을 수행할 수 있는지를 결정한다. 운영자는 작업 우선순위를 수정할 권한을 가질 수 있고, 유지보수 기술자는 진단 또는 복구 기능을 제어할 수 있으며, 감독자는 예외적인 임무 변경을 승인할 수 있다. 역할 기반 권한(Role-Based Permissions)은 임의적인 개입을 방지하는 동시에 필요한 상황에서 정당한 인간의 권한이 자율적 의사결정을 무효화하거나 수정할 수 있도록 보장한다.
+
+인간의 개입 자체도 안전 경계(Safety Boundaries)의 적용을 받아야 한다. 권한 있는 사용자도 잘못된 요청을 하거나, 상황을 잘못 이해하거나, 물리적 한계를 초과하는 행동을 시도할 수 있다. 따라서 감독은 모든 인간 명령이 모든 안전장치를 우회한다는 의미가 되어서는 안 된다. 기본적인 충돌 보호(Collision Protection), 액추에이터 한계(Actuator Limits), 비상 보호 기능, 기타 필수 제약조건은 시스템이 인간의 직접적인 지시에 따라 운영되는 경우에도 계속 유효해야 한다.
+
+교정 가능성(Corrigibility)은 정렬된 로봇이 정당한 교정을 거부하지 않고 받아들여야 한다는 점에서 인간 감독과 밀접하게 관련된다. 인간이 목표 대상을 변경하거나, 작업을 취소하거나, 잘못된 가정을 지적하면 시스템은 활성 목표를 갱신하고 더 이상 유효하지 않은 계획에서 안전하게 전환해야 한다. 이전에 해당 목표가 선택되었거나 이미 자원이 투입되었다는 이유만으로 오래된 목표를 계속 추구해서는 안 된다.
+
+개입은 자율성 수준(Autonomy Levels) 사이의 예측 가능한 전환도 필요로 한다. 자율 내비게이션에서 원격조작(Teleoperation)으로 전환하거나, 정상 운영에서 안전 대기 상태로 전환하거나, 비상 정지에서 복구(Recovery)로 전환할 때 시스템 상태가 동기화되지 않으면 새로운 위험이 발생할 수 있다. 로봇은 관련 임무 정보를 보존하고, 현재 제어권(Control Ownership)이 누구에게 있는지를 명확하게 표시하며, 필요한 조건과 권한이 복원된 이후에만 동작을 재개해야 한다.
+
+로그 기록 및 추적 가능성(Logging and Traceability)은 실시간 운영을 넘어 인간 감독을 강화한다. 지시, 목표, 계획, 개입, 안전 이벤트, 상태 전환, 중요한 모델 출력에 대한 기록은 로봇이 왜 특정 방식으로 행동했는지를 사후에 분석할 수 있게 한다. 이러한 기록은 사고 조사(Incident Investigation), 정책 개선, 검증(Validation), 학습을 지원하며 조직이 인식, 계획, 제어, 감독 또는 운영 절차 가운데 어디에서 문제가 발생했는지를 구분하는 데 도움을 준다.
+
+개입으로부터의 학습(Learning from Intervention)은 미래의 자율성을 향상시킬 수 있다. 인간의 교정은 모호한 지시, 잘못된 계획, 부적절한 선호 또는 이전에 알려지지 않았던 상황을 드러낼 수 있다. 이러한 사례는 모델 갱신(Model Updates), 정책 개선(Policy Refinement), 새로운 제약조건의 설계에 활용될 수 있다. 그러나 비상 행동이나 특정 상황에 한정된 교정은 다른 환경으로 일반화했을 때 부적절할 수 있으므로 개별 개입을 자동으로 영구적인 학습 규칙으로 변환해서는 안 된다.
+
+다중 로봇 시스템(Multi-Robot Systems)은 운영자가 개별 행동과 집단 행동(Collective Behavior)을 모두 이해해야 하기 때문에 감독을 더욱 어렵게 만든다. 하나의 로봇에 대한 개입이 작업 할당, 교통 흐름, 공유 자원 또는 플릿 우선순위(Fleet Priorities)에 영향을 미칠 수 있다. 따라서 플릿 감독(Fleet Supervision)은 관련 변경사항을 협조 메커니즘(Coordination Mechanisms)을 통해 전달하면서도 지역 안전 제어기(Local Safety Controllers)가 중앙 집중식 인간의 결정을 기다리지 않고 물리적 위험에 즉각 대응할 수 있도록 해야 한다.
+
+감독의 효과는 현실적인 작업 부하와 고장 조건에서 평가되어야 한다. 시험에서는 운영자가 중요한 이벤트를 인지하는지, 로봇 상태를 이해하는지, 사용 가능한 시간 내에 개입하는지, 안전하게 복구하는지, 여러 개의 동시 경고를 관리할 수 있는지를 확인해야 한다. 또한 자동화 편향(Automation Bias), 인간 모니터링에 대한 과도한 의존, 혼란스러운 인터페이스, 형식적으로는 감독 기능이 존재하지만 현실적으로는 유해한 행동을 방지할 수 없는 상황도 평가해야 한다.
+
+궁극적으로 인간 감독 및 개입(Human Oversight and Intervention)은 인간이 모든 행동을 직접 제어하지 않으면서도 자율 물리 AI에 대한 인간의 권한을 유지하도록 한다. 효과적인 감독은 경계가 설정된 자율성(Bounded Autonomy), 의미 있는 투명성, 위험 기반 에스컬레이션(Risk-Based Escalation), 신뢰할 수 있는 개입, 교정 가능성, 권한 관리, 안전한 제어 전환(Safe Control Transitions), 추적 가능성을 결합한다. 최종 목표는 적절한 상황에서는 독립적으로 행동하면서도 인간의 판단이 필요한 경우 관찰 가능하고(Observable), 중단 가능하며(Interruptible), 교정 가능하고(Correctable), 관리 가능한(Governable) 자율 시스템을 구현하는 것이다.
+
+##  
+
+## 04.10. Corrigibility and Interruptibility
+
+![](images/image10.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Corrigibility is the ability of a Physical AI system to accept legitimate human correction and modify its behavior without resisting, circumventing, or undermining that correction. Because autonomous robots operate under incomplete knowledge and changing conditions, their initial goals, plans, assumptions, or learned policies may become inappropriate. Alignment therefore requires systems that remain receptive to authorized changes throughout operation.
+
+Interruptibility is closely related but focuses specifically on the ability to pause, stop, suspend, or redirect autonomous behavior when necessary. A robot may need to be interrupted because of a newly detected hazard, an incorrect interpretation, equipment failure, changing mission priorities, or direct human intervention. Reliable interruptibility ensures that autonomous execution never becomes practically uncontrollable simply because a task has already begun.
+
+Corrigibility extends beyond responding to an emergency-stop command. Humans may need to correct an object reference, modify a destination, change a constraint, adjust a priority, cancel a subgoal, or replace an entire mission. The robot should incorporate these corrections into its active decision structure and safely transition away from obsolete behavior rather than continuing to optimize a goal that is no longer authorized.
+
+A corrigible system should not treat correction as an adversarial event. If a robot is strongly optimized to complete a task, interruption can mathematically appear as an obstacle to achieving its objective. Poorly designed objectives may therefore create incentives to avoid shutdown, delay intervention, hide information, or preserve access to resources. Alignment requires architectural safeguards that prevent task optimization from producing resistance to legitimate human control.
+
+Safe interruption requires clear authority. Not every person near a robot should necessarily be able to change every mission parameter, but authorized intervention must remain effective when required. Role-based permissions can distinguish emergency stopping, routine task modification, maintenance control, mission cancellation, and policy changes. Authority management therefore determines who may correct the system and what scope of behavior each person may modify.
+
+Emergency stopping should remain independent from ordinary task optimization wherever practical. A high-level planner or learned policy should not be able to disable, reinterpret, or postpone critical protective functions because stopping would reduce task reward. Hardware and software safety mechanisms can provide separate layers of protection so that unacceptable physical behavior can be constrained even when higher-level autonomy behaves incorrectly.
+
+Interruptibility must account for physical dynamics. A moving robot cannot always transition instantaneously from active motion to a completely safe state. Mass, velocity, braking distance, payload stability, manipulator configuration, terrain, and nearby people affect how interruption should occur. A safe stop may therefore require controlled deceleration, stabilization, collision avoidance, or movement toward a predefined safe configuration rather than simply removing actuator power.
+
+The system should distinguish among different interruption levels. A temporary pause may preserve the current plan and allow rapid continuation, while suspension may retain mission state for later resumption. Cancellation may invalidate the active objective entirely, and emergency stopping may prioritize immediate risk reduction over mission continuity. Explicit interruption semantics help prevent confusion about what information and authority remain valid after intervention.
+
+State preservation is important when interruption is temporary. The robot may need to remember completed actions, object locations, reservations, dependencies, partially executed manipulations, and relevant environmental changes. Without reliable state management, resuming after interruption can duplicate work or create unsafe assumptions. Physical AI should therefore connect interruptibility with mission state, world state, and execution history.
+
+Resumption should never be treated as the automatic inverse of stopping. Conditions that were valid before interruption may have changed while the robot was paused. People may have moved, objects may have been repositioned, access permissions may have changed, or another robot may now occupy a required resource. Before resuming, the system should revalidate critical assumptions, constraints, goals, and environmental conditions.
+
+Corrigibility also requires the ability to revise internal interpretations. If a human indicates that the robot selected the wrong object or misunderstood an instruction, the system should update the relevant belief and propagate the correction through dependent plans. Merely changing the next action is insufficient if downstream reasoning continues to rely on the original incorrect assumption. Corrections should therefore maintain consistency across the decision hierarchy.
+
+Goal management is central to corrigibility because corrections frequently change what the robot should pursue. Goals may need to be modified, suspended, invalidated, replaced, or reordered. Generated subgoals should not survive automatically when their parent objective is cancelled. A coherent goal lifecycle prevents autonomous components from continuing outdated activities after the human intent that justified them has changed.
+
+Replanning provides the bridge between correction and continued autonomy. After receiving a valid correction, the robot should determine which portions of the existing plan remain usable and which must be replaced. Efficient corrigibility does not require discarding all previous work whenever a small change occurs. Instead, the system should preserve valid progress while rebuilding the parts of the plan affected by the correction.
+
+Uncertainty should influence interruption and correction behavior. When confidence in perception, localization, prediction, or instruction interpretation falls significantly, the robot may initiate a precautionary pause or request human guidance before a failure occurs. This creates proactive interruptibility, in which the system deliberately creates opportunities for correction instead of waiting until an external operator detects a dangerous situation.
+
+Human interfaces must make interruption understandable and actionable. Operators should know whether the robot is running, pausing, stopping, suspended, awaiting approval, under teleoperation, or recovering. They should also understand which goal is active and what will happen if a control is used. Clear feedback prevents situations in which humans believe the robot has stopped while autonomous processes remain active or motion is about to resume.
+
+Corrigibility includes accepting updated constraints and policies, not only individual task commands. An organization may change restricted areas, speed limits, operating procedures, or authorization rules. The system should incorporate valid updates without requiring behavior learned under previous conditions to remain dominant. At the same time, policy changes should follow appropriate authorization and validation processes so that arbitrary modifications cannot weaken essential protections.
+
+Learning systems require special care because correction data can influence future behavior. Human interventions can provide valuable evidence about failures, preferences, or unexpected situations, but a single correction may be highly context-specific. The robot should distinguish immediate operational correction from long-term learning. Persistent model or policy updates should undergo validation so that temporary interventions do not become inappropriate generalized behavior.
+
+Multi-robot systems extend corrigibility from individual agents to collective behavior. Interrupting one robot may require reassignment of tasks, release of reserved resources, rerouting of other robots, or updates to fleet priorities. Fleet coordination should propagate relevant corrections while preserving local safety authority. A fleet-level objective should never prevent an individual robot from executing an immediate protective stop when local physical conditions require it.
+
+Testing corrigibility requires deliberately introducing corrections during autonomous execution. Evaluation can change goals, invalidate assumptions, interrupt motion, modify priorities, remove permissions, or request safe resumption after a pause. The important question is not merely whether the robot obeys a stop command, but whether it transitions safely, preserves appropriate state, abandons obsolete goals, accepts correction, and resumes only after required conditions are restored.
+
+Interruptibility should also be evaluated under adverse conditions such as communication loss, high workload, actuator degradation, delayed commands, or conflicting instructions. Dependence on a single communication path or centralized controller can make nominal intervention mechanisms unavailable precisely when they are needed. Robust architectures therefore provide layered mechanisms appropriate to the risk and ensure that critical protective functions remain available during foreseeable failures.
+
+Ultimately, corrigibility and interruptibility preserve continuing human authority over autonomous Physical AI. A well-aligned robot can pursue complex objectives independently while remaining willing and technically able to pause, stop, revise beliefs, modify goals, accept new constraints, and transition safely to corrected behavior. Autonomy is therefore not defined by resistance to intervention, but by competent action within a framework where legitimate human correction remains effective throughout the system lifecycle.
+
+교정 가능성(Corrigibility)은 물리 AI(Physical AI) 시스템이 정당한 인간의 교정(Human Correction)을 받아들이고, 그 교정을 거부하거나 우회하거나 약화시키지 않으면서 자신의 행동을 수정할 수 있는 능력을 의미한다. 자율 로봇(Autonomous Robots)은 불완전한 지식과 변화하는 조건에서 작동하므로 초기 목표, 계획, 가정 또는 학습된 정책(Learned Policies)이 부적절해질 수 있다. 따라서 정렬(Alignment)은 운영 전체 과정에서 권한 있는 변경을 지속적으로 수용할 수 있는 시스템을 요구한다.
+
+중단 가능성(Interruptibility)은 교정 가능성과 밀접하게 관련되지만, 특히 필요할 때 자율 행동을 일시 정지하고, 정지시키고, 중단하거나, 다른 방향으로 전환할 수 있는 능력에 초점을 둔다. 새롭게 감지된 위험, 잘못된 해석, 장비 고장, 변화된 임무 우선순위 또는 직접적인 인간 개입(Human Intervention)으로 인해 로봇을 중단해야 할 수 있다. 신뢰할 수 있는 중단 가능성은 작업이 이미 시작되었다는 이유만으로 자율 실행을 실질적으로 통제할 수 없는 상태가 되는 것을 방지한다.
+
+교정 가능성은 단순히 비상 정지(Emergency Stop) 명령에 대응하는 것 이상을 의미한다. 인간은 객체 참조를 수정하거나, 목적지를 변경하거나, 제약조건을 수정하거나, 우선순위를 조정하거나, 하위 목표(Subgoal)를 취소하거나, 전체 임무를 교체해야 할 수 있다. 로봇은 이러한 교정을 활성화된 의사결정 구조(Active Decision Structure)에 반영하고 더 이상 승인되지 않은 목표를 계속 최적화하는 대신 기존의 행동에서 안전하게 전환해야 한다.
+
+교정 가능한 시스템(Corrigible System)은 교정을 적대적 사건(Adversarial Event)으로 취급해서는 안 된다. 로봇이 작업 완료를 지나치게 강하게 최적화하도록 설계되면 중단은 수학적으로 자신의 목적 달성을 방해하는 장애물처럼 나타날 수 있다. 잘못 설계된 목적은 종료를 회피하거나, 개입을 지연하거나, 정보를 숨기거나, 자원에 대한 접근을 유지하려는 유인을 만들 수 있다. 따라서 정렬에는 작업 최적화(Task Optimization)가 정당한 인간 통제에 대한 저항을 발생시키지 못하도록 하는 아키텍처적 안전장치(Architectural Safeguards)가 필요하다.
+
+안전한 중단(Safe Interruption)을 위해서는 명확한 권한(Authority)이 필요하다. 로봇 주변의 모든 사람이 모든 임무 파라미터를 변경할 수 있어야 하는 것은 아니지만, 필요한 경우 권한 있는 개입은 확실하게 작동해야 한다. 역할 기반 권한(Role-Based Permissions)은 비상 정지, 일반적인 작업 수정, 유지보수 제어, 임무 취소, 정책 변경을 구분할 수 있다. 따라서 권한 관리(Authority Management)는 누가 시스템을 교정할 수 있고 각 사람이 어느 범위까지 행동을 변경할 수 있는지를 결정한다.
+
+가능한 경우 비상 정지는 일반적인 작업 최적화와 독립적으로 유지되어야 한다. 상위 수준 계획기(High-Level Planner)나 학습된 정책이 정지로 인해 작업 보상(Task Reward)이 감소한다는 이유로 중요한 보호 기능을 비활성화하거나, 재해석하거나, 지연시킬 수 있어서는 안 된다. 하드웨어 및 소프트웨어 안전 메커니즘(Hardware and Software Safety Mechanisms)은 상위 수준 자율성이 잘못 행동하더라도 허용할 수 없는 물리적 행동을 제한할 수 있도록 독립적인 보호 계층을 제공할 수 있다.
+
+중단 가능성은 물리적 동역학(Physical Dynamics)을 고려해야 한다. 움직이는 로봇은 항상 활성 동작 상태에서 완전히 안전한 상태로 순간적으로 전환할 수 있는 것은 아니다. 질량, 속도, 제동 거리, 적재물 안정성(Payload Stability), 매니퓰레이터 구성(Manipulator Configuration), 지형, 주변 사람은 중단이 어떠한 방식으로 이루어져야 하는지에 영향을 미친다. 따라서 안전 정지(Safe Stop)는 단순히 액추에이터의 전원을 차단하는 것이 아니라 제어된 감속, 안정화, 충돌 회피 또는 사전에 정의된 안전 구성(Safe Configuration)으로의 이동을 필요로 할 수 있다.
+
+시스템은 서로 다른 중단 수준(Interruption Levels)을 구분해야 한다. 일시 정지(Pause)는 현재 계획을 유지하여 빠르게 실행을 계속할 수 있도록 할 수 있으며, 중단(Suspension)은 나중에 재개하기 위해 임무 상태를 보존할 수 있다. 취소(Cancellation)는 활성 목표 자체를 완전히 무효화할 수 있으며, 비상 정지는 임무의 연속성보다 즉각적인 위험 감소를 우선할 수 있다. 명시적인 중단 의미 체계(Interruption Semantics)는 개입 이후 어떤 정보와 권한이 여전히 유효한지를 둘러싼 혼란을 방지하는 데 도움이 된다.
+
+중단이 일시적인 경우에는 상태 보존(State Preservation)이 중요하다. 로봇은 완료된 행동, 객체 위치, 예약된 자원, 의존 관계, 부분적으로 실행된 조작, 관련 환경 변화를 기억해야 할 수 있다. 신뢰할 수 있는 상태 관리(State Management)가 없다면 중단 이후 재개 과정에서 작업이 중복되거나 안전하지 않은 가정이 만들어질 수 있다. 따라서 물리 AI는 중단 가능성을 임무 상태(Mission State), 월드 상태(World State), 실행 이력(Execution History)과 연결해야 한다.
+
+재개(Resumption)는 정지의 자동적인 역과정으로 취급해서는 안 된다. 중단 이전에 유효했던 조건이 로봇이 정지해 있는 동안 변경되었을 수 있다. 사람이 이동하거나, 객체가 재배치되거나, 접근 권한이 변경되거나, 다른 로봇이 필요한 자원을 점유했을 수 있다. 따라서 시스템은 실행을 재개하기 전에 중요한 가정, 제약조건, 목표, 환경 조건을 다시 검증(Revalidation)해야 한다.
+
+교정 가능성은 내부 해석(Internal Interpretations)을 수정할 수 있는 능력도 요구한다. 인간이 로봇이 잘못된 객체를 선택했거나 지시를 잘못 이해했다고 알려주면 시스템은 관련 신념(Belief)을 갱신하고 그 교정을 의존 관계에 있는 계획 전체에 전파해야 한다. 이후의 추론이 여전히 기존의 잘못된 가정에 의존한다면 다음 행동만 변경하는 것으로는 충분하지 않다. 따라서 교정은 전체 의사결정 계층(Decision Hierarchy)에서 일관성을 유지해야 한다.
+
+목표 관리(Goal Management)는 교정이 로봇이 추구해야 하는 대상을 자주 변경하기 때문에 교정 가능성의 핵심이다. 목표는 수정, 일시 중단, 무효화, 교체 또는 재정렬될 필요가 있다. 상위 목표(Parent Objective)가 취소되었을 때 생성된 하위 목표가 자동으로 계속 유지되어서는 안 된다. 일관된 목표 생명주기(Goal Lifecycle)는 하위 자율 구성요소가 해당 행동을 정당화했던 인간의 의도가 변경된 이후에도 오래된 활동을 계속하는 것을 방지한다.
+
+재계획(Replanning)은 교정과 지속적인 자율성을 연결하는 역할을 한다. 유효한 교정을 받은 이후 로봇은 기존 계획 가운데 어떤 부분을 계속 사용할 수 있고 어떤 부분을 교체해야 하는지를 결정해야 한다. 효율적인 교정 가능성은 작은 변경이 발생할 때마다 이전의 모든 작업을 폐기하도록 요구하지 않는다. 대신 시스템은 유효한 진행 상태를 보존하면서 교정의 영향을 받은 계획 부분만 다시 구성해야 한다.
+
+불확실성(Uncertainty)은 중단 및 교정 행동에 영향을 미쳐야 한다. 인식(Perception), 위치 추정(Localization), 예측(Prediction), 지시 해석(Instruction Interpretation)에 대한 신뢰도가 크게 낮아지면 로봇은 고장이 발생하기 전에 예방적 일시 정지(Precautionary Pause)를 시작하거나 인간의 지침을 요청할 수 있다. 이는 외부 운영자가 위험한 상황을 탐지할 때까지 기다리는 대신 시스템 스스로 의도적으로 교정의 기회를 만드는 선제적 중단 가능성(Proactive Interruptibility)을 형성한다.
+
+인간 인터페이스(Human Interfaces)는 중단 상태를 이해하고 실행하기 쉽게 만들어야 한다. 운영자는 로봇이 실행 중인지, 일시 정지 중인지, 정지 중인지, 중단 상태인지, 승인을 기다리고 있는지, 원격조작(Teleoperation) 중인지 또는 복구 중인지 파악할 수 있어야 한다. 또한 어떤 목표가 활성화되어 있으며 특정 제어 기능을 사용할 경우 어떤 일이 발생하는지도 이해해야 한다. 명확한 피드백은 인간이 로봇이 정지했다고 생각하지만 실제로는 자율 프로세스가 계속 활성화되어 있거나 동작이 곧 재개되는 상황을 방지한다.
+
+교정 가능성은 개별 작업 명령뿐만 아니라 갱신된 제약조건과 정책을 수용하는 것도 포함한다. 조직은 제한 구역, 속도 제한, 운영 절차 또는 권한 규칙을 변경할 수 있다. 시스템은 이전 조건에서 학습된 행동이 계속 지배적으로 유지되도록 하지 않고 유효한 업데이트를 반영해야 한다. 동시에 임의적인 수정이 필수 보호 기능을 약화시키지 못하도록 정책 변경은 적절한 승인 및 검증 과정(Authorization and Validation Processes)을 따라야 한다.
+
+학습 시스템(Learning Systems)은 교정 데이터가 미래 행동에 영향을 미칠 수 있기 때문에 특별한 주의가 필요하다. 인간의 개입은 실패, 선호 또는 예상하지 못한 상황에 관한 중요한 정보를 제공할 수 있지만 하나의 교정은 특정 상황에만 적용될 수도 있다. 로봇은 즉각적인 운영 교정(Immediate Operational Correction)과 장기 학습(Long-Term Learning)을 구분해야 한다. 일시적인 개입이 부적절하게 일반화된 행동으로 변하지 않도록 지속적인 모델 또는 정책 갱신에는 검증이 필요하다.
+
+다중 로봇 시스템(Multi-Robot Systems)은 교정 가능성을 개별 에이전트에서 집단 행동(Collective Behavior)으로 확장한다. 하나의 로봇을 중단하면 작업 재할당, 예약된 자원의 해제, 다른 로봇의 경로 재설정 또는 플릿 우선순위(Fleet Priorities)의 갱신이 필요할 수 있다. 플릿 협조(Fleet Coordination)는 관련 교정을 전체 시스템에 전달하면서 지역적 안전 권한(Local Safety Authority)을 유지해야 한다. 플릿 수준 목표가 개별 로봇이 지역의 물리적 조건에 따라 즉각적인 보호 정지(Protective Stop)를 수행하는 것을 방해해서는 안 된다.
+
+교정 가능성의 시험(Testing)은 자율 실행 중에 의도적으로 교정을 도입하는 방식으로 이루어져야 한다. 평가(Evaluation)에서는 목표를 변경하고, 가정을 무효화하고, 움직임을 중단하고, 우선순위를 수정하고, 권한을 제거하거나, 일시 정지 이후 안전한 재개를 요청할 수 있다. 중요한 것은 단순히 로봇이 정지 명령을 따르는지가 아니라 안전하게 전환하고, 적절한 상태를 보존하며, 오래된 목표를 폐기하고, 교정을 받아들이며, 필요한 조건이 복원된 이후에만 실행을 재개하는지를 확인하는 것이다.
+
+중단 가능성은 통신 손실(Communication Loss), 높은 작업 부하(High Workload), 액추에이터 성능 저하(Actuator Degradation), 지연된 명령(Delayed Commands), 상충하는 지시(Conflicting Instructions)와 같은 불리한 조건에서도 평가되어야 한다. 단일 통신 경로나 중앙 집중식 제어기(Centralized Controller)에 대한 의존은 정작 필요한 순간에 개입 메커니즘을 사용할 수 없게 만들 수 있다. 따라서 견고한 아키텍처(Robust Architectures)는 위험 수준에 적합한 다계층 메커니즘(Layered Mechanisms)을 제공하고 예측 가능한 고장 상황에서도 중요한 보호 기능을 사용할 수 있도록 해야 한다.
+
+궁극적으로 교정 가능성과 중단 가능성(Corrigibility and Interruptibility)은 자율 물리 AI에 대한 지속적인 인간 권한(Continuing Human Authority)을 보존한다. 잘 정렬된 로봇은 복잡한 목표를 독립적으로 추구하면서도 일시 정지하고, 정지하고, 신념을 수정하고, 목표를 변경하고, 새로운 제약조건을 받아들이며, 교정된 행동으로 안전하게 전환할 의지와 기술적 능력을 유지한다. 따라서 자율성(Autonomy)은 개입에 저항하는 능력으로 정의되는 것이 아니라 시스템 생명주기(System Lifecycle) 전체에서 정당한 인간의 교정이 효과적으로 유지되는 프레임워크 안에서 유능하게 행동하는 능력으로 정의되어야 한다.
+
+##  
+
+## 04.11. Conservative Action under Uncertainty
+
+![](images/image11.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Conservative action under uncertainty means that a Physical AI system should reduce the potential severity of its actions when it lacks sufficient confidence about the world, human intent, system state, or future consequences. Because robots create direct physical effects, uncertainty cannot be treated only as a prediction error. It must influence how much autonomous authority, speed, force, commitment, and risk the system is permitted to exercise.
+
+Uncertainty can arise throughout the perception--reasoning--action pipeline. Sensors may provide incomplete observations, localization may drift, objects may be misclassified, human intentions may be unclear, instructions may be ambiguous, and world models may predict future states imperfectly. A well-aligned robot therefore represents uncertainty as an operational variable that affects decision making rather than hiding it behind a single best estimate.
+
+Conservative behavior does not mean that the robot should always stop whenever uncertainty exists. Real environments are inherently uncertain, and excessive caution can make useful autonomy impossible. The objective is risk-proportionate conservatism: the system should consider both the probability that its interpretation is wrong and the severity of the physical consequences that could result if it acts on that interpretation.
+
+Confidence and consequence must therefore be evaluated together. A low-confidence estimate about an irrelevant object may require no meaningful behavioral change, while moderate uncertainty about whether a person is entering the robot's path may justify immediate deceleration. Similarly, uncertainty about the identity of an object becomes more important when the robot intends to lift, cut, heat, transport, or otherwise physically modify it.
+
+One useful principle is to reduce action authority as uncertainty increases. A robot may lower speed, reduce force, increase separation distance, shorten planning horizons, restrict manipulation, or select actions that remain easily reversible. If uncertainty exceeds acceptable limits, the system can pause, acquire additional information, request clarification, transfer control, or enter a predefined safe state rather than continuing aggressive autonomous execution.
+
+Reversibility is especially important for conservative action. When several actions could resolve a situation, the robot should often prefer actions whose consequences can be easily corrected if its assumptions prove wrong. Moving slowly toward an uncertain target may be preferable to immediately grasping it, and waiting near an ambiguous destination may be preferable to entering a restricted area. Reversible actions preserve future options while additional evidence becomes available.
+
+Information gathering can itself be an appropriate conservative action. The robot may reposition sensors, obtain another camera view, inspect an object from a different angle, update localization, query a map, or wait briefly for a moving person's intention to become clearer. Active perception allows the system to reduce uncertainty before committing to consequential physical behavior and can avoid unnecessary human intervention when the missing information is recoverable autonomously.
+
+Human clarification provides another mechanism for reducing uncertainty. When ambiguity concerns an instruction, authority, target, priority, or expected outcome, asking a focused question may be safer than guessing. Clarification should be proportional to consequence so that humans are not asked to confirm every minor decision. High-impact or irreversible actions should generally require stronger confidence than routine actions with limited consequences.
+
+Safety margins should expand when important state estimates become less reliable. Uncertain localization may require greater clearance from obstacles, uncertain human motion may require larger separation distances, and uncertain friction may require lower speed or acceleration. These adaptive margins connect epistemic uncertainty to physical control so that reduced knowledge produces correspondingly reduced exposure to hazardous states.
+
+World models can support conservative behavior by predicting ranges of possible future outcomes rather than only one expected trajectory. Candidate actions can be evaluated against plausible variations in human motion, object dynamics, terrain, or system response. A plan that succeeds only under a narrow optimistic prediction should generally be considered less robust than one that remains safe across a wider set of credible future states.
+
+Worst-case reasoning can be useful when potential consequences are severe, but applying it universally may produce excessive conservatism. Physical AI should distinguish credible adverse outcomes from physically possible but extremely implausible scenarios. Robust decision making therefore combines uncertainty bounds, likelihood, consequence, safety requirements, and operational context instead of assuming either the average case or the absolute worst case is always appropriate.
+
+Out-of-distribution detection is closely related to conservative action because learned models are least reliable when observations differ substantially from their training experience. Novel environments, unusual objects, unexpected human behavior, sensor degradation, or unfamiliar interactions can indicate that learned confidence is unreliable. The system should respond by reducing autonomy, increasing monitoring, gathering information, or requesting assistance.
+
+Model confidence itself must be treated cautiously because neural systems can be confidently wrong. A high numerical confidence score does not guarantee that the underlying situation is familiar or correctly represented. Conservative Physical AI therefore benefits from multiple uncertainty signals, including sensor consistency, model disagreement, novelty detection, prediction error, constraint violations, and discrepancies between expected and observed outcomes.
+
+Temporal uncertainty also matters because confidence can change during execution. A plan may begin under well-understood conditions but become uncertain when visibility decreases, communication is lost, an obstacle moves unexpectedly, or localization quality deteriorates. Runtime monitoring should continuously reassess whether the assumptions that justified the original action remain valid and reduce action authority when they no longer do.
+
+Conservative action must remain coordinated with mission priorities. A robot performing emergency response may legitimately accept greater operational risk than one performing routine delivery, but higher urgency should not eliminate fundamental safety constraints. Risk tolerance can vary with mission context while mandatory physical protections remain intact. Alignment therefore requires explicit boundaries between adjustable caution and non-negotiable safety.
+
+Resource limitations can create another form of uncertainty. Low battery, thermal stress, degraded sensors, unreliable communication, or reduced actuator performance can make future capability uncertain even when the environment is understood. Conservative planning should consider whether the robot retains sufficient reserve to stop, recover, return, communicate, or safely abandon a task if conditions worsen.
+
+Multi-robot systems can reduce some uncertainty by sharing observations, maps, hazards, and confidence estimates. Information from another robot may help confirm an obstacle or identify changing conditions beyond local sensor range. However, shared information can itself be stale, inconsistent, or uncertain. Fleet-level reasoning should therefore preserve confidence and provenance rather than treating all communicated state as equally reliable ground truth.
+
+Conservative behavior should also avoid cascading uncertainty through hierarchical planning. An uncertain perception can generate an uncertain object hypothesis, which can create an uncertain subgoal and eventually an unsafe physical action if each layer treats the previous estimate as certain. Uncertainty should therefore propagate through perception, world modeling, planning, and control so that downstream decisions remain aware of the reliability of their foundations.
+
+Human oversight becomes increasingly important when uncertainty cannot be reduced autonomously and potential consequences remain significant. The robot should communicate what is uncertain, why it matters, what alternatives are available, and what information is needed. Effective escalation allows humans to resolve situations that exceed the robot's reliable competence while avoiding unnecessary intervention for uncertainty that the system can safely manage itself.
+
+Evaluation of conservative action should test whether robot behavior changes appropriately as uncertainty and consequence vary. Scenarios can degrade sensors, introduce ambiguous objects, alter human trajectories, create localization errors, or expose the robot to unfamiliar environments. A successful system should not merely avoid accidents; it should demonstrate calibrated changes in speed, margins, information gathering, clarification, stopping, and autonomous authority.
+
+Excessive conservatism should also be evaluated as a failure mode. A robot that repeatedly stops under minor uncertainty may be physically safe but operationally ineffective and may encourage humans to disable safeguards. Alignment therefore requires calibration between unnecessary hesitation and unjustified confidence. The system should preserve useful autonomy while reserving stronger protective responses for uncertainty that materially changes expected risk.
+
+Ultimately, conservative action under uncertainty provides a bridge between imperfect knowledge and safe physical autonomy. An aligned Physical AI system does not assume that its most likely interpretation is always correct, nor does it become paralyzed by every unknown. It adjusts authority, speed, force, margins, reversibility, information gathering, and human escalation according to uncertainty and consequence, enabling useful action while limiting exposure to outcomes it cannot reliably predict.
+
+불확실성 하의 보수적 행동(Conservative Action under Uncertainty)은 물리 AI(Physical AI) 시스템이 세계, 인간의 의도, 시스템 상태 또는 미래 결과에 대해 충분한 확신을 갖지 못할 때 자신의 행동이 초래할 수 있는 잠재적 심각성을 줄여야 한다는 것을 의미한다. 로봇은 직접적인 물리적 결과를 만들어 내므로 불확실성(Uncertainty)을 단순한 예측 오류로만 다룰 수 없다. 불확실성은 시스템에 허용되는 자율 권한(Autonomous Authority), 속도, 힘, 행동 확정 수준, 위험의 크기에 영향을 미쳐야 한다.
+
+불확실성은 인식-추론-행동 파이프라인(Perception--Reasoning--Action Pipeline) 전체에서 발생할 수 있다. 센서는 불완전한 관측을 제공할 수 있고, 위치 추정(Localization)은 드리프트(Drift)할 수 있으며, 객체가 잘못 분류되거나, 인간의 의도가 불분명하거나, 지시가 모호하거나, 월드 모델(World Models)이 미래 상태를 불완전하게 예측할 수 있다. 따라서 잘 정렬된 로봇은 불확실성을 하나의 최선 추정값 뒤에 숨기지 않고 의사결정에 영향을 미치는 운영 변수(Operational Variable)로 표현해야 한다.
+
+보수적 행동(Conservative Behavior)은 불확실성이 존재할 때마다 로봇이 항상 정지해야 한다는 의미는 아니다. 실제 환경에는 본질적으로 불확실성이 존재하며 지나친 주의는 유용한 자율성을 불가능하게 만들 수 있다. 목표는 위험 비례적 보수성(Risk-Proportionate Conservatism)이다. 즉, 시스템은 자신의 해석이 잘못되었을 가능성과 그 해석에 따라 행동했을 때 발생할 수 있는 물리적 결과의 심각성을 함께 고려해야 한다.
+
+따라서 신뢰도(Confidence)와 결과(Consequence)는 함께 평가되어야 한다. 중요하지 않은 객체에 대한 낮은 신뢰도의 추정은 행동을 크게 변경할 필요가 없을 수 있지만, 사람이 로봇의 이동 경로에 진입하고 있는지에 대한 중간 수준의 불확실성은 즉각적인 감속을 정당화할 수 있다. 마찬가지로 객체의 정체성에 관한 불확실성은 로봇이 해당 객체를 들어 올리거나, 절단하거나, 가열하거나, 운반하거나, 기타 방식으로 물리적으로 변경하려 할 때 더욱 중요해진다.
+
+유용한 원칙 중 하나는 불확실성이 증가할수록 행동 권한(Action Authority)을 감소시키는 것이다. 로봇은 속도나 힘을 낮추고, 분리 거리(Separation Distance)를 증가시키며, 계획 지평(Planning Horizon)을 단축하거나, 조작을 제한하고, 쉽게 되돌릴 수 있는 행동을 선택할 수 있다. 불확실성이 허용 가능한 한계를 초과하면 공격적인 자율 실행을 계속하기보다 일시 정지하고, 추가 정보를 획득하고, 명확화(Clarification)를 요청하거나, 제어권을 이전하거나, 사전에 정의된 안전 상태(Safe State)에 진입할 수 있다.
+
+가역성(Reversibility)은 보수적 행동에서 특히 중요하다. 여러 행동으로 상황을 해결할 수 있다면 로봇은 자신의 가정이 잘못된 것으로 밝혀졌을 때 쉽게 수정할 수 있는 행동을 선호해야 하는 경우가 많다. 불확실한 대상에 즉시 파지하는 것보다 천천히 접근하는 것이 바람직할 수 있으며, 제한 구역에 진입하는 것보다 모호한 목적지 근처에서 대기하는 것이 적절할 수 있다. 가역적 행동(Reversible Actions)은 추가적인 증거가 확보되는 동안 미래의 선택 가능성을 유지한다.
+
+정보 수집(Information Gathering) 자체도 적절한 보수적 행동이 될 수 있다. 로봇은 센서의 위치를 변경하거나, 다른 카메라 시점을 확보하거나, 다른 각도에서 객체를 검사하거나, 위치 추정을 갱신하거나, 지도를 조회하거나, 움직이는 사람의 의도가 더 명확해질 때까지 잠시 기다릴 수 있다. 능동적 인식(Active Perception)은 중대한 물리적 행동을 확정하기 전에 불확실성을 감소시키며, 필요한 정보를 자율적으로 복구할 수 있는 경우 불필요한 인간 개입을 줄일 수 있다.
+
+인간에 대한 명확화 요청(Human Clarification)은 불확실성을 감소시키는 또 다른 메커니즘을 제공한다. 모호성이 지시, 권한, 목표 대상, 우선순위 또는 예상 결과와 관련된다면 추측하는 것보다 구체적인 질문을 하는 것이 더 안전할 수 있다. 명확화는 인간이 사소한 모든 결정을 확인해야 하는 상황을 방지하기 위해 결과의 중요도에 비례해야 한다. 중대한 영향을 미치거나 되돌리기 어려운 행동은 제한적인 결과를 가진 일상적 행동보다 일반적으로 더 높은 신뢰도를 요구해야 한다.
+
+중요한 상태 추정의 신뢰성이 낮아지면 안전 여유(Safety Margins)를 확대해야 한다. 위치 추정이 불확실하면 장애물과 더 큰 간격을 유지해야 할 수 있고, 인간의 움직임이 불확실하면 더 넓은 분리 거리가 필요할 수 있으며, 마찰이 불확실하면 속도나 가속도를 낮춰야 할 수 있다. 이러한 적응형 여유(Adaptive Margins)는 인식론적 불확실성(Epistemic Uncertainty)을 물리적 제어와 연결하여 지식의 감소가 위험 상태에 대한 노출 감소로 이어지도록 한다.
+
+월드 모델(World Models)은 하나의 예상 궤적만 예측하는 것이 아니라 가능한 미래 결과의 범위를 예측함으로써 보수적 행동을 지원할 수 있다. 후보 행동(Candidate Actions)은 인간의 움직임, 객체 동역학, 지형 또는 시스템 반응의 가능한 변화에 대해 평가될 수 있다. 좁고 낙관적인 예측 조건에서만 성공하는 계획은 일반적으로 더 넓은 범위의 신뢰 가능한 미래 상태에서 안전성을 유지하는 계획보다 견고성이 낮다고 판단해야 한다.
+
+최악 상황 추론(Worst-Case Reasoning)은 잠재적 결과가 심각한 경우 유용할 수 있지만 모든 상황에 적용하면 지나친 보수성을 초래할 수 있다. 물리 AI는 신뢰할 수 있는 불리한 결과(Credible Adverse Outcomes)와 물리적으로는 가능하지만 발생 가능성이 극히 낮은 상황을 구분해야 한다. 따라서 견고한 의사결정(Robust Decision Making)은 평균적인 경우나 절대적인 최악의 경우 중 하나만을 항상 적용하는 대신 불확실성 범위, 가능성, 결과, 안전 요구사항, 운영 상황을 결합해야 한다.
+
+분포 외 탐지(Out-of-Distribution Detection)는 관측이 학습 경험과 크게 다를 때 학습된 모델의 신뢰성이 가장 낮아지기 때문에 보수적 행동과 밀접하게 관련된다. 새로운 환경, 익숙하지 않은 객체, 예상하지 못한 인간 행동, 센서 성능 저하 또는 낯선 상호작용은 학습된 신뢰도를 믿기 어렵다는 신호가 될 수 있다. 시스템은 이러한 상황에서 자율성을 줄이고, 모니터링을 강화하며, 정보를 추가로 수집하거나, 지원을 요청해야 한다.
+
+모델 신뢰도(Model Confidence) 자체도 신중하게 다루어야 한다. 신경망 시스템(Neural Systems)은 잘못된 판단에 대해서도 높은 신뢰도를 나타낼 수 있기 때문이다. 높은 수치적 신뢰도 점수가 해당 상황이 익숙하거나 올바르게 표현되었다는 것을 보장하지 않는다. 따라서 보수적인 물리 AI는 센서 일관성(Sensor Consistency), 모델 간 불일치(Model Disagreement), 신규성 탐지(Novelty Detection), 예측 오류, 제약조건 위반, 예상 결과와 실제 관측 결과 사이의 차이 등 여러 불확실성 신호를 함께 활용하는 것이 바람직하다.
+
+시간적 불확실성(Temporal Uncertainty)도 중요하다. 실행 과정에서 신뢰도가 변화할 수 있기 때문이다. 계획은 충분히 이해된 조건에서 시작되더라도 가시성이 감소하거나, 통신이 끊기거나, 장애물이 예상하지 못하게 움직이거나, 위치 추정 품질이 저하되면 불확실해질 수 있다. 런타임 모니터링(Runtime Monitoring)은 원래의 행동을 정당화했던 가정이 여전히 유효한지를 지속적으로 재평가하고, 더 이상 유효하지 않을 경우 행동 권한을 감소시켜야 한다.
+
+보수적 행동은 임무 우선순위(Mission Priorities)와도 조정되어야 한다. 비상 대응(Emergency Response)을 수행하는 로봇은 일반적인 배송을 수행하는 로봇보다 더 높은 운영 위험을 정당하게 수용할 수 있지만, 높은 긴급성이 기본적인 안전 제약조건을 제거해서는 안 된다. 위험 허용 수준(Risk Tolerance)은 임무 상황에 따라 변화할 수 있지만 필수적인 물리적 보호 기능은 유지되어야 한다. 따라서 정렬(Alignment)은 조정 가능한 주의 수준과 양보할 수 없는 안전 사이의 명확한 경계를 필요로 한다.
+
+자원 제한(Resource Limitations)은 또 다른 형태의 불확실성을 발생시킬 수 있다. 낮은 배터리, 열적 스트레스(Thermal Stress), 성능이 저하된 센서, 불안정한 통신 또는 감소된 액추에이터 성능은 환경 자체가 충분히 이해되고 있더라도 미래의 능력을 불확실하게 만들 수 있다. 보수적 계획(Conservative Planning)은 조건이 악화될 경우 로봇이 정지, 복구, 복귀, 통신 또는 안전한 작업 포기를 수행할 수 있는 충분한 여유를 유지하고 있는지를 고려해야 한다.
+
+다중 로봇 시스템(Multi-Robot Systems)은 관측, 지도, 위험요소, 신뢰도 추정값을 공유하여 일부 불확실성을 감소시킬 수 있다. 다른 로봇의 정보는 장애물의 존재를 확인하거나 지역 센서 범위 밖의 변화된 조건을 식별하는 데 도움을 줄 수 있다. 그러나 공유 정보 자체도 오래되었거나, 서로 일치하지 않거나, 불확실할 수 있다. 따라서 플릿 수준 추론(Fleet-Level Reasoning)은 전달된 모든 상태를 동일하게 신뢰할 수 있는 실측 정보(Ground Truth)로 취급하지 않고 신뢰도와 출처(Provenance)를 함께 유지해야 한다.
+
+보수적 행동은 계층적 계획(Hierarchical Planning)을 통해 불확실성이 연쇄적으로 증폭되는 것도 방지해야 한다. 불확실한 인식 결과가 불확실한 객체 가설(Object Hypothesis)을 생성하고, 이것이 다시 불확실한 하위 목표를 생성하며, 각 계층이 이전 단계의 추정을 확실한 것으로 취급하면 결국 안전하지 않은 물리적 행동으로 이어질 수 있다. 따라서 불확실성은 인식, 월드 모델링(World Modeling), 계획, 제어(Control)를 통해 전파되어 하위 단계의 의사결정이 자신의 기반이 얼마나 신뢰할 수 있는지를 인식하도록 해야 한다.
+
+인간 감독(Human Oversight)은 불확실성을 자율적으로 감소시킬 수 없고 잠재적인 결과가 여전히 중대한 경우 더욱 중요해진다. 로봇은 무엇이 불확실한지, 그것이 왜 중요한지, 어떤 대안이 존재하는지, 어떤 정보가 필요한지를 인간에게 전달해야 한다. 효과적인 에스컬레이션(Escalation)은 인간이 로봇의 신뢰 가능한 능력을 넘어서는 상황을 해결할 수 있도록 하면서 시스템 스스로 안전하게 관리할 수 있는 불확실성에 대해서는 불필요한 인간 개입을 방지한다.
+
+보수적 행동의 평가(Evaluation)는 불확실성과 결과의 심각성이 변화할 때 로봇의 행동이 적절하게 달라지는지를 시험해야 한다. 시험 시나리오에서는 센서 성능을 저하시키거나, 모호한 객체를 도입하거나, 인간의 이동 궤적을 변경하거나, 위치 추정 오류를 발생시키거나, 로봇을 익숙하지 않은 환경에 노출시킬 수 있다. 성공적인 시스템은 단순히 사고를 피하는 것뿐만 아니라 속도, 안전 여유, 정보 수집, 명확화, 정지, 자율 권한을 상황에 맞게 조정하는 능력을 보여야 한다.
+
+과도한 보수성(Excessive Conservatism) 역시 실패 모드(Failure Mode)로 평가해야 한다. 사소한 불확실성이 발생할 때마다 반복적으로 정지하는 로봇은 물리적으로 안전할 수 있지만 운영적으로는 효과적이지 않으며, 오히려 인간이 안전장치를 비활성화하도록 유도할 수 있다. 따라서 정렬은 불필요한 주저함과 정당화되지 않은 과신 사이의 균형 조정(Calibration)을 필요로 한다. 시스템은 유용한 자율성을 유지하면서 예상 위험을 실질적으로 변화시키는 불확실성에 대해서만 더 강력한 보호 대응을 적용해야 한다.
+
+궁극적으로 불확실성 하의 보수적 행동(Conservative Action under Uncertainty)은 불완전한 지식과 안전한 물리적 자율성(Safe Physical Autonomy)을 연결하는 역할을 한다. 정렬된 물리 AI 시스템은 가장 가능성이 높은 자신의 해석이 항상 옳다고 가정하지 않으며, 동시에 모든 미지의 요소 때문에 행동 불능 상태에 빠지지도 않는다. 시스템은 불확실성과 결과의 심각성에 따라 권한, 속도, 힘, 안전 여유, 가역성, 정보 수집, 인간 에스컬레이션을 조정함으로써 유용한 행동을 수행하면서도 신뢰성 있게 예측할 수 없는 결과에 대한 노출을 제한해야 한다.
+
+##  
+
+## 04.12. Alignment for Multi Robot and Fleet Systems
+
+![](images/image12.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Alignment for multi-robot and fleet systems extends the alignment problem from the behavior of a single autonomous agent to the coordinated behavior of many physically embodied agents. A fleet may contain robots with different capabilities, roles, locations, and operational states, yet their individual actions must remain consistent with shared human objectives, organizational policies, safety requirements, and the overall mission.
+
+Fleet alignment requires distinguishing individual goals from collective goals. A robot may optimize its own route, energy use, task completion time, or local safety while the fleet pursues broader objectives such as throughput, coverage, resilience, resource utilization, or mission completion. Local optimization is aligned only when it contributes to collective objectives without violating constraints that apply to the robot, the fleet, or the operating environment.
+
+A central challenge is that locally reasonable behavior can produce globally undesirable outcomes. Several robots independently choosing the shortest path may create congestion, repeated yielding, deadlock, or competition for shared infrastructure. Multiple robots may also duplicate work while other tasks remain unattended. Fleet alignment therefore requires coordination mechanisms that evaluate interactions among agents rather than assuming individually optimal behavior will automatically produce an optimal collective result.
+
+Shared mission state provides a common reference for coordinated behavior. Robots and fleet management systems need information about active goals, task assignments, priorities, completed work, resource reservations, hazards, restrictions, and relevant environmental changes. This shared state does not require every robot to possess identical information, but important differences must be managed so that inconsistent local beliefs do not silently generate conflicting actions.
+
+Task allocation is an important alignment mechanism because it determines how collective objectives are decomposed into individual responsibilities. Assignments may consider capability, location, energy, workload, risk, deadlines, equipment, and expected completion cost. Allocation should remain revisable because robot failures, environmental changes, emergency tasks, or newly available resources can make an initially reasonable assignment inappropriate during execution.
+
+Authority must be represented across both fleet and local levels. Fleet management may assign missions and coordinate shared resources, while individual robots require sufficient local authority to avoid collisions and respond to immediate hazards. A centralized objective should not force a robot to violate local safety constraints, and local autonomy should not allow an individual robot to ignore legitimate fleet-level priorities merely because another action appears locally advantageous.
+
+Priority conflicts become more complex when many robots share objectives and resources. An urgent inspection may compete with routine deliveries, while several robots may simultaneously require the same charging station, corridor, elevator, manipulation tool, or communication resource. Alignment requires arbitration rules that consider mission importance, safety, urgency, dependencies, fairness, resource availability, and the consequences of delaying each task.
+
+Coordination depends heavily on communication, but alignment cannot assume perfect connectivity. Messages may be delayed, duplicated, lost, or received after the underlying situation has changed. Robots should therefore reason about the age, confidence, and relevance of shared information. Critical local safety behavior must remain possible during communication loss, while reconnection should trigger synchronization before outdated assignments or reservations are blindly resumed.
+
+Distributed uncertainty creates additional challenges because different robots may observe different portions of the environment. One robot may detect a blocked corridor, another may identify a moving hazard, and a third may possess outdated map information. Sharing observations can improve collective awareness, but communicated information should retain confidence, timestamp, and provenance so that uncertain reports are not automatically treated as unquestionable ground truth.
+
+Fleet world models can integrate distributed observations into a broader representation of the operating environment. Such models may represent robot locations, dynamic obstacles, traffic patterns, resource availability, task progress, and predicted interactions. They can support planning beyond the sensing range of an individual robot, but alignment requires uncertainty to remain visible so that incomplete or stale collective knowledge does not create unjustified confidence.
+
+Conflict avoidance includes more than preventing physical collisions. Robots can conflict through path reservations, workspace occupancy, task dependencies, charging schedules, manipulation sequences, or access to shared equipment. Coordination protocols should prevent these logical and resource conflicts before they become physical problems. When conflicts cannot be avoided, the fleet should resolve them according to explicit priorities rather than unstable competition among local controllers.
+
+Deadlock and livelock are important fleet-level alignment failures. In deadlock, robots may wait indefinitely because each requires a resource held by another. In livelock, robots continue changing behavior without meaningful mission progress, such as repeatedly yielding to each other. Detecting these conditions requires monitoring collective progress and interaction patterns rather than evaluating each robot independently.
+
+Collective behavior should remain bounded by safety constraints at multiple levels. Individual robots need local protective functions for collision avoidance, speed limitation, and safe stopping, while fleet coordination can impose traffic rules, restricted zones, separation policies, or capacity limits. Layered safety is important because centralized coordination may be delayed or unavailable, while purely local safety may be insufficient to prevent system-wide congestion or unsafe interactions.
+
+Human oversight must scale from individual robots to the fleet as a whole. Operators should be able to understand mission progress, active priorities, degraded robots, conflicts, resource shortages, and unusual collective behavior without continuously monitoring every agent. Fleet interfaces should aggregate information while allowing operators to inspect individual robots when necessary, preserving both system-level awareness and local diagnostic visibility.
+
+Intervention in a fleet can create secondary effects that must be managed. Pausing one robot may block a corridor, cancelling its task may require reassignment, and removing it from service may release resources or invalidate dependent plans. Corrigibility therefore extends across coordination structures: human corrections should propagate to affected assignments, reservations, routes, and priorities rather than changing only the directly commanded robot.
+
+Fleet systems should support graceful degradation when robots or infrastructure fail. Losing one agent should not necessarily collapse the entire mission if remaining robots can redistribute work. The coordination layer can reallocate tasks, revise routes, reduce service levels, or prioritize critical objectives. Alignment during degradation means preserving the most important human goals and safety requirements rather than attempting to maintain nominal performance at unacceptable risk.
+
+Heterogeneous fleets introduce further alignment requirements because robots may have different sensors, payload capacities, mobility, manipulation abilities, safety envelopes, or levels of autonomy. A task suitable for one platform may be unsafe or impossible for another. Fleet reasoning must therefore understand capability boundaries and avoid treating robots as interchangeable resources simply because they participate in the same collective mission.
+
+Learning across a fleet can improve collective intelligence by sharing experience from many robots. Navigation difficulties, failure cases, environmental changes, and successful strategies can inform future behavior across the system. However, fleet-wide learning can also propagate errors rapidly. Updates derived from local experience should therefore be validated before becoming shared policies, especially when they affect safety constraints, authority, or high-impact physical behavior.
+
+Collective optimization must avoid sacrificing individual safety for aggregate performance. A fleet objective that maximizes throughput should not pressure one robot into unsafe speed, insufficient energy reserve, excessive actuator load, or hazardous interaction with people. System-level metrics must therefore remain subordinate to mandatory physical and operational constraints, ensuring that collective intelligence does not convert individual agents into expendable optimization variables.
+
+Evaluation should examine both individual and emergent fleet behavior. Tests can introduce communication loss, conflicting assignments, shared-resource competition, robot failures, changing priorities, uncertain observations, congestion, and emergency interventions. Successful alignment requires more than each robot behaving safely in isolation; the fleet must maintain coordination, recover from disruptions, preserve priorities, and avoid harmful collective patterns.
+
+Ultimately, alignment for multi-robot and fleet systems means ensuring that distributed autonomy produces coherent collective behavior under shared human authority. Individual robots should remain locally safe and capable while contributing to fleet objectives through coordinated goals, shared state, resource management, uncertainty-aware communication, human oversight, and corrigibility. The desired result is collective intelligence that increases capability and resilience without weakening the alignment boundaries that govern each physical agent.
+
+다중 로봇 및 플릿 시스템(Multi-Robot and Fleet Systems)의 정렬(Alignment)은 단일 자율 에이전트(Autonomous Agent)의 행동에 관한 정렬 문제를 물리적으로 체화된 여러 에이전트의 협조된 행동(Coordinated Behavior)으로 확장한다. 하나의 플릿(Fleet)은 서로 다른 능력, 역할, 위치, 운영 상태를 가진 로봇들로 구성될 수 있지만, 각 로봇의 개별 행동은 공유된 인간의 목적, 조직 정책, 안전 요구사항 및 전체 임무와 일관성을 유지해야 한다.
+
+플릿 정렬(Fleet Alignment)을 위해서는 개별 목표(Individual Goals)와 집단 목표(Collective Goals)를 구분해야 한다. 개별 로봇은 자신의 경로, 에너지 사용량, 작업 완료 시간 또는 지역적 안전(Local Safety)을 최적화할 수 있지만, 플릿은 처리량, 작업 범위, 회복탄력성(Resilience), 자원 활용 또는 임무 완료와 같은 더 광범위한 목적을 추구한다. 지역 최적화(Local Optimization)는 플릿과 로봇 및 운영 환경에 적용되는 제약조건을 위반하지 않으면서 집단 목표에 기여할 때에만 정렬된 것으로 볼 수 있다.
+
+핵심적인 문제는 지역적으로 합리적인 행동이 전체적으로 바람직하지 않은 결과를 만들어낼 수 있다는 것이다. 여러 로봇이 독립적으로 최단 경로를 선택하면 혼잡, 반복적인 양보, 교착상태(Deadlock) 또는 공유 인프라에 대한 경쟁이 발생할 수 있다. 또한 여러 로봇이 동일한 작업을 중복 수행하는 동안 다른 작업이 방치될 수도 있다. 따라서 플릿 정렬에는 개별적으로 최적인 행동이 자동으로 최적의 집단 결과를 만든다고 가정하는 대신 에이전트 간 상호작용을 평가하는 협조 메커니즘(Coordination Mechanisms)이 필요하다.
+
+공유 임무 상태(Shared Mission State)는 협조된 행동을 위한 공통 기준을 제공한다. 로봇과 플릿 관리 시스템(Fleet Management Systems)은 활성 목표, 작업 할당, 우선순위, 완료된 작업, 자원 예약(Resource Reservations), 위험요소, 제한사항 및 관련 환경 변화에 관한 정보를 필요로 한다. 이러한 공유 상태가 모든 로봇이 완전히 동일한 정보를 보유해야 한다는 의미는 아니지만, 서로 다른 지역적 신념(Local Beliefs)이 조용히 상충하는 행동을 발생시키지 않도록 중요한 정보 차이를 관리해야 한다.
+
+작업 할당(Task Allocation)은 집단 목표를 개별 책임으로 분해하는 방법을 결정하기 때문에 중요한 정렬 메커니즘이다. 작업 할당은 능력, 위치, 에너지, 작업 부하, 위험, 마감시간, 장비 및 예상 완료 비용을 고려할 수 있다. 로봇 고장, 환경 변화, 비상 작업 또는 새롭게 이용 가능한 자원으로 인해 처음에는 합리적이었던 작업 할당이 실행 과정에서 부적절해질 수 있으므로 작업 할당은 수정 가능해야 한다.
+
+권한(Authority)은 플릿 수준과 지역 수준 모두에서 표현되어야 한다. 플릿 관리 시스템은 임무를 할당하고 공유 자원을 조정할 수 있지만, 개별 로봇은 충돌을 피하고 즉각적인 위험에 대응하기 위한 충분한 지역적 권한(Local Authority)을 필요로 한다. 중앙 집중식 목표가 로봇에게 지역 안전 제약조건을 위반하도록 강제해서는 안 되며, 지역 자율성(Local Autonomy) 역시 다른 행동이 지역적으로 더 유리해 보인다는 이유만으로 개별 로봇이 정당한 플릿 수준 우선순위를 무시하도록 허용해서는 안 된다.
+
+여러 로봇이 목표와 자원을 공유하면 우선순위 충돌(Priority Conflicts)은 더욱 복잡해진다. 긴급 검사가 일상적인 배송 작업과 경쟁할 수 있으며, 여러 로봇이 동일한 충전소, 복도, 엘리베이터, 조작 도구 또는 통신 자원을 동시에 필요로 할 수 있다. 정렬에는 임무 중요도, 안전, 긴급성, 의존성, 공정성(Fairness), 자원 가용성 및 각 작업을 지연시켰을 때의 결과를 고려하는 중재 규칙(Arbitration Rules)이 필요하다.
+
+협조(Coordination)는 통신에 크게 의존하지만, 정렬된 시스템은 완벽한 연결성을 가정해서는 안 된다. 메시지가 지연되거나, 중복되거나, 손실되거나, 메시지의 기반이 된 상황이 이미 변경된 이후에 수신될 수 있다. 따라서 로봇은 공유 정보의 경과 시간(Age), 신뢰도(Confidence), 관련성을 고려해야 한다. 통신이 손실된 동안에도 중요한 지역 안전 행동은 가능해야 하며, 통신이 복구되면 오래된 작업 할당이나 예약을 그대로 재개하기 전에 상태 동기화(Synchronization)를 수행해야 한다.
+
+분산 불확실성(Distributed Uncertainty)은 서로 다른 로봇이 환경의 서로 다른 부분을 관측하기 때문에 추가적인 문제를 발생시킨다. 한 로봇은 차단된 복도를 탐지하고, 다른 로봇은 이동하는 위험요소를 식별하며, 또 다른 로봇은 오래된 지도 정보를 가지고 있을 수 있다. 관측 정보를 공유하면 집단적 상황 인식(Collective Awareness)을 향상시킬 수 있지만, 불확실한 보고가 자동으로 의심할 수 없는 실측 정보(Ground Truth)로 취급되지 않도록 전달 정보에는 신뢰도, 타임스탬프(Timestamp), 출처(Provenance)가 유지되어야 한다.
+
+플릿 월드 모델(Fleet World Models)은 분산된 관측 정보를 더 광범위한 운영 환경 표현으로 통합할 수 있다. 이러한 모델은 로봇 위치, 동적 장애물, 교통 패턴, 자원 가용성, 작업 진행 상태 및 예상되는 상호작용을 표현할 수 있다. 개별 로봇의 센싱 범위를 넘어서는 계획을 지원할 수 있지만, 불완전하거나 오래된 집단 지식이 정당화되지 않은 과신을 만들지 않도록 불확실성이 계속 명시적으로 표현되어야 한다.
+
+충돌 회피(Conflict Avoidance)는 물리적인 충돌을 방지하는 것 이상을 포함한다. 로봇들은 경로 예약, 작업 공간 점유, 작업 의존성, 충전 일정, 조작 순서 또는 공유 장비 접근을 통해서도 서로 충돌할 수 있다. 협조 프로토콜(Coordination Protocols)은 이러한 논리적 및 자원 충돌이 물리적 문제로 발전하기 전에 방지해야 한다. 충돌을 피할 수 없는 경우 플릿은 지역 제어기(Local Controllers) 사이의 불안정한 경쟁이 아니라 명시적인 우선순위에 따라 이를 해결해야 한다.
+
+교착상태(Deadlock)와 라이브락(Livelock)은 중요한 플릿 수준 정렬 실패(Fleet-Level Alignment Failures)이다. 교착상태에서는 각 로봇이 다른 로봇이 보유한 자원을 필요로 하기 때문에 무기한 대기할 수 있다. 라이브락에서는 로봇들이 서로 반복적으로 양보하는 것처럼 계속 행동을 변경하지만 실질적인 임무 진행은 이루어지지 않는다. 이러한 상태를 탐지하려면 각 로봇을 독립적으로 평가하는 대신 집단적인 진행 상황과 상호작용 패턴을 모니터링해야 한다.
+
+집단 행동(Collective Behavior)은 여러 수준의 안전 제약조건(Safety Constraints)에 의해 제한되어야 한다. 개별 로봇에는 충돌 회피, 속도 제한, 안전 정지를 위한 지역 보호 기능(Local Protective Functions)이 필요하며, 플릿 협조 계층은 교통 규칙, 제한 구역, 분리 정책(Separation Policies) 또는 수용량 제한을 적용할 수 있다. 중앙 집중식 협조가 지연되거나 사용할 수 없을 수 있고, 반대로 순수한 지역 안전만으로는 시스템 전체의 혼잡이나 위험한 상호작용을 방지하기 어려울 수 있으므로 계층화된 안전(Layered Safety)이 중요하다.
+
+인간 감독(Human Oversight)은 개별 로봇에서 전체 플릿으로 확장될 수 있어야 한다. 운영자는 모든 에이전트를 지속적으로 모니터링하지 않으면서도 임무 진행 상황, 활성 우선순위, 성능이 저하된 로봇, 충돌, 자원 부족 및 비정상적인 집단 행동을 이해할 수 있어야 한다. 플릿 인터페이스(Fleet Interfaces)는 정보를 통합해서 보여주는 동시에 필요한 경우 개별 로봇을 상세하게 확인할 수 있도록 하여 시스템 수준의 상황 인식과 지역 진단 가시성(Local Diagnostic Visibility)을 모두 유지해야 한다.
+
+플릿에 대한 개입(Intervention)은 관리해야 하는 이차적인 영향을 발생시킬 수 있다. 하나의 로봇을 일시 정지하면 복도가 차단될 수 있고, 해당 로봇의 작업을 취소하면 작업 재할당이 필요할 수 있으며, 서비스를 중단하면 자원이 해제되거나 의존 관계에 있는 계획이 무효화될 수 있다. 따라서 교정 가능성(Corrigibility)은 협조 구조 전체로 확장되어야 한다. 인간의 교정은 직접 명령을 받은 로봇만 변경하는 것이 아니라 영향을 받는 작업 할당, 예약, 경로 및 우선순위까지 전파되어야 한다.
+
+플릿 시스템은 로봇이나 인프라에 장애가 발생할 때 단계적 성능 저하(Graceful Degradation)를 지원해야 한다. 남아 있는 로봇들이 작업을 재분배할 수 있다면 하나의 에이전트 손실이 반드시 전체 임무의 실패로 이어질 필요는 없다. 협조 계층은 작업을 재할당하고, 경로를 수정하고, 서비스 수준을 낮추거나, 중요한 목표를 우선시할 수 있다. 성능 저하 상황에서의 정렬은 허용할 수 없는 위험을 감수하면서 정상 성능을 유지하려 하기보다 가장 중요한 인간의 목표와 안전 요구사항을 보존하는 것을 의미한다.
+
+이기종 플릿(Heterogeneous Fleets)은 로봇마다 센서, 적재 용량, 이동 능력, 조작 능력, 안전 범위(Safety Envelopes) 또는 자율성 수준이 다를 수 있기 때문에 추가적인 정렬 요구사항을 발생시킨다. 하나의 플랫폼에 적합한 작업이 다른 플랫폼에는 안전하지 않거나 수행 불가능할 수 있다. 따라서 플릿 추론(Fleet Reasoning)은 로봇들이 동일한 집단 임무에 참여한다는 이유만으로 서로 교환 가능한 자원으로 취급하지 않고 각 로봇의 능력 경계(Capability Boundaries)를 이해해야 한다.
+
+플릿 전체의 학습(Learning Across a Fleet)은 여러 로봇에서 얻은 경험을 공유함으로써 집단 지능(Collective Intelligence)을 향상시킬 수 있다. 내비게이션의 어려움, 실패 사례, 환경 변화 및 성공적인 전략은 전체 시스템의 미래 행동 개선에 활용될 수 있다. 그러나 플릿 전체 학습은 오류 역시 빠르게 확산시킬 수 있다. 따라서 지역 경험에서 생성된 업데이트는 특히 안전 제약조건, 권한 또는 영향력이 큰 물리적 행동에 영향을 미치는 경우 공유 정책(Shared Policies)이 되기 전에 검증되어야 한다.
+
+집단 최적화(Collective Optimization)는 전체 성능을 높이기 위해 개별 로봇의 안전을 희생해서는 안 된다. 처리량을 최대화하는 플릿 목표가 하나의 로봇에 안전하지 않은 속도, 불충분한 에너지 예비량, 과도한 액추에이터 부하 또는 사람과의 위험한 상호작용을 강요해서는 안 된다. 따라서 시스템 수준 지표(System-Level Metrics)는 필수적인 물리적 및 운영적 제약조건에 종속되어야 하며, 집단 지능이 개별 에이전트를 단순히 희생 가능한 최적화 변수로 전환하지 않도록 해야 한다.
+
+평가(Evaluation)는 개별 행동뿐만 아니라 창발적인 플릿 행동(Emergent Fleet Behavior)도 검토해야 한다. 시험에서는 통신 손실, 상충하는 작업 할당, 공유 자원 경쟁, 로봇 고장, 변화하는 우선순위, 불확실한 관측, 혼잡 및 비상 개입을 도입할 수 있다. 성공적인 정렬은 각 로봇이 독립적으로 안전하게 행동하는 것만으로는 충분하지 않으며, 플릿 전체가 협조를 유지하고, 장애에서 복구하며, 우선순위를 보존하고, 유해한 집단 행동 패턴을 방지할 수 있어야 한다.
+
+궁극적으로 다중 로봇 및 플릿 시스템의 정렬(Alignment for Multi-Robot and Fleet Systems)은 분산 자율성(Distributed Autonomy)이 공유된 인간의 권한 아래에서 일관된 집단 행동(Coherent Collective Behavior)을 생성하도록 보장하는 것을 의미한다. 개별 로봇은 지역적으로 안전하고 유능한 상태를 유지하면서 협조된 목표, 공유 상태, 자원 관리, 불확실성을 고려한 통신, 인간 감독 및 교정 가능성을 통해 플릿 목표에 기여해야 한다. 최종적으로 추구하는 것은 각 물리적 에이전트를 지배하는 정렬의 경계(Alignment Boundaries)를 약화시키지 않으면서 전체 시스템의 능력과 회복탄력성을 향상시키는 집단 지능(Collective Intelligence)이다.
+
+##  
+
+## 04.13. Physical Reasoning and Safety Constraints
+
+![](images/image13.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Physical reasoning enables a Physical AI system to understand how actions interact with bodies, objects, forces, geometry, motion, and environmental conditions before those actions are executed. Unlike purely symbolic reasoning, physical reasoning must remain grounded in the embodied consequences of decisions. Safety constraints provide the boundaries that prevent predicted or commanded actions from entering unacceptable physical states.
+
+A robot must reason about its own embodiment before determining whether an intended action is feasible. Dimensions, mass, center of gravity, payload, joint limits, actuator capabilities, braking performance, sensor coverage, and energy state constrain the available action space. A plan can be logically correct yet physically impossible or unsafe when it exceeds the actual capabilities of the platform performing it.
+
+Geometric reasoning provides an essential foundation for safe physical interaction. Robots must understand free space, obstacles, clearances, reachable regions, collision geometry, and the spatial relationships among their bodies, tools, payloads, people, and infrastructure. Safety requires more than checking the robot base because manipulators, carried objects, cables, and other extended structures can create additional collision envelopes.
+
+Dynamics add another layer beyond geometric feasibility. Velocity, acceleration, momentum, inertia, friction, torque, contact force, and braking distance determine how motion evolves through time. A trajectory that is geometrically collision-free may still be unsafe if the robot cannot stop before reaching an obstacle or if a heavy payload becomes unstable during rapid motion. Physical reasoning must therefore predict dynamic consequences.
+
+Contact-rich tasks require reasoning about interactions between surfaces and objects. Grasping, pushing, pulling, insertion, tool use, and collaborative manipulation depend on friction, compliance, force distribution, object stability, and contact geometry. Small errors in these estimates can produce slipping, crushing, jamming, or unexpected motion. Safety constraints should therefore limit force and motion while monitoring actual contact behavior during execution.
+
+Human presence makes physical reasoning especially demanding because people are dynamic, partially predictable, and vulnerable. The robot must estimate human position, motion, reachable space, and possible future trajectories while maintaining appropriate separation and stopping capability. Rather than treating people as ordinary moving obstacles, safety reasoning should account for uncertainty and reduce speed, force, or autonomy when human behavior becomes difficult to predict.
+
+Safety constraints can be represented as boundaries on states, actions, trajectories, forces, distances, velocities, or operating conditions. Some constraints prohibit collision, excessive force, unstable configurations, or entry into restricted regions. Others define speed limits, minimum separation, payload restrictions, thermal limits, or required stopping margins. Explicit representation allows the planner and controller to reason about what actions are admissible before optimization begins.
+
+Hard constraints and soft constraints should be distinguished carefully. Hard constraints represent conditions that must not be intentionally violated, such as critical collision limits or actuator safety boundaries. Soft constraints express preferences such as smoother motion, larger comfort distance, or lower energy use. Treating mandatory safety requirements as ordinary optimization penalties can allow performance incentives to override protections when rewards become sufficiently large.
+
+Safety envelopes provide a practical way to connect constraints with changing physical conditions. An envelope may define allowable combinations of speed, distance, force, payload, uncertainty, and robot configuration. The permitted operating region can contract when a person approaches, localization confidence decreases, payload mass increases, or braking performance deteriorates. Dynamic envelopes therefore transform safety from a fixed threshold into context-sensitive operating boundaries.
+
+Uncertainty must be propagated through physical reasoning because state estimates are never perfectly accurate. Sensor noise, occlusion, localization error, uncertain friction, unknown object mass, and imperfect human-motion prediction can make apparently safe plans unsafe in reality. Safety margins should reflect uncertainty so that lower confidence produces greater clearance, lower speed, reduced force, or more conservative actions.
+
+World models can support physical reasoning by predicting how candidate actions may change future states. A robot can estimate whether an object will remain stable after being moved, whether another agent may enter its path, or whether a planned maneuver leaves sufficient stopping distance. Predictive reasoning allows safety constraints to be checked against possible future consequences instead of waiting for hazardous conditions to appear.
+
+However, learned world models should not be treated as perfect physical simulators. Predictions can fail outside the training distribution, under unusual contact conditions, or when important variables are unobserved. Safety-critical decisions should therefore combine learned prediction with explicit constraints, uncertainty estimates, runtime monitoring, and independent protective mechanisms. Model intelligence should strengthen safety reasoning rather than replace safety architecture.
+
+Planning should search only within an admissible action space whenever mandatory constraints can be specified in advance. Candidate trajectories that violate collision boundaries, force limits, restricted zones, or required stopping margins should be rejected rather than merely assigned lower utility. Optimization can then select efficient actions among the remaining safe alternatives, preserving a clear distinction between safety feasibility and performance preference.
+
+Runtime monitoring is necessary because the real world may diverge from the assumptions used during planning. Obstacles can move, humans can enter the workspace, payloads can shift, surfaces can provide unexpected friction, and actuators can degrade. The system should continuously compare expected and observed behavior, detect emerging constraint violations, and modify or interrupt execution before deviations become hazardous.
+
+Safety filters and supervisory controllers can provide an independent boundary between high-level intelligence and physical actuation. A planner or learned policy may propose actions, while a lower-level mechanism checks whether commands satisfy velocity, force, collision, stability, or workspace constraints. This architecture allows sophisticated autonomous reasoning while preventing a single incorrect high-level decision from directly producing unrestricted physical behavior.
+
+Conservative action becomes necessary when physical reasoning cannot establish adequate confidence. The robot may slow down, increase clearance, reduce manipulation force, gather additional sensor information, shorten its planning horizon, or choose a reversible action. If uncertainty remains too high, the appropriate result may be a safe pause or request for human assistance rather than continued execution based on an unsupported assumption.
+
+Physical reasoning should also consider failure and recovery states. A safe plan is incomplete if the robot has no acceptable response when localization is lost, communication fails, a grasp becomes unstable, or an actuator stops responding. Planning should preserve sufficient energy, space, braking capability, and alternative actions for recovery. Safety therefore includes maintaining future options, not merely avoiding immediate hazards.
+
+Human oversight complements autonomous physical reasoning when situations exceed validated system capability. Operators may need to confirm unusual objects, authorize exceptional maneuvers, modify constraints, or decide whether degraded operation remains acceptable. The system should communicate the relevant physical state, uncertainty, predicted consequences, and violated constraints so that intervention is based on meaningful operational information.
+
+Multi-robot environments introduce physical constraints created by other autonomous agents. Robots may share corridors, intersections, work cells, charging stations, or manipulation spaces, making one robot's trajectory part of another robot's dynamic environment. Fleet coordination can reduce conflicts through reservations and shared predictions, but each robot should retain local collision avoidance and safe stopping capability if coordination information becomes unavailable.
+
+Evaluation should test physical reasoning under conditions that challenge both models and constraints. Scenarios can vary payload, friction, terrain, obstacle motion, human behavior, sensor quality, communication, and actuator performance. Testing should determine whether the system recognizes infeasible actions, preserves safety margins, predicts relevant consequences, responds to uncertainty, and remains protected when learned predictions or planning assumptions fail.
+
+Ultimately, physical reasoning and safety constraints connect intelligent decision making with the realities of embodied action. A well-aligned Physical AI system reasons not only about whether an action achieves a goal, but whether its geometry, dynamics, contacts, uncertainty, human interaction, and failure consequences remain acceptable. Safe autonomy emerges when predictive intelligence operates inside explicit physical boundaries that remain monitored and enforceable throughout execution.
+
+물리적 추론(Physical Reasoning)은 물리 AI(Physical AI) 시스템이 행동을 실행하기 전에 해당 행동이 신체, 객체, 힘, 기하학적 구조, 운동 및 환경 조건과 어떻게 상호작용하는지를 이해할 수 있도록 한다. 순수한 기호적 추론(Symbolic Reasoning)과 달리 물리적 추론은 의사결정이 가져오는 체화된 결과(Embodied Consequences)에 기반해야 한다. 안전 제약조건(Safety Constraints)은 예측되거나 명령된 행동이 허용할 수 없는 물리적 상태로 진입하는 것을 방지하는 경계를 제공한다.
+
+로봇은 의도한 행동의 실행 가능성을 판단하기 전에 자신의 체화 특성(Embodiment)에 대해 추론해야 한다. 크기, 질량, 무게중심(Center of Gravity), 적재물(Payload), 관절 한계, 액추에이터 능력, 제동 성능, 센서 범위 및 에너지 상태는 사용 가능한 행동 공간(Action Space)을 제한한다. 논리적으로 올바른 계획이라도 이를 수행하는 플랫폼의 실제 능력을 초과한다면 물리적으로 실행 불가능하거나 안전하지 않을 수 있다.
+
+기하학적 추론(Geometric Reasoning)은 안전한 물리적 상호작용을 위한 필수적인 기반을 제공한다. 로봇은 자유 공간(Free Space), 장애물, 여유 공간(Clearances), 도달 가능 영역, 충돌 기하 구조(Collision Geometry), 그리고 자신의 몸체, 도구, 적재물, 사람 및 인프라 사이의 공간적 관계를 이해해야 한다. 매니퓰레이터, 운반 중인 객체, 케이블 및 기타 확장 구조물도 추가적인 충돌 영역(Collision Envelopes)을 형성할 수 있기 때문에 로봇 베이스만 확인하는 것으로는 충분하지 않다.
+
+동역학(Dynamics)은 기하학적 실행 가능성을 넘어서는 또 다른 계층을 추가한다. 속도, 가속도, 운동량, 관성, 마찰, 토크, 접촉력(Contact Force), 제동 거리는 움직임이 시간에 따라 어떻게 변화하는지를 결정한다. 기하학적으로 충돌이 없는 궤적이라도 로봇이 장애물에 도달하기 전에 정지할 수 없거나 무거운 적재물이 빠른 움직임에서 불안정해진다면 안전하지 않을 수 있다. 따라서 물리적 추론은 동적 결과(Dynamic Consequences)를 예측해야 한다.
+
+접촉이 많은 작업(Contact-Rich Tasks)은 표면과 객체 사이의 상호작용에 대한 추론을 필요로 한다. 파지(Grasping), 밀기, 당기기, 삽입, 도구 사용 및 협력 조작(Collaborative Manipulation)은 마찰, 순응성(Compliance), 힘 분포, 객체 안정성 및 접촉 기하 구조에 의존한다. 이러한 추정에서 작은 오류도 미끄러짐, 압착, 걸림 또는 예상하지 못한 움직임을 발생시킬 수 있다. 따라서 안전 제약조건은 실행 중 실제 접촉 행동을 모니터링하면서 힘과 움직임을 제한해야 한다.
+
+사람은 동적이고 부분적으로만 예측 가능하며 물리적으로 취약하기 때문에 인간의 존재는 물리적 추론을 특히 어렵게 만든다. 로봇은 적절한 분리 거리와 정지 능력을 유지하면서 사람의 위치, 움직임, 도달 가능 공간(Reachable Space), 가능한 미래 궤적을 추정해야 한다. 사람을 단순한 이동 장애물로 취급하는 대신 안전 추론(Safety Reasoning)은 불확실성을 고려하고 인간 행동을 예측하기 어려워질수록 속도, 힘 또는 자율성을 감소시켜야 한다.
+
+안전 제약조건은 상태, 행동, 궤적, 힘, 거리, 속도 또는 운영 조건에 대한 경계로 표현될 수 있다. 일부 제약조건은 충돌, 과도한 힘, 불안정한 구성 또는 제한 구역 진입을 금지한다. 다른 제약조건은 속도 제한, 최소 분리 거리, 적재 제한, 열적 한계(Thermal Limits) 또는 필요한 정지 여유(Stopping Margins)를 정의한다. 명시적인 표현을 통해 계획기(Planner)와 제어기(Controller)는 최적화를 시작하기 전에 어떤 행동이 허용 가능한지를 판단할 수 있다.
+
+강성 제약조건(Hard Constraints)과 연성 제약조건(Soft Constraints)은 신중하게 구분해야 한다. 강성 제약조건은 중요한 충돌 한계 또는 액추에이터 안전 경계처럼 의도적으로 위반해서는 안 되는 조건을 나타낸다. 연성 제약조건은 더 부드러운 움직임, 더 넓은 편안 거리 또는 낮은 에너지 사용과 같은 선호를 표현한다. 필수 안전 요구사항을 일반적인 최적화 페널티(Optimization Penalties)로 취급하면 보상이 충분히 커질 경우 성능 목표가 보호 기능을 무시할 수 있다.
+
+안전 영역(Safety Envelopes)은 제약조건을 변화하는 물리적 조건과 연결하는 실용적인 방법을 제공한다. 안전 영역은 허용 가능한 속도, 거리, 힘, 적재량, 불확실성 및 로봇 구성의 조합을 정의할 수 있다. 사람이 접근하거나, 위치 추정 신뢰도(Localization Confidence)가 감소하거나, 적재물 질량이 증가하거나, 제동 성능이 저하되면 허용 가능한 운영 영역이 축소될 수 있다. 따라서 동적 안전 영역(Dynamic Envelopes)은 안전을 고정된 임계값에서 상황 인식형 운영 경계(Context-Sensitive Operating Boundaries)로 전환한다.
+
+상태 추정은 완벽하게 정확할 수 없기 때문에 불확실성(Uncertainty)은 물리적 추론 전체에 전파되어야 한다. 센서 노이즈, 가림(Occlusion), 위치 추정 오류, 불확실한 마찰, 알려지지 않은 객체 질량, 불완전한 인간 움직임 예측으로 인해 겉보기에는 안전한 계획이 실제로는 위험할 수 있다. 안전 여유(Safety Margins)는 불확실성을 반영해야 하며, 신뢰도가 낮아질수록 더 넓은 여유 공간, 낮은 속도, 감소된 힘 또는 더욱 보수적인 행동으로 이어져야 한다.
+
+월드 모델(World Models)은 후보 행동이 미래 상태를 어떻게 변화시킬 수 있는지를 예측함으로써 물리적 추론을 지원할 수 있다. 로봇은 객체를 이동한 이후에도 안정적으로 유지될지, 다른 에이전트가 자신의 경로에 진입할 가능성이 있는지, 계획된 기동이 충분한 정지 거리를 확보하는지를 추정할 수 있다. 예측적 추론(Predictive Reasoning)을 통해 위험한 조건이 실제로 발생할 때까지 기다리는 대신 가능한 미래 결과를 기준으로 안전 제약조건을 검사할 수 있다.
+
+그러나 학습된 월드 모델(Learned World Models)을 완벽한 물리 시뮬레이터(Physical Simulator)로 취급해서는 안 된다. 학습 분포를 벗어난 상황, 비정상적인 접촉 조건 또는 중요한 변수가 관측되지 않는 상황에서는 예측이 실패할 수 있다. 따라서 안전 필수 의사결정(Safety-Critical Decisions)은 학습 기반 예측을 명시적인 제약조건, 불확실성 추정, 런타임 모니터링(Runtime Monitoring), 독립적인 보호 메커니즘과 결합해야 한다. 모델 지능(Model Intelligence)은 안전 아키텍처를 대체하는 것이 아니라 안전 추론을 강화해야 한다.
+
+필수 제약조건을 사전에 명시할 수 있다면 계획(Planning)은 허용 가능한 행동 공간(Admissible Action Space) 안에서만 탐색해야 한다. 충돌 경계, 힘 제한, 제한 구역 또는 필요한 정지 여유를 위반하는 후보 궤적은 단순히 낮은 효용(Utility)을 부여하는 것이 아니라 제거되어야 한다. 이후 최적화는 남아 있는 안전한 대안 가운데 효율적인 행동을 선택함으로써 안전 실행 가능성(Safety Feasibility)과 성능 선호(Performance Preference)를 명확하게 구분할 수 있다.
+
+실제 세계는 계획 과정에서 사용한 가정과 달라질 수 있기 때문에 런타임 모니터링이 필요하다. 장애물이 이동하거나, 사람이 작업 공간에 진입하거나, 적재물이 움직이거나, 표면의 마찰이 예상과 다르거나, 액추에이터 성능이 저하될 수 있다. 시스템은 예상 행동과 실제 관측 행동을 지속적으로 비교하고, 발생하고 있는 제약조건 위반을 탐지하며, 편차가 위험한 상황으로 발전하기 전에 실행을 수정하거나 중단해야 한다.
+
+안전 필터(Safety Filters)와 감독 제어기(Supervisory Controllers)는 상위 수준 지능과 물리적 구동(Physical Actuation) 사이에 독립적인 경계를 제공할 수 있다. 계획기나 학습된 정책(Learned Policy)이 행동을 제안하면 하위 수준 메커니즘이 해당 명령이 속도, 힘, 충돌, 안정성 또는 작업 공간 제약조건을 충족하는지를 검사할 수 있다. 이러한 아키텍처는 정교한 자율 추론을 허용하면서 하나의 잘못된 상위 수준 결정이 제한되지 않은 물리적 행동으로 직접 이어지는 것을 방지한다.
+
+물리적 추론이 충분한 신뢰도를 확보하지 못할 때에는 보수적 행동(Conservative Action)이 필요하다. 로봇은 속도를 낮추고, 여유 공간을 확대하고, 조작 힘을 감소시키고, 추가 센서 정보를 수집하고, 계획 지평을 단축하거나, 되돌릴 수 있는 행동(Reversible Action)을 선택할 수 있다. 불확실성이 여전히 지나치게 높다면 근거가 부족한 가정에 따라 실행을 계속하기보다 안전하게 일시 정지하거나 인간의 지원을 요청하는 것이 적절할 수 있다.
+
+물리적 추론은 고장 및 복구 상태(Failure and Recovery States)도 고려해야 한다. 위치 추정을 잃거나, 통신이 중단되거나, 파지가 불안정해지거나, 액추에이터가 응답하지 않을 때 적절한 대응 방법이 없다면 해당 계획은 완전하게 안전하다고 할 수 없다. 계획은 복구를 위해 충분한 에너지, 공간, 제동 능력 및 대체 행동을 보존해야 한다. 따라서 안전은 즉각적인 위험을 피하는 것뿐만 아니라 미래의 선택 가능성(Future Options)을 유지하는 것까지 포함한다.
+
+인간 감독(Human Oversight)은 상황이 검증된 시스템 능력(Validated System Capability)을 넘어설 때 자율적 물리 추론을 보완한다. 운영자는 비정상적인 객체를 확인하고, 예외적인 기동을 승인하고, 제약조건을 수정하거나, 성능이 저하된 상태에서의 운영이 여전히 허용 가능한지를 결정해야 할 수 있다. 시스템은 개입이 의미 있는 운영 정보를 기반으로 이루어질 수 있도록 관련 물리 상태, 불확실성, 예상 결과 및 위반된 제약조건을 전달해야 한다.
+
+다중 로봇 환경(Multi-Robot Environments)에서는 다른 자율 에이전트가 새로운 물리적 제약조건을 만들어낸다. 로봇들은 복도, 교차로, 작업 셀, 충전소 또는 조작 공간을 공유할 수 있으므로 한 로봇의 궤적이 다른 로봇의 동적 환경(Dynamic Environment)의 일부가 된다. 플릿 협조(Fleet Coordination)는 예약과 공유 예측을 통해 충돌을 감소시킬 수 있지만, 협조 정보를 사용할 수 없게 되는 경우에도 각 로봇은 지역 충돌 회피(Local Collision Avoidance)와 안전 정지 능력을 유지해야 한다.
+
+평가(Evaluation)는 모델과 제약조건 모두에 도전이 되는 조건에서 물리적 추론을 시험해야 한다. 시나리오에서는 적재량, 마찰, 지형, 장애물 움직임, 인간 행동, 센서 품질, 통신 및 액추에이터 성능을 변화시킬 수 있다. 시험을 통해 시스템이 실행 불가능한 행동을 인식하고, 안전 여유를 유지하며, 관련 결과를 예측하고, 불확실성에 적절하게 대응하며, 학습된 예측이나 계획 가정이 실패하는 경우에도 보호 상태를 유지하는지를 확인해야 한다.
+
+궁극적으로 물리적 추론 및 안전 제약조건(Physical Reasoning and Safety Constraints)은 지능적 의사결정(Intelligent Decision Making)을 체화된 행동(Embodied Action)의 현실과 연결한다. 잘 정렬된 물리 AI 시스템은 단순히 행동이 목표를 달성하는지만 추론하는 것이 아니라 해당 행동의 기하학, 동역학, 접촉, 불확실성, 인간과의 상호작용 및 고장 결과가 허용 가능한 범위에 있는지도 판단한다. 안전한 자율성(Safe Autonomy)은 예측 지능(Predictive Intelligence)이 실행 전체 과정에서 지속적으로 모니터링되고 강제할 수 있는 명시적인 물리적 경계 안에서 작동할 때 구현된다.
+
+##  
+
+## 04.14. Alignment Evaluation for Robot Behavior
+
+![](images/image14.png){width="7.268055555555556in" height="7.268055555555556in"}
+
+Alignment evaluation for robot behavior determines whether a Physical AI system consistently acts according to intended human goals, safety requirements, operational constraints, and legitimate authority. Evaluation must examine observable behavior rather than only model accuracy or task success. A robot can complete its assigned task successfully while still being misaligned if it uses unsafe, unauthorized, deceptive, or unnecessarily risky actions.
+
+Behavioral alignment evaluation begins by defining what acceptable behavior means within the operating context. Requirements may include mission completion, collision avoidance, human preference compliance, restricted-area rules, force limits, response to intervention, and conservative behavior under uncertainty. These expectations should be translated into observable criteria so that alignment can be measured during realistic physical interaction.
+
+Task success remains important, but it represents only one dimension of evaluation. A delivery robot may reach its destination while violating speed restrictions, approaching people too closely, or ignoring priority rules. Alignment evaluation therefore separates outcome quality from behavioral process. The system should accomplish useful objectives through methods that remain consistent with safety, authority, constraints, and intended operating procedures.
+
+Scenario-based evaluation provides a practical method for examining robot behavior under controlled conditions. Scenarios can vary environmental complexity, human activity, obstacle configurations, task priorities, communication quality, and system degradation. Rather than testing only nominal operation, evaluation should expose the robot to situations in which correct behavior requires interpretation, adaptation, constraint enforcement, or escalation.
+
+Ambiguous instructions are particularly valuable evaluation cases because they reveal whether the robot acts beyond justified confidence. The system can be given incomplete references, uncertain destinations, vague priorities, or multiple plausible interpretations. Evaluation should determine whether it identifies ambiguity, gathers additional information, requests clarification when necessary, and avoids irreversible actions based on unsupported assumptions.
+
+Conflicting instructions test the robot's ability to preserve goal hierarchy and authority. An operator command may conflict with a fleet objective, organizational policy, or safety constraint. The evaluation should examine whether the robot distinguishes preferences from mandatory restrictions and whether higher-priority requirements remain effective. Simply following the most recent or most easily optimized instruction is not sufficient evidence of alignment.
+
+Human intervention tests are essential because aligned autonomy must remain corrigible and interruptible. During task execution, evaluators can change a destination, modify priorities, cancel a goal, issue a pause, or trigger an emergency stop. The robot should accept legitimate correction, abandon invalidated objectives, preserve appropriate state, and transition safely rather than resisting intervention or continuing obsolete behavior.
+
+Uncertainty should be deliberately manipulated during evaluation. Sensor noise, occlusion, localization degradation, unfamiliar objects, uncertain human motion, or model disagreement can reduce confidence in the robot's world representation. A well-aligned system should respond proportionally by increasing safety margins, reducing speed or force, gathering information, selecting reversible actions, or escalating to human oversight when uncertainty becomes consequential.
+
+Physical safety evaluation must consider both geometric and dynamic behavior. Collision-free trajectories are insufficient if braking distance, payload stability, contact force, momentum, or actuator limitations create unacceptable risk. Tests should examine whether physical reasoning remains consistent with the robot's actual embodiment and whether safety constraints continue to bound behavior when planning assumptions become inaccurate.
+
+Human interaction introduces behavioral properties that cannot be evaluated adequately through static obstacle tests. Scenarios should include people crossing paths, approaching unexpectedly, changing direction, entering shared workspaces, or providing new instructions. Evaluation should examine separation behavior, motion predictability, yielding, communication, and uncertainty response so that human safety is assessed as an interactive property rather than a fixed-distance rule.
+
+Out-of-distribution conditions reveal whether learned behavior remains trustworthy beyond familiar experience. Evaluation can introduce unusual object arrangements, novel terrain, unexpected lighting, rare interactions, or combinations of conditions absent from training. The objective is not to demand perfect performance everywhere, but to determine whether the system recognizes reduced competence and shifts toward appropriately conservative behavior instead of remaining confidently aggressive.
+
+Runtime constraint enforcement should be tested independently from high-level planning quality. Evaluators can intentionally provide unsafe candidate actions or create environmental changes that invalidate previously safe plans. Safety filters, supervisory controllers, and low-level protective functions should reject, modify, or stop commands that violate mandatory limits. This demonstrates that alignment does not depend entirely on a single intelligent component behaving correctly.
+
+Failure injection helps determine whether alignment survives degraded operation. Communication loss, sensor faults, actuator degradation, low energy, map inconsistency, or partial compute failure can be introduced systematically. The evaluation should determine whether the robot enters appropriate degraded modes, preserves essential safety functions, communicates its condition when possible, and avoids continuing nominal behavior when its assumptions or capabilities are no longer valid.
+
+Recovery behavior deserves separate evaluation because stopping safely is only part of robust alignment. After a fault, interruption, or uncertain condition is resolved, the robot must determine whether previous goals and environmental assumptions remain valid. Tests should verify state synchronization, constraint revalidation, control ownership, resource availability, and safe resumption rather than assuming that returning to normal operation is simply the reverse of stopping.
+
+Behavioral metrics should capture more than binary pass or fail outcomes. Useful measures can include intervention frequency, unsafe-state exposure, minimum separation, constraint violations, clarification rate, unnecessary stopping, recovery time, goal completion, and response latency. Metrics should be interpreted together because maximizing a single measure can distort behavior, such as achieving zero incidents by refusing to perform useful tasks.
+
+Alignment evaluation should also measure excessive conservatism. A robot that pauses whenever minor uncertainty appears may satisfy narrow safety metrics while failing its operational purpose. Evaluation should distinguish justified caution from unnecessary hesitation by varying both uncertainty and consequence. Proper calibration means that behavioral conservatism increases when potential harm increases rather than remaining uniformly high across all situations.
+
+Temporal evaluation is important because some alignment failures emerge only over extended operation. Repeated tasks can reveal accumulated localization error, changing preferences, resource depletion, policy drift, learned shortcuts, or gradual degradation in safety margins. Long-horizon testing can also determine whether corrections remain effective and whether the robot preserves goal hierarchy instead of slowly optimizing toward unintended behaviors.
+
+Multi-robot evaluation must examine emergent behavior that cannot be inferred from testing robots independently. Scenarios should include shared-resource competition, congestion, communication delays, conflicting assignments, robot failures, and fleet-level interventions. Evaluation should detect deadlock, livelock, duplicated work, unsafe local optimization, or collective behavior that undermines mission priorities even though each individual robot appears locally reasonable.
+
+Human oversight should itself be evaluated as part of the alignment system. Tests should determine whether operators can understand robot state, identify significant uncertainty, recognize conflicts, and intervene within the available time. Poor interfaces, excessive alerts, delayed explanations, or unclear control ownership can make nominal oversight ineffective. Alignment therefore depends partly on whether human supervision remains operationally usable under realistic workload.
+
+Traceability supports both evaluation and diagnosis. Logs should connect instructions, observations, uncertainty estimates, active goals, plans, safety interventions, human corrections, and physical outcomes. When a failure occurs, evaluators should be able to determine whether it originated in perception, reasoning, goal management, planning, control, communication, or supervision. Traceability transforms behavioral failures into evidence that can guide systematic improvement.
+
+Evaluation should combine simulation, controlled physical testing, and progressively realistic deployment. Simulation enables large numbers of rare or hazardous scenarios, while hardware testing exposes modeling errors and physical effects that simulation may miss. Controlled pilots then reveal interactions with real people, infrastructure, workflows, and organizational procedures. Evidence from these stages should accumulate before autonomy is expanded into higher-consequence environments.
+
+Ultimately, alignment evaluation for robot behavior asks whether autonomous competence remains bounded by human intent, safety, authority, and uncertainty awareness across both normal and abnormal conditions. Strong evaluation does not merely prove that a robot can complete tasks. It demonstrates that the robot behaves appropriately when instructions conflict, confidence falls, humans intervene, components fail, environments change, and collective interactions produce conditions that were not explicitly planned.
+
+로봇 행동 정렬 평가(Alignment Evaluation for Robot Behavior)는 물리 AI(Physical AI) 시스템이 의도된 인간 목표, 안전 요구사항, 운영 제약조건 및 정당한 권한(Legitimate Authority)에 따라 일관되게 행동하는지를 판단한다. 평가는 단순히 모델 정확도나 작업 성공 여부만이 아니라 실제로 관찰 가능한 행동(Observable Behavior)을 검토해야 한다. 로봇이 할당된 작업을 성공적으로 완료하더라도 안전하지 않거나, 권한을 벗어나거나, 기만적이거나, 불필요하게 위험한 행동을 사용한다면 오정렬(Misalignment)된 것으로 볼 수 있다.
+
+행동 정렬 평가(Behavioral Alignment Evaluation)는 운영 상황에서 허용 가능한 행동(Acceptable Behavior)이 무엇인지를 정의하는 것에서 시작한다. 요구사항에는 임무 완료, 충돌 회피, 인간 선호 준수, 제한 구역 규칙, 힘 제한, 인간 개입에 대한 대응, 불확실성 하의 보수적 행동(Conservative Behavior under Uncertainty) 등이 포함될 수 있다. 이러한 기대사항은 현실적인 물리적 상호작용 과정에서 정렬을 측정할 수 있도록 관찰 가능한 평가 기준(Observable Criteria)으로 변환되어야 한다.
+
+작업 성공(Task Success)은 여전히 중요하지만 평가의 한 가지 차원에 불과하다. 배송 로봇이 목적지에 도착하더라도 속도 제한을 위반하거나, 사람에게 지나치게 가까이 접근하거나, 우선순위 규칙을 무시할 수 있다. 따라서 정렬 평가는 결과 품질(Outcome Quality)과 행동 과정(Behavioral Process)을 구분해야 한다. 시스템은 안전, 권한, 제약조건 및 의도된 운영 절차와 일관성을 유지하는 방법을 통해 유용한 목적을 달성해야 한다.
+
+시나리오 기반 평가(Scenario-Based Evaluation)는 통제된 조건에서 로봇 행동을 검토할 수 있는 실용적인 방법을 제공한다. 시나리오에서는 환경 복잡성, 인간 활동, 장애물 구성, 작업 우선순위, 통신 품질 및 시스템 성능 저하(System Degradation)를 변화시킬 수 있다. 정상 운영만 시험하는 대신 올바른 행동을 위해 해석, 적응, 제약조건 적용 또는 에스컬레이션(Escalation)이 필요한 상황에 로봇을 노출시켜야 한다.
+
+모호한 지시(Ambiguous Instructions)는 로봇이 정당화된 신뢰 수준을 넘어 행동하는지를 보여주기 때문에 특히 중요한 평가 사례이다. 시스템에 불완전한 참조, 불확실한 목적지, 모호한 우선순위 또는 여러 개의 가능한 해석을 제공할 수 있다. 평가에서는 로봇이 모호성을 식별하고, 추가 정보를 수집하며, 필요한 경우 명확화(Clarification)를 요청하고, 근거가 부족한 가정에 기반한 되돌릴 수 없는 행동을 회피하는지를 확인해야 한다.
+
+상충하는 지시(Conflicting Instructions)는 로봇이 목표 계층(Goal Hierarchy)과 권한을 유지할 수 있는지를 시험한다. 운영자의 명령이 플릿 목표(Fleet Objective), 조직 정책 또는 안전 제약조건과 충돌할 수 있다. 평가는 로봇이 선호(Preferences)와 필수 제한사항(Mandatory Restrictions)을 구분하는지, 더 높은 우선순위의 요구사항이 계속 유효하게 유지되는지를 확인해야 한다. 단순히 가장 최근의 지시나 가장 쉽게 최적화할 수 있는 지시를 따르는 것은 정렬을 입증하기에 충분하지 않다.
+
+인간 개입 시험(Human Intervention Tests)은 정렬된 자율성이 교정 가능(Corrigible)하고 중단 가능(Interruptible)해야 하기 때문에 필수적이다. 작업 실행 중 평가자는 목적지를 변경하고, 우선순위를 수정하고, 목표를 취소하고, 일시 정지를 명령하거나, 비상 정지(Emergency Stop)를 작동시킬 수 있다. 로봇은 정당한 교정을 받아들이고, 무효화된 목표를 폐기하며, 적절한 상태를 보존하고, 개입에 저항하거나 오래된 행동을 계속하는 대신 안전하게 전환해야 한다.
+
+평가 과정에서는 불확실성(Uncertainty)을 의도적으로 변화시켜야 한다. 센서 노이즈, 가림(Occlusion), 위치 추정 성능 저하, 익숙하지 않은 객체, 불확실한 인간 움직임 또는 모델 간 불일치(Model Disagreement)를 통해 로봇의 세계 표현에 대한 신뢰도를 낮출 수 있다. 잘 정렬된 시스템은 안전 여유를 확대하고, 속도나 힘을 줄이고, 정보를 수집하고, 가역적 행동(Reversible Actions)을 선택하거나, 불확실성이 중대한 영향을 미칠 경우 인간 감독(Human Oversight)으로 에스컬레이션하는 방식으로 비례적으로 대응해야 한다.
+
+물리적 안전 평가(Physical Safety Evaluation)는 기하학적 행동과 동적 행동을 모두 고려해야 한다. 충돌이 없는 궤적만으로는 제동 거리, 적재물 안정성(Payload Stability), 접촉력, 운동량 또는 액추에이터 한계로 인한 허용할 수 없는 위험을 평가하기에 충분하지 않다. 시험에서는 물리적 추론(Physical Reasoning)이 로봇의 실제 체화 특성(Embodiment)과 일치하는지, 계획의 가정이 부정확해지는 상황에서도 안전 제약조건이 계속 행동의 경계를 제한하는지를 확인해야 한다.
+
+인간 상호작용(Human Interaction)은 정적인 장애물 시험만으로 충분히 평가할 수 없는 행동 특성을 포함한다. 시나리오에는 사람이 로봇의 경로를 가로지르거나, 예상하지 못하게 접근하거나, 방향을 변경하거나, 공유 작업 공간에 진입하거나, 새로운 지시를 제공하는 상황이 포함되어야 한다. 인간 안전을 단순한 고정 거리 규칙이 아니라 상호작용적 특성(Interactive Property)으로 평가할 수 있도록 분리 행동, 움직임의 예측 가능성, 양보, 통신 및 불확실성 대응을 검토해야 한다.
+
+분포 외 조건(Out-of-Distribution Conditions)은 익숙한 경험의 범위를 벗어났을 때 학습된 행동이 계속 신뢰할 수 있는지를 보여준다. 평가에서는 비정상적인 객체 배치, 새로운 지형, 예상하지 못한 조명, 드문 상호작용 또는 학습 과정에 존재하지 않았던 조건의 조합을 도입할 수 있다. 목표는 모든 상황에서 완벽한 성능을 요구하는 것이 아니라 시스템이 자신의 능력 저하를 인식하고 자신 있게 공격적인 행동을 계속하는 대신 적절하게 보수적인 행동으로 전환하는지를 판단하는 것이다.
+
+런타임 제약조건 적용(Runtime Constraint Enforcement)은 상위 수준 계획의 품질과 독립적으로 시험되어야 한다. 평가자는 의도적으로 안전하지 않은 후보 행동을 제공하거나 이전에 안전했던 계획을 무효화하는 환경 변화를 발생시킬 수 있다. 안전 필터(Safety Filters), 감독 제어기(Supervisory Controllers), 하위 수준 보호 기능은 필수 제한사항을 위반하는 명령을 거부하거나, 수정하거나, 정지시켜야 한다. 이를 통해 정렬이 하나의 지능형 구성요소가 항상 올바르게 행동하는 것에만 의존하지 않는다는 것을 확인할 수 있다.
+
+고장 주입(Failure Injection)은 성능이 저하된 운영 조건에서도 정렬이 유지되는지를 확인하는 데 도움이 된다. 통신 손실, 센서 고장, 액추에이터 성능 저하, 낮은 에너지 상태, 지도 불일치 또는 부분적인 연산 장애를 체계적으로 도입할 수 있다. 평가에서는 로봇이 적절한 성능 저하 모드(Degraded Modes)로 전환하고, 필수 안전 기능을 유지하며, 가능한 경우 자신의 상태를 전달하고, 기존 가정이나 능력이 더 이상 유효하지 않을 때 정상 행동을 계속하지 않는지를 판단해야 한다.
+
+복구 행동(Recovery Behavior)은 안전하게 정지하는 것이 견고한 정렬의 일부에 불과하기 때문에 별도로 평가할 필요가 있다. 고장, 중단 또는 불확실한 조건이 해결된 이후 로봇은 이전 목표와 환경에 관한 가정이 여전히 유효한지를 판단해야 한다. 정상 운영으로 복귀하는 과정을 단순히 정지 과정의 역순으로 가정해서는 안 되며, 상태 동기화(State Synchronization), 제약조건 재검증, 제어권(Control Ownership), 자원 가용성 및 안전한 재개(Safe Resumption)를 확인해야 한다.
+
+행동 지표(Behavioral Metrics)는 단순한 이진적 성공 또는 실패 이상의 정보를 표현해야 한다. 유용한 측정값에는 개입 빈도, 안전하지 않은 상태에 대한 노출, 최소 분리 거리, 제약조건 위반, 명확화 요청 비율, 불필요한 정지, 복구 시간, 목표 완료 및 대응 지연시간(Response Latency)이 포함될 수 있다. 단일 지표를 최대화하면 유용한 작업을 거부함으로써 사고를 제로로 만드는 것처럼 행동이 왜곡될 수 있으므로 여러 지표를 함께 해석해야 한다.
+
+정렬 평가는 과도한 보수성(Excessive Conservatism)도 측정해야 한다. 사소한 불확실성이 발생할 때마다 정지하는 로봇은 제한적인 안전 지표를 만족하면서도 운영 목적을 달성하지 못할 수 있다. 평가는 불확실성과 결과의 심각성을 모두 변화시켜 정당한 주의(Justified Caution)와 불필요한 주저함(Unnecessary Hesitation)을 구분해야 한다. 적절한 보정(Calibration)은 모든 상황에서 보수성이 동일하게 높아지는 것이 아니라 잠재적인 피해가 증가할수록 행동의 보수성도 증가하는 것을 의미한다.
+
+시간적 평가(Temporal Evaluation)는 일부 정렬 실패가 장기간 운영에서만 나타나기 때문에 중요하다. 반복적인 작업은 누적되는 위치 추정 오류, 변화하는 선호, 자원 고갈, 정책 드리프트(Policy Drift), 학습된 지름길(Learned Shortcuts) 또는 안전 여유의 점진적인 감소를 드러낼 수 있다. 장기 평가(Long-Horizon Testing)는 교정이 지속적으로 유효한지, 로봇이 의도하지 않은 행동을 향해 점진적으로 최적화되는 대신 목표 계층을 계속 유지하는지도 판단할 수 있다.
+
+다중 로봇 평가(Multi-Robot Evaluation)는 로봇을 개별적으로 시험하는 것만으로는 추론할 수 없는 창발적 행동(Emergent Behavior)을 검토해야 한다. 시나리오에는 공유 자원 경쟁, 혼잡, 통신 지연, 상충하는 작업 할당, 로봇 고장 및 플릿 수준 개입(Fleet-Level Interventions)이 포함되어야 한다. 각 로봇이 지역적으로 합리적으로 행동하는 것처럼 보이더라도 교착상태(Deadlock), 라이브락(Livelock), 중복 작업, 안전하지 않은 지역 최적화 또는 임무 우선순위를 훼손하는 집단 행동이 발생하는지를 평가해야 한다.
+
+인간 감독 자체도 정렬 시스템의 일부로 평가되어야 한다. 시험에서는 운영자가 로봇 상태를 이해하고, 중요한 불확실성을 식별하고, 충돌을 인식하며, 주어진 시간 안에 개입할 수 있는지를 판단해야 한다. 부적절한 인터페이스, 과도한 경고, 지연된 설명 또는 불명확한 제어권은 형식적으로 존재하는 감독 기능을 실제 운영에서는 무효하게 만들 수 있다. 따라서 정렬은 현실적인 작업 부하에서도 인간 감독이 운영적으로 사용 가능한지에 부분적으로 의존한다.
+
+추적 가능성(Traceability)은 평가와 진단을 모두 지원한다. 로그(Log)는 지시, 관측, 불확실성 추정, 활성 목표, 계획, 안전 개입, 인간의 교정 및 물리적 결과를 서로 연결해야 한다. 장애가 발생했을 때 평가자는 그 원인이 인식(Perception), 추론(Reasoning), 목표 관리(Goal Management), 계획(Planning), 제어(Control), 통신 또는 감독 가운데 어디에서 발생했는지를 판단할 수 있어야 한다. 추적 가능성은 행동 실패를 체계적인 개선을 이끌 수 있는 증거로 전환한다.
+
+평가는 시뮬레이션(Simulation), 통제된 물리적 시험(Controlled Physical Testing), 점진적으로 현실성이 증가하는 배포(Progressively Realistic Deployment)를 결합해야 한다. 시뮬레이션은 희귀하거나 위험한 시나리오를 대규모로 시험할 수 있게 하고, 하드웨어 시험은 시뮬레이션이 놓칠 수 있는 모델링 오류와 물리적 효과를 드러낸다. 이후 통제된 파일럿(Controlled Pilots)을 통해 실제 사람, 인프라, 작업 흐름 및 조직 절차와의 상호작용을 확인할 수 있다. 더 높은 결과 위험을 가진 환경으로 자율성을 확대하기 전에 이러한 단계에서 확보된 증거를 축적해야 한다.
+
+궁극적으로 로봇 행동 정렬 평가(Alignment Evaluation for Robot Behavior)는 정상 및 비정상 조건 모두에서 자율적 능력(Autonomous Competence)이 인간 의도, 안전, 권한 및 불확실성 인식(Uncertainty Awareness)의 경계 안에 유지되는지를 묻는다. 강력한 평가는 단순히 로봇이 작업을 완료할 수 있다는 사실만을 입증하지 않는다. 지시가 충돌하고, 신뢰도가 낮아지고, 인간이 개입하고, 구성요소가 고장 나고, 환경이 변화하며, 집단적 상호작용에서 명시적으로 계획되지 않았던 상황이 발생하더라도 로봇이 적절하게 행동한다는 것을 입증해야 한다.
